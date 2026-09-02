@@ -1,0 +1,2 @@
+# Preserve upstream OFL license bytes exactly; ignore whitespace diagnostics for this file only.
+assets/p0_spikes/p0_05/fonts/OFL.txt -whitespace
