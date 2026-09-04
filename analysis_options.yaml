@@ -26,3 +26,11 @@ linter:
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+# Package 1 only: schema v1 intentionally has no product or dummy tables.
+# The Drift generator emits an unused private manager field for this empty schema.
+# Keep generated code compiled by tests, but exclude this generated file from static linting.
+# Remove this exclusion when Package 2 adds the first real production table.
+analyzer:
+  exclude:
+    - lib/core/database/app_database.g.dart

@@ -7,6 +7,7 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private val p003KeystoreBridge = P003KeystoreBridge()
+    private val quraniKeystoreBridge = QuraniKeystoreBridge()
     private lateinit var p006SafBridge: P006SafBridge
     private lateinit var p007ExternalSharingBridge: P007ExternalSharingBridge
 
@@ -18,6 +19,12 @@ class MainActivity : FlutterActivity() {
             P003KeystoreBridge.CHANNEL,
         ).setMethodCallHandler { call, result ->
             p003KeystoreBridge.handle(call, result)
+        }
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            QuraniKeystoreBridge.CHANNEL,
+        ).setMethodCallHandler { call, result ->
+            quraniKeystoreBridge.handle(call, result)
         }
 
         val p004AudioBridge = P004AudioBridge(applicationContext)
