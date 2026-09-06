@@ -11,6 +11,13 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
         return;
       }
 
+      if (from == 1 && to == 2) {
+        await migrator.createTable(database.halaqahs);
+        await migrator.createTable(database.supportProgramSettings);
+        await migrator.createTable(database.supportProgramPeriods);
+        return;
+      }
+
       throw StateError(
         'Unsupported Qurani database migration path: $from -> $to. '
         'Every schema change must add an explicit tested migration.',

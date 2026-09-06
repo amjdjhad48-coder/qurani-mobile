@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:qurani/features/setup/presentation/initial_setup_gate.dart';
 
 class QuraniApp extends StatelessWidget {
   const QuraniApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'قرآني',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: SafeArea(child: Center(child: Text('قرآني'))),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF176B35)),
+        scaffoldBackgroundColor: const Color(0xFFF8FAF9),
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(),
+        ),
       ),
+      builder: (context, child) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
+      home: const InitialSetupGate(),
     );
   }
 }

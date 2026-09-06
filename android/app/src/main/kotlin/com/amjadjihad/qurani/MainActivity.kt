@@ -1,6 +1,9 @@
 package com.amjadjihad.qurani
 
 import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -10,6 +13,16 @@ class MainActivity : FlutterActivity() {
     private val quraniKeystoreBridge = QuraniKeystoreBridge()
     private lateinit var p006SafBridge: P006SafBridge
     private lateinit var p007ExternalSharingBridge: P007ExternalSharingBridge
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setRecentsScreenshotEnabled(false)
+        }
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -25,6 +38,14 @@ class MainActivity : FlutterActivity() {
             QuraniKeystoreBridge.CHANNEL,
         ).setMethodCallHandler { call, result ->
             quraniKeystoreBridge.handle(call, result)
+        }
+        val localSecurityStoreBridge =
+            QuraniLocalSecurityStoreBridge(applicationContext)
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            QuraniLocalSecurityStoreBridge.CHANNEL,
+        ).setMethodCallHandler { call, result ->
+            localSecurityStoreBridge.handle(call, result)
         }
 
         val p004AudioBridge = P004AudioBridge(applicationContext)

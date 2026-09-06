@@ -31,7 +31,7 @@ void main() {
     });
 
     test(
-      'createTestDatabase opens an empty in-memory production schema',
+      'createTestDatabase opens the current in-memory production schema',
       () async {
         final database = createTestDatabase();
 
@@ -47,7 +47,14 @@ void main() {
             )
             .get();
 
-        expect(userTables, isEmpty);
+        expect(
+          userTables.map((row) => row.read<String>('name')).toList(),
+          <String>[
+            'halaqahs',
+            'support_program_periods',
+            'support_program_settings',
+          ],
+        );
 
         final foreignKeys = await database
             .customSelect('PRAGMA foreign_keys;')
