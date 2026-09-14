@@ -26,6 +26,11 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
         return;
       }
 
+      if (from == 4 && to == 5) {
+        await _createPackage5Schema(database, migrator);
+        return;
+      }
+
       if (from == 1 && to == 3) {
         await _createPackage2Schema(database, migrator);
         await _createPackage3Schema(database, migrator);
@@ -42,6 +47,27 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
         await _createPackage2Schema(database, migrator);
         await _createPackage3Schema(database, migrator);
         await _createPackage4Schema(database, migrator);
+        return;
+      }
+
+      if (from == 3 && to == 5) {
+        await _createPackage4Schema(database, migrator);
+        await _createPackage5Schema(database, migrator);
+        return;
+      }
+
+      if (from == 2 && to == 5) {
+        await _createPackage3Schema(database, migrator);
+        await _createPackage4Schema(database, migrator);
+        await _createPackage5Schema(database, migrator);
+        return;
+      }
+
+      if (from == 1 && to == 5) {
+        await _createPackage2Schema(database, migrator);
+        await _createPackage3Schema(database, migrator);
+        await _createPackage4Schema(database, migrator);
+        await _createPackage5Schema(database, migrator);
         return;
       }
 
@@ -84,6 +110,13 @@ Future<void> _createPackage4Schema(
 ) async {
   await migrator.createTable(database.halaqahDays);
   await migrator.createTable(database.attendanceRecords);
+}
+
+Future<void> _createPackage5Schema(
+  AppDatabase database,
+  Migrator migrator,
+) async {
+  await migrator.createTable(database.recitations);
 }
 
 Future<void> verifyDatabaseAfterSchemaChange(AppDatabase database) async {

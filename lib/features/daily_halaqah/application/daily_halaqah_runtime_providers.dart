@@ -6,6 +6,8 @@ import 'package:qurani/features/daily_halaqah/application/daily_halaqah_read_ser
 import 'package:qurani/features/daily_halaqah/application/daily_halaqah_service.dart';
 import 'package:qurani/features/daily_halaqah/application/halaqah_holiday_service.dart';
 import 'package:qurani/features/daily_halaqah/data/drift_daily_halaqah_repository.dart';
+import 'package:qurani/features/recitation/application/recitation_service.dart';
+import 'package:qurani/features/recitation/data/drift_recitation_repository.dart';
 import 'package:qurani/features/setup/application/runtime_lock_service.dart';
 import 'package:qurani/features/setup/application/setup_providers.dart';
 import 'package:qurani/features/setup/data/drift_runtime_database_opener.dart';
@@ -20,6 +22,7 @@ final class DailyHalaqahRuntimeContext {
     required this.readService,
     required this.holidayService,
     required this.closeDayCore,
+    this.recitationService,
   });
 
   final int halaqahId;
@@ -30,6 +33,10 @@ final class DailyHalaqahRuntimeContext {
   final DailyHalaqahReadService readService;
   final HalaqahHolidayService holidayService;
   final CloseHalaqahDayCore closeDayCore;
+
+  // Nullable only to preserve existing P4 test fixtures during the P5 UI
+  // transition. The production provider below always supplies this service.
+  final RecitationService? recitationService;
 }
 
 final dailyHalaqahRuntimeContextProvider =
@@ -66,6 +73,12 @@ final dailyHalaqahRuntimeContextProvider =
       final repository = DriftDailyHalaqahRepository(database);
       final clock = ref.watch(clockProvider);
 
+      final recitationService = RecitationService(
+        repository: DriftRecitationRepository(database),
+        dailyHalaqahRepository: repository,
+        clock: clock,
+      );
+
       return DailyHalaqahRuntimeContext(
         halaqahId: halaqah.id,
         halaqahName: halaqah.halaqahName,
@@ -75,5 +88,6 @@ final dailyHalaqahRuntimeContextProvider =
         readService: DailyHalaqahReadService(repository),
         holidayService: HalaqahHolidayService(repository),
         closeDayCore: CloseHalaqahDayCore(repository),
+        recitationService: recitationService,
       );
     });

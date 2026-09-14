@@ -330,7 +330,13 @@ ORDER BY d.day_date DESC, d.id DESC;
           _database.attendanceRecords,
         )..where((table) => table.dayId.equals(existing.id))).get();
 
-        if (attendanceRows.isNotEmpty) {
+        final recitationRow =
+            await (_database.select(_database.recitations)
+                  ..where((table) => table.dayId.equals(existing.id))
+                  ..limit(1))
+                .getSingleOrNull();
+
+        if (attendanceRows.isNotEmpty || recitationRow != null) {
           conflictingDates.add(dayDate);
         }
       }

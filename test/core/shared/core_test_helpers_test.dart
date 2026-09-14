@@ -53,6 +53,7 @@ void main() {
             'attendance_records',
             'halaqah_days',
             'halaqahs',
+            'recitations',
             'student_activity_periods',
             'student_progress_plans',
             'students',

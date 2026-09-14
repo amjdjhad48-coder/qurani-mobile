@@ -3296,6 +3296,934 @@ class AttendanceRecordsCompanion extends UpdateCompanion<AttendanceRecord> {
   }
 }
 
+class $RecitationsTable extends Recitations
+    with TableInfo<$RecitationsTable, Recitation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecitationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _dayIdMeta = const VerificationMeta('dayId');
+  @override
+  late final GeneratedColumn<int> dayId = GeneratedColumn<int>(
+    'day_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES halaqah_days (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _studentIdMeta = const VerificationMeta(
+    'studentId',
+  );
+  @override
+  late final GeneratedColumn<int> studentId = GeneratedColumn<int>(
+    'student_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES students (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startSurahMeta = const VerificationMeta(
+    'startSurah',
+  );
+  @override
+  late final GeneratedColumn<int> startSurah = GeneratedColumn<int>(
+    'start_surah',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startAyahMeta = const VerificationMeta(
+    'startAyah',
+  );
+  @override
+  late final GeneratedColumn<int> startAyah = GeneratedColumn<int>(
+    'start_ayah',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endSurahMeta = const VerificationMeta(
+    'endSurah',
+  );
+  @override
+  late final GeneratedColumn<int> endSurah = GeneratedColumn<int>(
+    'end_surah',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endAyahMeta = const VerificationMeta(
+    'endAyah',
+  );
+  @override
+  late final GeneratedColumn<int> endAyah = GeneratedColumn<int>(
+    'end_ayah',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _facesQuarterAchievedMeta =
+      const VerificationMeta('facesQuarterAchieved');
+  @override
+  late final GeneratedColumn<int> facesQuarterAchieved = GeneratedColumn<int>(
+    'faces_quarter_achieved',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _evaluationMeta = const VerificationMeta(
+    'evaluation',
+  );
+  @override
+  late final GeneratedColumn<String> evaluation = GeneratedColumn<String>(
+    'evaluation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _errorCountMeta = const VerificationMeta(
+    'errorCount',
+  );
+  @override
+  late final GeneratedColumn<int> errorCount = GeneratedColumn<int>(
+    'error_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _plannedStartSurahMeta = const VerificationMeta(
+    'plannedStartSurah',
+  );
+  @override
+  late final GeneratedColumn<int> plannedStartSurah = GeneratedColumn<int>(
+    'planned_start_surah',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _plannedStartAyahMeta = const VerificationMeta(
+    'plannedStartAyah',
+  );
+  @override
+  late final GeneratedColumn<int> plannedStartAyah = GeneratedColumn<int>(
+    'planned_start_ayah',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _plannedEndSurahMeta = const VerificationMeta(
+    'plannedEndSurah',
+  );
+  @override
+  late final GeneratedColumn<int> plannedEndSurah = GeneratedColumn<int>(
+    'planned_end_surah',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _plannedEndAyahMeta = const VerificationMeta(
+    'plannedEndAyah',
+  );
+  @override
+  late final GeneratedColumn<int> plannedEndAyah = GeneratedColumn<int>(
+    'planned_end_ayah',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    dayId,
+    studentId,
+    type,
+    startSurah,
+    startAyah,
+    endSurah,
+    endAyah,
+    facesQuarterAchieved,
+    evaluation,
+    errorCount,
+    note,
+    plannedStartSurah,
+    plannedStartAyah,
+    plannedEndSurah,
+    plannedEndAyah,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recitations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Recitation> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('day_id')) {
+      context.handle(
+        _dayIdMeta,
+        dayId.isAcceptableOrUnknown(data['day_id']!, _dayIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayIdMeta);
+    }
+    if (data.containsKey('student_id')) {
+      context.handle(
+        _studentIdMeta,
+        studentId.isAcceptableOrUnknown(data['student_id']!, _studentIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_studentIdMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('start_surah')) {
+      context.handle(
+        _startSurahMeta,
+        startSurah.isAcceptableOrUnknown(data['start_surah']!, _startSurahMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startSurahMeta);
+    }
+    if (data.containsKey('start_ayah')) {
+      context.handle(
+        _startAyahMeta,
+        startAyah.isAcceptableOrUnknown(data['start_ayah']!, _startAyahMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startAyahMeta);
+    }
+    if (data.containsKey('end_surah')) {
+      context.handle(
+        _endSurahMeta,
+        endSurah.isAcceptableOrUnknown(data['end_surah']!, _endSurahMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_endSurahMeta);
+    }
+    if (data.containsKey('end_ayah')) {
+      context.handle(
+        _endAyahMeta,
+        endAyah.isAcceptableOrUnknown(data['end_ayah']!, _endAyahMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_endAyahMeta);
+    }
+    if (data.containsKey('faces_quarter_achieved')) {
+      context.handle(
+        _facesQuarterAchievedMeta,
+        facesQuarterAchieved.isAcceptableOrUnknown(
+          data['faces_quarter_achieved']!,
+          _facesQuarterAchievedMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_facesQuarterAchievedMeta);
+    }
+    if (data.containsKey('evaluation')) {
+      context.handle(
+        _evaluationMeta,
+        evaluation.isAcceptableOrUnknown(data['evaluation']!, _evaluationMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_evaluationMeta);
+    }
+    if (data.containsKey('error_count')) {
+      context.handle(
+        _errorCountMeta,
+        errorCount.isAcceptableOrUnknown(data['error_count']!, _errorCountMeta),
+      );
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('planned_start_surah')) {
+      context.handle(
+        _plannedStartSurahMeta,
+        plannedStartSurah.isAcceptableOrUnknown(
+          data['planned_start_surah']!,
+          _plannedStartSurahMeta,
+        ),
+      );
+    }
+    if (data.containsKey('planned_start_ayah')) {
+      context.handle(
+        _plannedStartAyahMeta,
+        plannedStartAyah.isAcceptableOrUnknown(
+          data['planned_start_ayah']!,
+          _plannedStartAyahMeta,
+        ),
+      );
+    }
+    if (data.containsKey('planned_end_surah')) {
+      context.handle(
+        _plannedEndSurahMeta,
+        plannedEndSurah.isAcceptableOrUnknown(
+          data['planned_end_surah']!,
+          _plannedEndSurahMeta,
+        ),
+      );
+    }
+    if (data.containsKey('planned_end_ayah')) {
+      context.handle(
+        _plannedEndAyahMeta,
+        plannedEndAyah.isAcceptableOrUnknown(
+          data['planned_end_ayah']!,
+          _plannedEndAyahMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Recitation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Recitation(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      dayId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}day_id'],
+      )!,
+      studentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}student_id'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      startSurah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}start_surah'],
+      )!,
+      startAyah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}start_ayah'],
+      )!,
+      endSurah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}end_surah'],
+      )!,
+      endAyah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}end_ayah'],
+      )!,
+      facesQuarterAchieved: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}faces_quarter_achieved'],
+      )!,
+      evaluation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}evaluation'],
+      )!,
+      errorCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}error_count'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      plannedStartSurah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}planned_start_surah'],
+      ),
+      plannedStartAyah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}planned_start_ayah'],
+      ),
+      plannedEndSurah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}planned_end_surah'],
+      ),
+      plannedEndAyah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}planned_end_ayah'],
+      ),
+    );
+  }
+
+  @override
+  $RecitationsTable createAlias(String alias) {
+    return $RecitationsTable(attachedDatabase, alias);
+  }
+}
+
+class Recitation extends DataClass implements Insertable<Recitation> {
+  final int id;
+  final int dayId;
+  final int studentId;
+  final String type;
+  final int startSurah;
+  final int startAyah;
+  final int endSurah;
+  final int endAyah;
+  final int facesQuarterAchieved;
+  final String evaluation;
+  final int errorCount;
+  final String? note;
+  final int? plannedStartSurah;
+  final int? plannedStartAyah;
+  final int? plannedEndSurah;
+  final int? plannedEndAyah;
+  const Recitation({
+    required this.id,
+    required this.dayId,
+    required this.studentId,
+    required this.type,
+    required this.startSurah,
+    required this.startAyah,
+    required this.endSurah,
+    required this.endAyah,
+    required this.facesQuarterAchieved,
+    required this.evaluation,
+    required this.errorCount,
+    this.note,
+    this.plannedStartSurah,
+    this.plannedStartAyah,
+    this.plannedEndSurah,
+    this.plannedEndAyah,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['day_id'] = Variable<int>(dayId);
+    map['student_id'] = Variable<int>(studentId);
+    map['type'] = Variable<String>(type);
+    map['start_surah'] = Variable<int>(startSurah);
+    map['start_ayah'] = Variable<int>(startAyah);
+    map['end_surah'] = Variable<int>(endSurah);
+    map['end_ayah'] = Variable<int>(endAyah);
+    map['faces_quarter_achieved'] = Variable<int>(facesQuarterAchieved);
+    map['evaluation'] = Variable<String>(evaluation);
+    map['error_count'] = Variable<int>(errorCount);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    if (!nullToAbsent || plannedStartSurah != null) {
+      map['planned_start_surah'] = Variable<int>(plannedStartSurah);
+    }
+    if (!nullToAbsent || plannedStartAyah != null) {
+      map['planned_start_ayah'] = Variable<int>(plannedStartAyah);
+    }
+    if (!nullToAbsent || plannedEndSurah != null) {
+      map['planned_end_surah'] = Variable<int>(plannedEndSurah);
+    }
+    if (!nullToAbsent || plannedEndAyah != null) {
+      map['planned_end_ayah'] = Variable<int>(plannedEndAyah);
+    }
+    return map;
+  }
+
+  RecitationsCompanion toCompanion(bool nullToAbsent) {
+    return RecitationsCompanion(
+      id: Value(id),
+      dayId: Value(dayId),
+      studentId: Value(studentId),
+      type: Value(type),
+      startSurah: Value(startSurah),
+      startAyah: Value(startAyah),
+      endSurah: Value(endSurah),
+      endAyah: Value(endAyah),
+      facesQuarterAchieved: Value(facesQuarterAchieved),
+      evaluation: Value(evaluation),
+      errorCount: Value(errorCount),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      plannedStartSurah: plannedStartSurah == null && nullToAbsent
+          ? const Value.absent()
+          : Value(plannedStartSurah),
+      plannedStartAyah: plannedStartAyah == null && nullToAbsent
+          ? const Value.absent()
+          : Value(plannedStartAyah),
+      plannedEndSurah: plannedEndSurah == null && nullToAbsent
+          ? const Value.absent()
+          : Value(plannedEndSurah),
+      plannedEndAyah: plannedEndAyah == null && nullToAbsent
+          ? const Value.absent()
+          : Value(plannedEndAyah),
+    );
+  }
+
+  factory Recitation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Recitation(
+      id: serializer.fromJson<int>(json['id']),
+      dayId: serializer.fromJson<int>(json['dayId']),
+      studentId: serializer.fromJson<int>(json['studentId']),
+      type: serializer.fromJson<String>(json['type']),
+      startSurah: serializer.fromJson<int>(json['startSurah']),
+      startAyah: serializer.fromJson<int>(json['startAyah']),
+      endSurah: serializer.fromJson<int>(json['endSurah']),
+      endAyah: serializer.fromJson<int>(json['endAyah']),
+      facesQuarterAchieved: serializer.fromJson<int>(
+        json['facesQuarterAchieved'],
+      ),
+      evaluation: serializer.fromJson<String>(json['evaluation']),
+      errorCount: serializer.fromJson<int>(json['errorCount']),
+      note: serializer.fromJson<String?>(json['note']),
+      plannedStartSurah: serializer.fromJson<int?>(json['plannedStartSurah']),
+      plannedStartAyah: serializer.fromJson<int?>(json['plannedStartAyah']),
+      plannedEndSurah: serializer.fromJson<int?>(json['plannedEndSurah']),
+      plannedEndAyah: serializer.fromJson<int?>(json['plannedEndAyah']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'dayId': serializer.toJson<int>(dayId),
+      'studentId': serializer.toJson<int>(studentId),
+      'type': serializer.toJson<String>(type),
+      'startSurah': serializer.toJson<int>(startSurah),
+      'startAyah': serializer.toJson<int>(startAyah),
+      'endSurah': serializer.toJson<int>(endSurah),
+      'endAyah': serializer.toJson<int>(endAyah),
+      'facesQuarterAchieved': serializer.toJson<int>(facesQuarterAchieved),
+      'evaluation': serializer.toJson<String>(evaluation),
+      'errorCount': serializer.toJson<int>(errorCount),
+      'note': serializer.toJson<String?>(note),
+      'plannedStartSurah': serializer.toJson<int?>(plannedStartSurah),
+      'plannedStartAyah': serializer.toJson<int?>(plannedStartAyah),
+      'plannedEndSurah': serializer.toJson<int?>(plannedEndSurah),
+      'plannedEndAyah': serializer.toJson<int?>(plannedEndAyah),
+    };
+  }
+
+  Recitation copyWith({
+    int? id,
+    int? dayId,
+    int? studentId,
+    String? type,
+    int? startSurah,
+    int? startAyah,
+    int? endSurah,
+    int? endAyah,
+    int? facesQuarterAchieved,
+    String? evaluation,
+    int? errorCount,
+    Value<String?> note = const Value.absent(),
+    Value<int?> plannedStartSurah = const Value.absent(),
+    Value<int?> plannedStartAyah = const Value.absent(),
+    Value<int?> plannedEndSurah = const Value.absent(),
+    Value<int?> plannedEndAyah = const Value.absent(),
+  }) => Recitation(
+    id: id ?? this.id,
+    dayId: dayId ?? this.dayId,
+    studentId: studentId ?? this.studentId,
+    type: type ?? this.type,
+    startSurah: startSurah ?? this.startSurah,
+    startAyah: startAyah ?? this.startAyah,
+    endSurah: endSurah ?? this.endSurah,
+    endAyah: endAyah ?? this.endAyah,
+    facesQuarterAchieved: facesQuarterAchieved ?? this.facesQuarterAchieved,
+    evaluation: evaluation ?? this.evaluation,
+    errorCount: errorCount ?? this.errorCount,
+    note: note.present ? note.value : this.note,
+    plannedStartSurah: plannedStartSurah.present
+        ? plannedStartSurah.value
+        : this.plannedStartSurah,
+    plannedStartAyah: plannedStartAyah.present
+        ? plannedStartAyah.value
+        : this.plannedStartAyah,
+    plannedEndSurah: plannedEndSurah.present
+        ? plannedEndSurah.value
+        : this.plannedEndSurah,
+    plannedEndAyah: plannedEndAyah.present
+        ? plannedEndAyah.value
+        : this.plannedEndAyah,
+  );
+  Recitation copyWithCompanion(RecitationsCompanion data) {
+    return Recitation(
+      id: data.id.present ? data.id.value : this.id,
+      dayId: data.dayId.present ? data.dayId.value : this.dayId,
+      studentId: data.studentId.present ? data.studentId.value : this.studentId,
+      type: data.type.present ? data.type.value : this.type,
+      startSurah: data.startSurah.present
+          ? data.startSurah.value
+          : this.startSurah,
+      startAyah: data.startAyah.present ? data.startAyah.value : this.startAyah,
+      endSurah: data.endSurah.present ? data.endSurah.value : this.endSurah,
+      endAyah: data.endAyah.present ? data.endAyah.value : this.endAyah,
+      facesQuarterAchieved: data.facesQuarterAchieved.present
+          ? data.facesQuarterAchieved.value
+          : this.facesQuarterAchieved,
+      evaluation: data.evaluation.present
+          ? data.evaluation.value
+          : this.evaluation,
+      errorCount: data.errorCount.present
+          ? data.errorCount.value
+          : this.errorCount,
+      note: data.note.present ? data.note.value : this.note,
+      plannedStartSurah: data.plannedStartSurah.present
+          ? data.plannedStartSurah.value
+          : this.plannedStartSurah,
+      plannedStartAyah: data.plannedStartAyah.present
+          ? data.plannedStartAyah.value
+          : this.plannedStartAyah,
+      plannedEndSurah: data.plannedEndSurah.present
+          ? data.plannedEndSurah.value
+          : this.plannedEndSurah,
+      plannedEndAyah: data.plannedEndAyah.present
+          ? data.plannedEndAyah.value
+          : this.plannedEndAyah,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Recitation(')
+          ..write('id: $id, ')
+          ..write('dayId: $dayId, ')
+          ..write('studentId: $studentId, ')
+          ..write('type: $type, ')
+          ..write('startSurah: $startSurah, ')
+          ..write('startAyah: $startAyah, ')
+          ..write('endSurah: $endSurah, ')
+          ..write('endAyah: $endAyah, ')
+          ..write('facesQuarterAchieved: $facesQuarterAchieved, ')
+          ..write('evaluation: $evaluation, ')
+          ..write('errorCount: $errorCount, ')
+          ..write('note: $note, ')
+          ..write('plannedStartSurah: $plannedStartSurah, ')
+          ..write('plannedStartAyah: $plannedStartAyah, ')
+          ..write('plannedEndSurah: $plannedEndSurah, ')
+          ..write('plannedEndAyah: $plannedEndAyah')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    dayId,
+    studentId,
+    type,
+    startSurah,
+    startAyah,
+    endSurah,
+    endAyah,
+    facesQuarterAchieved,
+    evaluation,
+    errorCount,
+    note,
+    plannedStartSurah,
+    plannedStartAyah,
+    plannedEndSurah,
+    plannedEndAyah,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Recitation &&
+          other.id == this.id &&
+          other.dayId == this.dayId &&
+          other.studentId == this.studentId &&
+          other.type == this.type &&
+          other.startSurah == this.startSurah &&
+          other.startAyah == this.startAyah &&
+          other.endSurah == this.endSurah &&
+          other.endAyah == this.endAyah &&
+          other.facesQuarterAchieved == this.facesQuarterAchieved &&
+          other.evaluation == this.evaluation &&
+          other.errorCount == this.errorCount &&
+          other.note == this.note &&
+          other.plannedStartSurah == this.plannedStartSurah &&
+          other.plannedStartAyah == this.plannedStartAyah &&
+          other.plannedEndSurah == this.plannedEndSurah &&
+          other.plannedEndAyah == this.plannedEndAyah);
+}
+
+class RecitationsCompanion extends UpdateCompanion<Recitation> {
+  final Value<int> id;
+  final Value<int> dayId;
+  final Value<int> studentId;
+  final Value<String> type;
+  final Value<int> startSurah;
+  final Value<int> startAyah;
+  final Value<int> endSurah;
+  final Value<int> endAyah;
+  final Value<int> facesQuarterAchieved;
+  final Value<String> evaluation;
+  final Value<int> errorCount;
+  final Value<String?> note;
+  final Value<int?> plannedStartSurah;
+  final Value<int?> plannedStartAyah;
+  final Value<int?> plannedEndSurah;
+  final Value<int?> plannedEndAyah;
+  const RecitationsCompanion({
+    this.id = const Value.absent(),
+    this.dayId = const Value.absent(),
+    this.studentId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.startSurah = const Value.absent(),
+    this.startAyah = const Value.absent(),
+    this.endSurah = const Value.absent(),
+    this.endAyah = const Value.absent(),
+    this.facesQuarterAchieved = const Value.absent(),
+    this.evaluation = const Value.absent(),
+    this.errorCount = const Value.absent(),
+    this.note = const Value.absent(),
+    this.plannedStartSurah = const Value.absent(),
+    this.plannedStartAyah = const Value.absent(),
+    this.plannedEndSurah = const Value.absent(),
+    this.plannedEndAyah = const Value.absent(),
+  });
+  RecitationsCompanion.insert({
+    this.id = const Value.absent(),
+    required int dayId,
+    required int studentId,
+    required String type,
+    required int startSurah,
+    required int startAyah,
+    required int endSurah,
+    required int endAyah,
+    required int facesQuarterAchieved,
+    required String evaluation,
+    this.errorCount = const Value.absent(),
+    this.note = const Value.absent(),
+    this.plannedStartSurah = const Value.absent(),
+    this.plannedStartAyah = const Value.absent(),
+    this.plannedEndSurah = const Value.absent(),
+    this.plannedEndAyah = const Value.absent(),
+  }) : dayId = Value(dayId),
+       studentId = Value(studentId),
+       type = Value(type),
+       startSurah = Value(startSurah),
+       startAyah = Value(startAyah),
+       endSurah = Value(endSurah),
+       endAyah = Value(endAyah),
+       facesQuarterAchieved = Value(facesQuarterAchieved),
+       evaluation = Value(evaluation);
+  static Insertable<Recitation> custom({
+    Expression<int>? id,
+    Expression<int>? dayId,
+    Expression<int>? studentId,
+    Expression<String>? type,
+    Expression<int>? startSurah,
+    Expression<int>? startAyah,
+    Expression<int>? endSurah,
+    Expression<int>? endAyah,
+    Expression<int>? facesQuarterAchieved,
+    Expression<String>? evaluation,
+    Expression<int>? errorCount,
+    Expression<String>? note,
+    Expression<int>? plannedStartSurah,
+    Expression<int>? plannedStartAyah,
+    Expression<int>? plannedEndSurah,
+    Expression<int>? plannedEndAyah,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (dayId != null) 'day_id': dayId,
+      if (studentId != null) 'student_id': studentId,
+      if (type != null) 'type': type,
+      if (startSurah != null) 'start_surah': startSurah,
+      if (startAyah != null) 'start_ayah': startAyah,
+      if (endSurah != null) 'end_surah': endSurah,
+      if (endAyah != null) 'end_ayah': endAyah,
+      if (facesQuarterAchieved != null)
+        'faces_quarter_achieved': facesQuarterAchieved,
+      if (evaluation != null) 'evaluation': evaluation,
+      if (errorCount != null) 'error_count': errorCount,
+      if (note != null) 'note': note,
+      if (plannedStartSurah != null) 'planned_start_surah': plannedStartSurah,
+      if (plannedStartAyah != null) 'planned_start_ayah': plannedStartAyah,
+      if (plannedEndSurah != null) 'planned_end_surah': plannedEndSurah,
+      if (plannedEndAyah != null) 'planned_end_ayah': plannedEndAyah,
+    });
+  }
+
+  RecitationsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? dayId,
+    Value<int>? studentId,
+    Value<String>? type,
+    Value<int>? startSurah,
+    Value<int>? startAyah,
+    Value<int>? endSurah,
+    Value<int>? endAyah,
+    Value<int>? facesQuarterAchieved,
+    Value<String>? evaluation,
+    Value<int>? errorCount,
+    Value<String?>? note,
+    Value<int?>? plannedStartSurah,
+    Value<int?>? plannedStartAyah,
+    Value<int?>? plannedEndSurah,
+    Value<int?>? plannedEndAyah,
+  }) {
+    return RecitationsCompanion(
+      id: id ?? this.id,
+      dayId: dayId ?? this.dayId,
+      studentId: studentId ?? this.studentId,
+      type: type ?? this.type,
+      startSurah: startSurah ?? this.startSurah,
+      startAyah: startAyah ?? this.startAyah,
+      endSurah: endSurah ?? this.endSurah,
+      endAyah: endAyah ?? this.endAyah,
+      facesQuarterAchieved: facesQuarterAchieved ?? this.facesQuarterAchieved,
+      evaluation: evaluation ?? this.evaluation,
+      errorCount: errorCount ?? this.errorCount,
+      note: note ?? this.note,
+      plannedStartSurah: plannedStartSurah ?? this.plannedStartSurah,
+      plannedStartAyah: plannedStartAyah ?? this.plannedStartAyah,
+      plannedEndSurah: plannedEndSurah ?? this.plannedEndSurah,
+      plannedEndAyah: plannedEndAyah ?? this.plannedEndAyah,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (dayId.present) {
+      map['day_id'] = Variable<int>(dayId.value);
+    }
+    if (studentId.present) {
+      map['student_id'] = Variable<int>(studentId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (startSurah.present) {
+      map['start_surah'] = Variable<int>(startSurah.value);
+    }
+    if (startAyah.present) {
+      map['start_ayah'] = Variable<int>(startAyah.value);
+    }
+    if (endSurah.present) {
+      map['end_surah'] = Variable<int>(endSurah.value);
+    }
+    if (endAyah.present) {
+      map['end_ayah'] = Variable<int>(endAyah.value);
+    }
+    if (facesQuarterAchieved.present) {
+      map['faces_quarter_achieved'] = Variable<int>(facesQuarterAchieved.value);
+    }
+    if (evaluation.present) {
+      map['evaluation'] = Variable<String>(evaluation.value);
+    }
+    if (errorCount.present) {
+      map['error_count'] = Variable<int>(errorCount.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (plannedStartSurah.present) {
+      map['planned_start_surah'] = Variable<int>(plannedStartSurah.value);
+    }
+    if (plannedStartAyah.present) {
+      map['planned_start_ayah'] = Variable<int>(plannedStartAyah.value);
+    }
+    if (plannedEndSurah.present) {
+      map['planned_end_surah'] = Variable<int>(plannedEndSurah.value);
+    }
+    if (plannedEndAyah.present) {
+      map['planned_end_ayah'] = Variable<int>(plannedEndAyah.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationsCompanion(')
+          ..write('id: $id, ')
+          ..write('dayId: $dayId, ')
+          ..write('studentId: $studentId, ')
+          ..write('type: $type, ')
+          ..write('startSurah: $startSurah, ')
+          ..write('startAyah: $startAyah, ')
+          ..write('endSurah: $endSurah, ')
+          ..write('endAyah: $endAyah, ')
+          ..write('facesQuarterAchieved: $facesQuarterAchieved, ')
+          ..write('evaluation: $evaluation, ')
+          ..write('errorCount: $errorCount, ')
+          ..write('note: $note, ')
+          ..write('plannedStartSurah: $plannedStartSurah, ')
+          ..write('plannedStartAyah: $plannedStartAyah, ')
+          ..write('plannedEndSurah: $plannedEndSurah, ')
+          ..write('plannedEndAyah: $plannedEndAyah')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -3312,6 +4240,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $HalaqahDaysTable halaqahDays = $HalaqahDaysTable(this);
   late final $AttendanceRecordsTable attendanceRecords =
       $AttendanceRecordsTable(this);
+  late final $RecitationsTable recitations = $RecitationsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3325,6 +4254,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     studentActivityPeriods,
     halaqahDays,
     attendanceRecords,
+    recitations,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -4785,6 +5715,24 @@ final class $$StudentsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$RecitationsTable, List<Recitation>>
+  _recitationsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.recitations,
+    aliasName: 'students__id__recitations__student_id',
+  );
+
+  $$RecitationsTableProcessedTableManager get recitationsRefs {
+    final manager = $$RecitationsTableTableManager(
+      $_db,
+      $_db.recitations,
+    ).filter((f) => f.studentId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_recitationsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$StudentsTableFilterComposer
@@ -4946,6 +5894,31 @@ class $$StudentsTableFilterComposer
           }) => $$AttendanceRecordsTableFilterComposer(
             $db: $db,
             $table: $db.attendanceRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> recitationsRefs(
+    Expression<bool> Function($$RecitationsTableFilterComposer f) f,
+  ) {
+    final $$RecitationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.recitations,
+      getReferencedColumn: (t) => t.studentId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecitationsTableFilterComposer(
+            $db: $db,
+            $table: $db.recitations,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -5210,6 +6183,31 @@ class $$StudentsTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> recitationsRefs<T extends Object>(
+    Expression<T> Function($$RecitationsTableAnnotationComposer a) f,
+  ) {
+    final $$RecitationsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.recitations,
+      getReferencedColumn: (t) => t.studentId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecitationsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.recitations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$StudentsTableTableManager
@@ -5230,6 +6228,7 @@ class $$StudentsTableTableManager
             bool studentProgressPlansRefs,
             bool studentActivityPeriodsRefs,
             bool attendanceRecordsRefs,
+            bool recitationsRefs,
           })
         > {
   $$StudentsTableTableManager(_$AppDatabase db, $StudentsTable table)
@@ -5317,6 +6316,7 @@ class $$StudentsTableTableManager
                 studentProgressPlansRefs = false,
                 studentActivityPeriodsRefs = false,
                 attendanceRecordsRefs = false,
+                recitationsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -5324,6 +6324,7 @@ class $$StudentsTableTableManager
                     if (studentProgressPlansRefs) db.studentProgressPlans,
                     if (studentActivityPeriodsRefs) db.studentActivityPeriods,
                     if (attendanceRecordsRefs) db.attendanceRecords,
+                    if (recitationsRefs) db.recitations,
                   ],
                   addJoins:
                       <
@@ -5422,6 +6423,27 @@ class $$StudentsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (recitationsRefs)
+                        await $_getPrefetchedData<
+                          Student,
+                          $StudentsTable,
+                          Recitation
+                        >(
+                          currentTable: table,
+                          referencedTable: $$StudentsTableReferences
+                              ._recitationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$StudentsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).recitationsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.studentId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -5447,6 +6469,7 @@ typedef $$StudentsTableProcessedTableManager =
         bool studentProgressPlansRefs,
         bool studentActivityPeriodsRefs,
         bool attendanceRecordsRefs,
+        bool recitationsRefs,
       })
     >;
 typedef $$StudentProgressPlansTableCreateCompanionBuilder =
@@ -6119,6 +7142,24 @@ final class $$HalaqahDaysTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$RecitationsTable, List<Recitation>>
+  _recitationsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.recitations,
+    aliasName: 'halaqah_days__id__recitations__day_id',
+  );
+
+  $$RecitationsTableProcessedTableManager get recitationsRefs {
+    final manager = $$RecitationsTableTableManager(
+      $_db,
+      $_db.recitations,
+    ).filter((f) => f.dayId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_recitationsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$HalaqahDaysTableFilterComposer
@@ -6184,6 +7225,31 @@ class $$HalaqahDaysTableFilterComposer
           }) => $$AttendanceRecordsTableFilterComposer(
             $db: $db,
             $table: $db.attendanceRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> recitationsRefs(
+    Expression<bool> Function($$RecitationsTableFilterComposer f) f,
+  ) {
+    final $$RecitationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.recitations,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecitationsTableFilterComposer(
+            $db: $db,
+            $table: $db.recitations,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -6308,6 +7374,31 @@ class $$HalaqahDaysTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> recitationsRefs<T extends Object>(
+    Expression<T> Function($$RecitationsTableAnnotationComposer a) f,
+  ) {
+    final $$RecitationsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.recitations,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecitationsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.recitations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$HalaqahDaysTableTableManager
@@ -6323,7 +7414,11 @@ class $$HalaqahDaysTableTableManager
           $$HalaqahDaysTableUpdateCompanionBuilder,
           (HalaqahDay, $$HalaqahDaysTableReferences),
           HalaqahDay,
-          PrefetchHooks Function({bool halaqahId, bool attendanceRecordsRefs})
+          PrefetchHooks Function({
+            bool halaqahId,
+            bool attendanceRecordsRefs,
+            bool recitationsRefs,
+          })
         > {
   $$HalaqahDaysTableTableManager(_$AppDatabase db, $HalaqahDaysTable table)
     : super(
@@ -6369,11 +7464,16 @@ class $$HalaqahDaysTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({halaqahId = false, attendanceRecordsRefs = false}) {
+              ({
+                halaqahId = false,
+                attendanceRecordsRefs = false,
+                recitationsRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (attendanceRecordsRefs) db.attendanceRecords,
+                    if (recitationsRefs) db.recitations,
                   ],
                   addJoins:
                       <
@@ -6432,6 +7532,27 @@ class $$HalaqahDaysTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (recitationsRefs)
+                        await $_getPrefetchedData<
+                          HalaqahDay,
+                          $HalaqahDaysTable,
+                          Recitation
+                        >(
+                          currentTable: table,
+                          referencedTable: $$HalaqahDaysTableReferences
+                              ._recitationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$HalaqahDaysTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).recitationsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.dayId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -6452,7 +7573,11 @@ typedef $$HalaqahDaysTableProcessedTableManager =
       $$HalaqahDaysTableUpdateCompanionBuilder,
       (HalaqahDay, $$HalaqahDaysTableReferences),
       HalaqahDay,
-      PrefetchHooks Function({bool halaqahId, bool attendanceRecordsRefs})
+      PrefetchHooks Function({
+        bool halaqahId,
+        bool attendanceRecordsRefs,
+        bool recitationsRefs,
+      })
     >;
 typedef $$AttendanceRecordsTableCreateCompanionBuilder =
     AttendanceRecordsCompanion Function({
@@ -6850,6 +7975,628 @@ typedef $$AttendanceRecordsTableProcessedTableManager =
       AttendanceRecord,
       PrefetchHooks Function({bool dayId, bool studentId})
     >;
+typedef $$RecitationsTableCreateCompanionBuilder =
+    RecitationsCompanion Function({
+      Value<int> id,
+      required int dayId,
+      required int studentId,
+      required String type,
+      required int startSurah,
+      required int startAyah,
+      required int endSurah,
+      required int endAyah,
+      required int facesQuarterAchieved,
+      required String evaluation,
+      Value<int> errorCount,
+      Value<String?> note,
+      Value<int?> plannedStartSurah,
+      Value<int?> plannedStartAyah,
+      Value<int?> plannedEndSurah,
+      Value<int?> plannedEndAyah,
+    });
+typedef $$RecitationsTableUpdateCompanionBuilder =
+    RecitationsCompanion Function({
+      Value<int> id,
+      Value<int> dayId,
+      Value<int> studentId,
+      Value<String> type,
+      Value<int> startSurah,
+      Value<int> startAyah,
+      Value<int> endSurah,
+      Value<int> endAyah,
+      Value<int> facesQuarterAchieved,
+      Value<String> evaluation,
+      Value<int> errorCount,
+      Value<String?> note,
+      Value<int?> plannedStartSurah,
+      Value<int?> plannedStartAyah,
+      Value<int?> plannedEndSurah,
+      Value<int?> plannedEndAyah,
+    });
+
+final class $$RecitationsTableReferences
+    extends BaseReferences<_$AppDatabase, $RecitationsTable, Recitation> {
+  $$RecitationsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $HalaqahDaysTable _dayIdTable(_$AppDatabase db) =>
+      db.halaqahDays.createAlias('recitations__day_id__halaqah_days__id');
+
+  $$HalaqahDaysTableProcessedTableManager get dayId {
+    final $_column = $_itemColumn<int>('day_id')!;
+
+    final manager = $$HalaqahDaysTableTableManager(
+      $_db,
+      $_db.halaqahDays,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_dayIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $StudentsTable _studentIdTable(_$AppDatabase db) =>
+      db.students.createAlias('recitations__student_id__students__id');
+
+  $$StudentsTableProcessedTableManager get studentId {
+    final $_column = $_itemColumn<int>('student_id')!;
+
+    final manager = $$StudentsTableTableManager(
+      $_db,
+      $_db.students,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_studentIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$RecitationsTableFilterComposer
+    extends Composer<_$AppDatabase, $RecitationsTable> {
+  $$RecitationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get startSurah => $composableBuilder(
+    column: $table.startSurah,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get startAyah => $composableBuilder(
+    column: $table.startAyah,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get endSurah => $composableBuilder(
+    column: $table.endSurah,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get endAyah => $composableBuilder(
+    column: $table.endAyah,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get facesQuarterAchieved => $composableBuilder(
+    column: $table.facesQuarterAchieved,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get evaluation => $composableBuilder(
+    column: $table.evaluation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get errorCount => $composableBuilder(
+    column: $table.errorCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get plannedStartSurah => $composableBuilder(
+    column: $table.plannedStartSurah,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get plannedStartAyah => $composableBuilder(
+    column: $table.plannedStartAyah,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get plannedEndSurah => $composableBuilder(
+    column: $table.plannedEndSurah,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get plannedEndAyah => $composableBuilder(
+    column: $table.plannedEndAyah,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$HalaqahDaysTableFilterComposer get dayId {
+    final $$HalaqahDaysTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableFilterComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableFilterComposer get studentId {
+    final $$StudentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableFilterComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RecitationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RecitationsTable> {
+  $$RecitationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get startSurah => $composableBuilder(
+    column: $table.startSurah,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get startAyah => $composableBuilder(
+    column: $table.startAyah,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get endSurah => $composableBuilder(
+    column: $table.endSurah,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get endAyah => $composableBuilder(
+    column: $table.endAyah,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get facesQuarterAchieved => $composableBuilder(
+    column: $table.facesQuarterAchieved,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get evaluation => $composableBuilder(
+    column: $table.evaluation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get errorCount => $composableBuilder(
+    column: $table.errorCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get plannedStartSurah => $composableBuilder(
+    column: $table.plannedStartSurah,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get plannedStartAyah => $composableBuilder(
+    column: $table.plannedStartAyah,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get plannedEndSurah => $composableBuilder(
+    column: $table.plannedEndSurah,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get plannedEndAyah => $composableBuilder(
+    column: $table.plannedEndAyah,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$HalaqahDaysTableOrderingComposer get dayId {
+    final $$HalaqahDaysTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableOrderingComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableOrderingComposer get studentId {
+    final $$StudentsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableOrderingComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RecitationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RecitationsTable> {
+  $$RecitationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<int> get startSurah => $composableBuilder(
+    column: $table.startSurah,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get startAyah =>
+      $composableBuilder(column: $table.startAyah, builder: (column) => column);
+
+  GeneratedColumn<int> get endSurah =>
+      $composableBuilder(column: $table.endSurah, builder: (column) => column);
+
+  GeneratedColumn<int> get endAyah =>
+      $composableBuilder(column: $table.endAyah, builder: (column) => column);
+
+  GeneratedColumn<int> get facesQuarterAchieved => $composableBuilder(
+    column: $table.facesQuarterAchieved,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get evaluation => $composableBuilder(
+    column: $table.evaluation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get errorCount => $composableBuilder(
+    column: $table.errorCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<int> get plannedStartSurah => $composableBuilder(
+    column: $table.plannedStartSurah,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get plannedStartAyah => $composableBuilder(
+    column: $table.plannedStartAyah,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get plannedEndSurah => $composableBuilder(
+    column: $table.plannedEndSurah,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get plannedEndAyah => $composableBuilder(
+    column: $table.plannedEndAyah,
+    builder: (column) => column,
+  );
+
+  $$HalaqahDaysTableAnnotationComposer get dayId {
+    final $$HalaqahDaysTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableAnnotationComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableAnnotationComposer get studentId {
+    final $$StudentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RecitationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RecitationsTable,
+          Recitation,
+          $$RecitationsTableFilterComposer,
+          $$RecitationsTableOrderingComposer,
+          $$RecitationsTableAnnotationComposer,
+          $$RecitationsTableCreateCompanionBuilder,
+          $$RecitationsTableUpdateCompanionBuilder,
+          (Recitation, $$RecitationsTableReferences),
+          Recitation,
+          PrefetchHooks Function({bool dayId, bool studentId})
+        > {
+  $$RecitationsTableTableManager(_$AppDatabase db, $RecitationsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecitationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecitationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RecitationsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> dayId = const Value.absent(),
+                Value<int> studentId = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<int> startSurah = const Value.absent(),
+                Value<int> startAyah = const Value.absent(),
+                Value<int> endSurah = const Value.absent(),
+                Value<int> endAyah = const Value.absent(),
+                Value<int> facesQuarterAchieved = const Value.absent(),
+                Value<String> evaluation = const Value.absent(),
+                Value<int> errorCount = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int?> plannedStartSurah = const Value.absent(),
+                Value<int?> plannedStartAyah = const Value.absent(),
+                Value<int?> plannedEndSurah = const Value.absent(),
+                Value<int?> plannedEndAyah = const Value.absent(),
+              }) => RecitationsCompanion(
+                id: id,
+                dayId: dayId,
+                studentId: studentId,
+                type: type,
+                startSurah: startSurah,
+                startAyah: startAyah,
+                endSurah: endSurah,
+                endAyah: endAyah,
+                facesQuarterAchieved: facesQuarterAchieved,
+                evaluation: evaluation,
+                errorCount: errorCount,
+                note: note,
+                plannedStartSurah: plannedStartSurah,
+                plannedStartAyah: plannedStartAyah,
+                plannedEndSurah: plannedEndSurah,
+                plannedEndAyah: plannedEndAyah,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int dayId,
+                required int studentId,
+                required String type,
+                required int startSurah,
+                required int startAyah,
+                required int endSurah,
+                required int endAyah,
+                required int facesQuarterAchieved,
+                required String evaluation,
+                Value<int> errorCount = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int?> plannedStartSurah = const Value.absent(),
+                Value<int?> plannedStartAyah = const Value.absent(),
+                Value<int?> plannedEndSurah = const Value.absent(),
+                Value<int?> plannedEndAyah = const Value.absent(),
+              }) => RecitationsCompanion.insert(
+                id: id,
+                dayId: dayId,
+                studentId: studentId,
+                type: type,
+                startSurah: startSurah,
+                startAyah: startAyah,
+                endSurah: endSurah,
+                endAyah: endAyah,
+                facesQuarterAchieved: facesQuarterAchieved,
+                evaluation: evaluation,
+                errorCount: errorCount,
+                note: note,
+                plannedStartSurah: plannedStartSurah,
+                plannedStartAyah: plannedStartAyah,
+                plannedEndSurah: plannedEndSurah,
+                plannedEndAyah: plannedEndAyah,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$RecitationsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({dayId = false, studentId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (dayId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.dayId,
+                                referencedTable: $$RecitationsTableReferences
+                                    ._dayIdTable(db),
+                                referencedColumn: $$RecitationsTableReferences
+                                    ._dayIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+                    if (studentId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.studentId,
+                                referencedTable: $$RecitationsTableReferences
+                                    ._studentIdTable(db),
+                                referencedColumn: $$RecitationsTableReferences
+                                    ._studentIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$RecitationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RecitationsTable,
+      Recitation,
+      $$RecitationsTableFilterComposer,
+      $$RecitationsTableOrderingComposer,
+      $$RecitationsTableAnnotationComposer,
+      $$RecitationsTableCreateCompanionBuilder,
+      $$RecitationsTableUpdateCompanionBuilder,
+      (Recitation, $$RecitationsTableReferences),
+      Recitation,
+      PrefetchHooks Function({bool dayId, bool studentId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -6876,4 +8623,6 @@ class $AppDatabaseManager {
       $$HalaqahDaysTableTableManager(_db, _db.halaqahDays);
   $$AttendanceRecordsTableTableManager get attendanceRecords =>
       $$AttendanceRecordsTableTableManager(_db, _db.attendanceRecords);
+  $$RecitationsTableTableManager get recitations =>
+      $$RecitationsTableTableManager(_db, _db.recitations);
 }

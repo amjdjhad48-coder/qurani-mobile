@@ -7,6 +7,7 @@ import 'package:qurani/features/daily_halaqah/domain/daily_halaqah.dart';
 import 'package:qurani/features/daily_halaqah/presentation/attendance_status_selector.dart';
 import 'package:qurani/features/daily_halaqah/presentation/halaqah_day_history_screen.dart';
 import 'package:qurani/features/daily_halaqah/presentation/halaqah_day_summary_screen.dart';
+import 'package:qurani/features/recitation/presentation/student_recitation_section.dart';
 
 class DailyHalaqahScreen extends StatefulWidget {
   const DailyHalaqahScreen({required this.runtimeContext, super.key});
@@ -622,6 +623,20 @@ class _DailyHalaqahScreenState extends State<DailyHalaqahScreen> {
                   if (item.isAttendanceUnset) ...<Widget>[
                     const SizedBox(height: 8),
                     const Text('لم يحدد الحضور بعد.'),
+                  ],
+                  if (widget.runtimeContext.recitationService
+                      case final recitationService?) ...<Widget>[
+                    const SizedBox(height: 12),
+                    StudentRecitationSection(
+                      service: recitationService,
+                      halaqahId: widget.runtimeContext.halaqahId,
+                      dayId: summary.day.id,
+                      studentId: studentId,
+                      studentName: item.student.studentName,
+                      onChanged: () {
+                        _scrollToStudent(studentId);
+                      },
+                    ),
                   ],
                 ],
               ),

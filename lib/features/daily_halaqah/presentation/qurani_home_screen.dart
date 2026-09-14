@@ -109,7 +109,7 @@ class _QuraniHomeScreenState extends State<QuraniHomeScreen> {
 
     final day = data.day;
 
-    if (day != null && (day.isClosed || day.isHoliday)) {
+    if (day != null && day.isHoliday) {
       await Navigator.of(context).push<void>(
         MaterialPageRoute<void>(
           builder: (context) => HalaqahDaySummaryScreen(
@@ -332,6 +332,10 @@ class _QuraniHomeScreenState extends State<QuraniHomeScreen> {
       return 'متابعة يوم الحلقة';
     }
 
+    if (day.isClosed) {
+      return 'فتح يوم الحلقة';
+    }
+
     return 'عرض ملخص اليوم';
   }
 
@@ -340,7 +344,7 @@ class _QuraniHomeScreenState extends State<QuraniHomeScreen> {
       return Icons.play_arrow;
     }
 
-    if (day.isOpen) {
+    if (day.isOpen || day.isClosed) {
       return Icons.fact_check_outlined;
     }
 

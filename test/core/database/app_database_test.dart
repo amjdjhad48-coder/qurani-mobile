@@ -6,12 +6,12 @@ import 'package:qurani/core/database/database_migrations.dart';
 void main() {
   group('AppDatabase migration infrastructure', () {
     test(
-      'schemaVersion 4 creates Package 2, Package 3, and Package 4 tables',
+      'schemaVersion 5 creates Package 2 through Package 5 tables',
       () async {
         final database = AppDatabase(NativeDatabase.memory());
 
         try {
-          expect(database.schemaVersion, 4);
+          expect(database.schemaVersion, 5);
 
           await database.customSelect('SELECT 1;').get();
 
@@ -21,6 +21,7 @@ void main() {
             'attendance_records',
             'halaqah_days',
             'halaqahs',
+            'recitations',
             'student_activity_periods',
             'student_progress_plans',
             'students',
@@ -38,7 +39,7 @@ void main() {
       },
     );
 
-    test('migrates the empty v1 database explicitly to schema v4', () async {
+    test('migrates the empty v1 database explicitly to schema v5', () async {
       final executor = NativeDatabase.memory(
         setup: (rawDatabase) {
           rawDatabase.execute('PRAGMA user_version = 1;');
@@ -50,8 +51,7 @@ void main() {
       try {
         await database.customSelect('SELECT 1;').get();
 
-        final version = await _userVersion(database);
-        expect(version, 4);
+        expect(await _userVersion(database), 5);
 
         final tables = await _userTables(database);
 
@@ -59,6 +59,7 @@ void main() {
         expect(tables, contains('students'));
         expect(tables, contains('halaqah_days'));
         expect(tables, contains('attendance_records'));
+        expect(tables, contains('recitations'));
 
         await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
       } finally {
@@ -66,7 +67,7 @@ void main() {
       }
     });
 
-    test('migrates schema v2 explicitly to schema v4', () async {
+    test('migrates schema v2 explicitly to schema v5', () async {
       final executor = NativeDatabase.memory(
         setup: (rawDatabase) {
           rawDatabase.execute(
@@ -83,7 +84,7 @@ void main() {
       try {
         await database.customSelect('SELECT 1;').get();
 
-        expect(await _userVersion(database), 4);
+        expect(await _userVersion(database), 5);
 
         final tables = await _userTables(database);
         expect(tables, contains('students'));
@@ -91,6 +92,7 @@ void main() {
         expect(tables, contains('student_activity_periods'));
         expect(tables, contains('halaqah_days'));
         expect(tables, contains('attendance_records'));
+        expect(tables, contains('recitations'));
 
         await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
       } finally {
@@ -98,7 +100,7 @@ void main() {
       }
     });
 
-    test('migrates schema v3 explicitly to schema v4', () async {
+    test('migrates schema v3 explicitly to schema v5', () async {
       final executor = NativeDatabase.memory(
         setup: (rawDatabase) {
           rawDatabase.execute(
@@ -125,11 +127,12 @@ void main() {
       try {
         await database.customSelect('SELECT 1;').get();
 
-        expect(await _userVersion(database), 4);
+        expect(await _userVersion(database), 5);
 
         final tables = await _userTables(database);
         expect(tables, contains('halaqah_days'));
         expect(tables, contains('attendance_records'));
+        expect(tables, contains('recitations'));
 
         await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
       } finally {
@@ -137,7 +140,56 @@ void main() {
       }
     });
 
-    test('schema v4 keeps foreign keys enabled', () async {
+    test('migrates schema v4 explicitly to schema v5', () async {
+      final executor = NativeDatabase.memory(
+        setup: (rawDatabase) {
+          rawDatabase.execute(
+            'CREATE TABLE halaqahs ('
+            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
+            ');',
+          );
+
+          rawDatabase.execute(
+            'CREATE TABLE students ('
+            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+            'halaqah_id INTEGER NOT NULL, '
+            'FOREIGN KEY (halaqah_id) REFERENCES halaqahs(id) '
+            'ON DELETE RESTRICT'
+            ');',
+          );
+
+          rawDatabase.execute(
+            'CREATE TABLE halaqah_days ('
+            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+            'halaqah_id INTEGER NOT NULL, '
+            'day_date TEXT NOT NULL, '
+            'status TEXT NOT NULL, '
+            'FOREIGN KEY (halaqah_id) REFERENCES halaqahs(id) '
+            'ON DELETE RESTRICT'
+            ');',
+          );
+
+          rawDatabase.execute('PRAGMA user_version = 4;');
+        },
+      );
+
+      final database = AppDatabase(executor);
+
+      try {
+        await database.customSelect('SELECT 1;').get();
+
+        expect(await _userVersion(database), 5);
+
+        final tables = await _userTables(database);
+        expect(tables, contains('recitations'));
+
+        await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
+      } finally {
+        await database.close();
+      }
+    });
+
+    test('schema v5 keeps foreign keys enabled', () async {
       final database = AppDatabase(NativeDatabase.memory());
 
       try {
@@ -161,7 +213,7 @@ void main() {
         final strategy = database.migration;
 
         await expectLater(
-          strategy.onUpgrade(database.createMigrator(), 4, 5),
+          strategy.onUpgrade(database.createMigrator(), 5, 6),
           throwsA(isA<StateError>()),
         );
       } finally {
