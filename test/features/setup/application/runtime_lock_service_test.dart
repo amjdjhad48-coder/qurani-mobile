@@ -378,6 +378,31 @@ void main() {
       },
     );
 
+    test(
+      'runtime database handle is available only while session is unlocked',
+      () async {
+        final harness = _Harness(
+          clock: _MutableClock(DateTime.utc(2026, 9, 5, 9)),
+          initialState: _readyState(),
+        );
+
+        expect(harness.service.requireOpenDatabaseHandle, throwsStateError);
+
+        final unlockResult = await harness.service.unlock('482731');
+
+        expect(unlockResult.status, RuntimeUnlockStatus.unlocked);
+
+        final handle = harness.service.requireOpenDatabaseHandle();
+
+        expect(handle, same(harness.databaseOpener.lastHandle));
+        expect(harness.databaseOpener.lastHandle!.closeCalls, 0);
+
+        await harness.service.lock();
+
+        expect(harness.databaseOpener.lastHandle!.closeCalls, 1);
+        expect(harness.service.requireOpenDatabaseHandle, throwsStateError);
+      },
+    );
     test('runtime unlock refuses preparing setup state', () async {
       final harness = _Harness(
         clock: _MutableClock(DateTime.utc(2026, 9, 4, 20)),

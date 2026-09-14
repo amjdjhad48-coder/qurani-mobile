@@ -1,0 +1,729 @@
+{
+  "_meta": {
+    "description": "This file contains a serialized version of schema entities for drift.",
+    "version": "1.3.0"
+  },
+  "options": {
+    "store_date_time_values_as_text": true
+  },
+  "entities": [
+    {
+      "id": 0,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "halaqahs",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "teacher_name",
+            "getter_name": "teacherName",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "allowed-lengths": {
+                  "min": 1,
+                  "max": 200
+                }
+              }
+            ]
+          },
+          {
+            "name": "halaqah_name",
+            "getter_name": "halaqahName",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "allowed-lengths": {
+                  "min": 1,
+                  "max": 200
+                }
+              }
+            ]
+          },
+          {
+            "name": "center_name",
+            "getter_name": "centerName",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "allowed-lengths": {
+                  "min": 1,
+                  "max": 200
+                }
+              }
+            ]
+          },
+          {
+            "name": "created_at_utc",
+            "getter_name": "createdAtUtc",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at_utc",
+            "getter_name": "updatedAtUtc",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (length(trim(teacher_name)) > 0)",
+          "CHECK (length(trim(halaqah_name)) > 0)",
+          "CHECK (length(trim(center_name)) > 0)"
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "support_program_settings",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "halaqah_id",
+            "getter_name": "halaqahId",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES halaqahs (id) ON DELETE RESTRICT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES halaqahs (id) ON DELETE RESTRICT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "halaqahs",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "restrict"
+                }
+              }
+            ]
+          },
+          {
+            "name": "status",
+            "getter_name": "status",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "organization_name",
+            "getter_name": "organizationName",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at_utc",
+            "getter_name": "createdAtUtc",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at_utc",
+            "getter_name": "updatedAtUtc",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (status IN ('disabled', 'pending_activation', 'enabled'))",
+          "CHECK ((status = 'disabled' AND organization_name IS NULL) OR (status IN ('pending_activation', 'enabled') AND organization_name IS NOT NULL AND length(trim(organization_name)) > 0))"
+        ],
+        "unique_keys": [
+          [
+            "halaqah_id"
+          ]
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "support_program_periods",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "halaqah_id",
+            "getter_name": "halaqahId",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES halaqahs (id) ON DELETE RESTRICT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES halaqahs (id) ON DELETE RESTRICT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "halaqahs",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "restrict"
+                }
+              }
+            ]
+          },
+          {
+            "name": "organization_name",
+            "getter_name": "organizationName",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "allowed-lengths": {
+                  "min": 1,
+                  "max": 200
+                }
+              }
+            ]
+          },
+          {
+            "name": "started_at_utc",
+            "getter_name": "startedAtUtc",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "ended_at_utc",
+            "getter_name": "endedAtUtc",
+            "moor_type": "dateTime",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (length(trim(organization_name)) > 0)",
+          "CHECK (ended_at_utc IS NULL OR ended_at_utc > started_at_utc)"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "students",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "halaqah_id",
+            "getter_name": "halaqahId",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES halaqahs (id) ON DELETE RESTRICT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES halaqahs (id) ON DELETE RESTRICT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "halaqahs",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "restrict"
+                }
+              }
+            ]
+          },
+          {
+            "name": "student_name",
+            "getter_name": "studentName",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "father_name",
+            "getter_name": "fatherName",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "age_years",
+            "getter_name": "ageYears",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "guardian_country_code",
+            "getter_name": "guardianCountryCode",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "allowed-lengths": {
+                  "min": 4,
+                  "max": 4
+                }
+              }
+            ]
+          },
+          {
+            "name": "guardian_national_number",
+            "getter_name": "guardianNationalNumber",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "previous_memorization_text",
+            "getter_name": "previousMemorizationText",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "note",
+            "getter_name": "note",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "support_student_number",
+            "getter_name": "supportStudentNumber",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "display_order",
+            "getter_name": "displayOrder",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "is_active",
+            "getter_name": "isActive",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"is_active\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"is_active\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('1')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "archived_at_utc",
+            "getter_name": "archivedAtUtc",
+            "moor_type": "dateTime",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (length(trim(student_name)) > 0)",
+          "CHECK (length(trim(father_name)) > 0)",
+          "CHECK (guardian_country_code IN ('+967', '+966'))",
+          "CHECK (length(trim(guardian_national_number)) > 0)",
+          "CHECK (length(trim(previous_memorization_text)) > 0)",
+          "CHECK (support_student_number IS NULL OR length(trim(support_student_number)) > 0)"
+        ],
+        "unique_keys": [
+          [
+            "halaqah_id",
+            "support_student_number"
+          ]
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "references": [
+        3
+      ],
+      "type": "table",
+      "data": {
+        "name": "student_progress_plans",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "student_id",
+            "getter_name": "studentId",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES students (id) ON DELETE RESTRICT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES students (id) ON DELETE RESTRICT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "students",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "restrict"
+                }
+              }
+            ]
+          },
+          {
+            "name": "current_juz",
+            "getter_name": "currentJuz",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "daily_plan_text",
+            "getter_name": "dailyPlanText",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (current_juz IS NULL OR (current_juz >= 1 AND current_juz <= 30))"
+        ],
+        "explicit_pk": [
+          "student_id"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "references": [
+        3
+      ],
+      "type": "table",
+      "data": {
+        "name": "student_activity_periods",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "student_id",
+            "getter_name": "studentId",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES students (id) ON DELETE RESTRICT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES students (id) ON DELETE RESTRICT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "students",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "restrict"
+                }
+              }
+            ]
+          },
+          {
+            "name": "active_from_date",
+            "getter_name": "activeFromDate",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "allowed-lengths": {
+                  "min": 10,
+                  "max": 10
+                }
+              }
+            ]
+          },
+          {
+            "name": "active_to_date",
+            "getter_name": "activeToDate",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "allowed-lengths": {
+                  "min": 10,
+                  "max": 10
+                }
+              }
+            ]
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (active_to_date IS NULL OR active_to_date >= active_from_date)"
+        ]
+      }
+    }
+  ],
+  "fixed_sql": [
+    {
+      "name": "halaqahs",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"halaqahs\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"teacher_name\" TEXT NOT NULL, \"halaqah_name\" TEXT NOT NULL, \"center_name\" TEXT NOT NULL, \"created_at_utc\" TEXT NOT NULL, \"updated_at_utc\" TEXT NOT NULL, CHECK (length(trim(teacher_name)) > 0), CHECK (length(trim(halaqah_name)) > 0), CHECK (length(trim(center_name)) > 0));"
+        }
+      ]
+    },
+    {
+      "name": "support_program_settings",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"support_program_settings\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"halaqah_id\" INTEGER NOT NULL REFERENCES halaqahs (id) ON DELETE RESTRICT, \"status\" TEXT NOT NULL, \"organization_name\" TEXT NULL, \"created_at_utc\" TEXT NOT NULL, \"updated_at_utc\" TEXT NOT NULL, UNIQUE (\"halaqah_id\"), CHECK (status IN ('disabled', 'pending_activation', 'enabled')), CHECK ((status = 'disabled' AND organization_name IS NULL) OR (status IN ('pending_activation', 'enabled') AND organization_name IS NOT NULL AND length(trim(organization_name)) > 0)));"
+        }
+      ]
+    },
+    {
+      "name": "support_program_periods",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"support_program_periods\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"halaqah_id\" INTEGER NOT NULL REFERENCES halaqahs (id) ON DELETE RESTRICT, \"organization_name\" TEXT NOT NULL, \"started_at_utc\" TEXT NOT NULL, \"ended_at_utc\" TEXT NULL, CHECK (length(trim(organization_name)) > 0), CHECK (ended_at_utc IS NULL OR ended_at_utc > started_at_utc));"
+        }
+      ]
+    },
+    {
+      "name": "students",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"students\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"halaqah_id\" INTEGER NOT NULL REFERENCES halaqahs (id) ON DELETE RESTRICT, \"student_name\" TEXT NOT NULL, \"father_name\" TEXT NOT NULL, \"age_years\" INTEGER NOT NULL, \"guardian_country_code\" TEXT NOT NULL, \"guardian_national_number\" TEXT NOT NULL, \"previous_memorization_text\" TEXT NOT NULL, \"note\" TEXT NULL, \"support_student_number\" TEXT NULL, \"display_order\" INTEGER NOT NULL, \"is_active\" INTEGER NOT NULL DEFAULT 1 CHECK (\"is_active\" IN (0, 1)), \"archived_at_utc\" TEXT NULL, UNIQUE (\"halaqah_id\", \"support_student_number\"), CHECK (length(trim(student_name)) > 0), CHECK (length(trim(father_name)) > 0), CHECK (guardian_country_code IN ('+967', '+966')), CHECK (length(trim(guardian_national_number)) > 0), CHECK (length(trim(previous_memorization_text)) > 0), CHECK (support_student_number IS NULL OR length(trim(support_student_number)) > 0));"
+        }
+      ]
+    },
+    {
+      "name": "student_progress_plans",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"student_progress_plans\" (\"student_id\" INTEGER NOT NULL REFERENCES students (id) ON DELETE RESTRICT, \"current_juz\" INTEGER NULL, \"daily_plan_text\" TEXT NULL, PRIMARY KEY (\"student_id\"), CHECK (current_juz IS NULL OR (current_juz >= 1 AND current_juz <= 30)));"
+        }
+      ]
+    },
+    {
+      "name": "student_activity_periods",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"student_activity_periods\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"student_id\" INTEGER NOT NULL REFERENCES students (id) ON DELETE RESTRICT, \"active_from_date\" TEXT NOT NULL, \"active_to_date\" TEXT NULL, CHECK (active_to_date IS NULL OR active_to_date >= active_from_date));"
+        }
+      ]
+    }
+  ]
+}

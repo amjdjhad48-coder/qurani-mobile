@@ -51,6 +51,9 @@ void main() {
           userTables.map((row) => row.read<String>('name')).toList(),
           <String>[
             'halaqahs',
+            'student_activity_periods',
+            'student_progress_plans',
+            'students',
             'support_program_periods',
             'support_program_settings',
           ],

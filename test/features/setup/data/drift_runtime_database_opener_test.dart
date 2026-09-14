@@ -45,12 +45,12 @@ void main() {
         expect(handle, isA<DriftRuntimeDatabaseHandle>());
 
         final driftHandle = handle as DriftRuntimeDatabaseHandle;
-        expect(driftHandle.database.schemaVersion, 2);
+        expect(driftHandle.database.schemaVersion, 3);
 
         final versionRows = await driftHandle.database
             .customSelect('PRAGMA user_version;')
             .get();
-        expect(versionRows.single.data.values.single, 2);
+        expect(versionRows.single.data.values.single, 3);
 
         await handle.close();
       },

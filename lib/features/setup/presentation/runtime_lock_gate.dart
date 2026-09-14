@@ -9,6 +9,7 @@ import 'package:qurani/features/setup/application/setup_providers.dart';
 import 'package:qurani/features/setup/presentation/change_pin_screen.dart';
 import 'package:qurani/features/setup/presentation/forgot_pin_recovery_screen.dart';
 import 'package:qurani/features/setup/presentation/pin_lock_screen.dart';
+import 'package:qurani/features/students/presentation/students_list_screen.dart';
 
 class RuntimeLockGate extends ConsumerStatefulWidget {
   const RuntimeLockGate({required this.onLocalResetComplete, super.key});
@@ -381,52 +382,15 @@ class _RuntimeLockGateState extends ConsumerState<RuntimeLockGate>
                 onChanged: _finishChangePin,
                 onCancel: _cancelChangePin,
               )
-            : Scaffold(
-                body: SafeArea(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        key: const Key('runtime_unlocked_surface'),
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const Icon(Icons.lock_open_outlined, size: 56),
-                          const SizedBox(height: 12),
-                          const Text(
-                            'تم فتح التطبيق',
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'جلسة البيانات مفتوحة مؤقتًا في الذاكرة. واجهة التشغيل اليومية تبدأ في Package 3.',
-                            textAlign: TextAlign.center,
-                          ),
-                          if (_noticeText != null) ...<Widget>[
-                            const SizedBox(height: 12),
-                            Text(
-                              _noticeText!,
-                              key: const Key('runtime_notice'),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                          const SizedBox(height: 20),
-                          FilledButton.tonalIcon(
-                            key: const Key('change_pin_button'),
-                            onPressed: _busy ? null : _openChangePin,
-                            icon: const Icon(Icons.password_outlined),
-                            label: const Text('تغيير PIN'),
-                          ),
-                          const SizedBox(height: 8),
-                          FilledButton.tonalIcon(
-                            key: const Key('lock_now_button'),
-                            onPressed: _busy ? null : _lockNow,
-                            icon: const Icon(Icons.lock_outline),
-                            label: const Text('قفل التطبيق'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+            : KeyedSubtree(
+                key: const Key('runtime_unlocked_surface'),
+                child: StudentsListScreen(
+                  actionsEnabled: !_busy,
+                  noticeText: _noticeText,
+                  onChangePin: _openChangePin,
+                  onLockNow: () {
+                    unawaited(_lockNow());
+                  },
                 ),
               ),
       );

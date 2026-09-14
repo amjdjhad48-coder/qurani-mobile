@@ -12,9 +12,18 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
       }
 
       if (from == 1 && to == 2) {
-        await migrator.createTable(database.halaqahs);
-        await migrator.createTable(database.supportProgramSettings);
-        await migrator.createTable(database.supportProgramPeriods);
+        await _createPackage2Schema(database, migrator);
+        return;
+      }
+
+      if (from == 2 && to == 3) {
+        await _createPackage3Schema(database, migrator);
+        return;
+      }
+
+      if (from == 1 && to == 3) {
+        await _createPackage2Schema(database, migrator);
+        await _createPackage3Schema(database, migrator);
         return;
       }
 
@@ -31,6 +40,24 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
       }
     },
   );
+}
+
+Future<void> _createPackage2Schema(
+  AppDatabase database,
+  Migrator migrator,
+) async {
+  await migrator.createTable(database.halaqahs);
+  await migrator.createTable(database.supportProgramSettings);
+  await migrator.createTable(database.supportProgramPeriods);
+}
+
+Future<void> _createPackage3Schema(
+  AppDatabase database,
+  Migrator migrator,
+) async {
+  await migrator.createTable(database.students);
+  await migrator.createTable(database.studentProgressPlans);
+  await migrator.createTable(database.studentActivityPeriods);
 }
 
 Future<void> verifyDatabaseAfterSchemaChange(AppDatabase database) async {

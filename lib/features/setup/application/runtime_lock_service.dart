@@ -48,6 +48,10 @@ abstract interface class RuntimeDatabaseOpener {
   Future<RuntimeDatabaseHandle> open({required Uint8List databaseKey});
 }
 
+abstract interface class RuntimeDatabaseSessionAccess {
+  RuntimeDatabaseHandle requireOpenDatabaseHandle();
+}
+
 enum RuntimeUnlockStatus { unlocked, invalidPin, temporarilyLocked }
 
 final class RuntimeLockSnapshot {
@@ -96,7 +100,8 @@ abstract interface class RuntimeLockCoordinator {
   Future<void> dispose();
 }
 
-final class RuntimeLockService implements RuntimeLockCoordinator {
+final class RuntimeLockService
+    implements RuntimeLockCoordinator, RuntimeDatabaseSessionAccess {
   factory RuntimeLockService({
     required LocalSecurityStateStore securityStateStore,
     required KeyManagement keyManagement,
@@ -153,6 +158,19 @@ final class RuntimeLockService implements RuntimeLockCoordinator {
       failedAttemptCount: state.failedAttemptCount,
       lockedUntilUtc: activeLock,
     );
+  }
+
+  @override
+  RuntimeDatabaseHandle requireOpenDatabaseHandle() {
+    final handle = _databaseHandle;
+
+    if (handle == null) {
+      throw StateError(
+        'Runtime database is available only while the session is unlocked.',
+      );
+    }
+
+    return handle;
   }
 
   @override
