@@ -9,7 +9,7 @@ import 'package:qurani/features/setup/application/setup_providers.dart';
 import 'package:qurani/features/setup/presentation/change_pin_screen.dart';
 import 'package:qurani/features/setup/presentation/forgot_pin_recovery_screen.dart';
 import 'package:qurani/features/setup/presentation/pin_lock_screen.dart';
-import 'package:qurani/features/students/presentation/students_list_screen.dart';
+import 'package:qurani/app/qurani_main_shell.dart';
 
 class RuntimeLockGate extends ConsumerStatefulWidget {
   const RuntimeLockGate({required this.onLocalResetComplete, super.key});
@@ -384,7 +384,7 @@ class _RuntimeLockGateState extends ConsumerState<RuntimeLockGate>
               )
             : KeyedSubtree(
                 key: const Key('runtime_unlocked_surface'),
-                child: StudentsListScreen(
+                child: QuraniMainShell(
                   actionsEnabled: !_busy,
                   noticeText: _noticeText,
                   onChangePin: _openChangePin,

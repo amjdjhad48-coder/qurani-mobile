@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:qurani/core/database/database_migrations.dart';
+import 'package:qurani/features/daily_halaqah/data/tables/halaqah_day_tables.dart';
 import 'package:qurani/features/setup/data/tables/setup_tables.dart';
 import 'package:qurani/features/students/data/tables/student_tables.dart';
 
@@ -13,13 +14,15 @@ part 'app_database.g.dart';
     Students,
     StudentProgressPlans,
     StudentActivityPeriods,
+    HalaqahDays,
+    AttendanceRecords,
   ],
 )
 final class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => buildAppDatabaseMigrationStrategy(this);

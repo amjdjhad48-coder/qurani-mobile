@@ -21,9 +21,27 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
         return;
       }
 
+      if (from == 3 && to == 4) {
+        await _createPackage4Schema(database, migrator);
+        return;
+      }
+
       if (from == 1 && to == 3) {
         await _createPackage2Schema(database, migrator);
         await _createPackage3Schema(database, migrator);
+        return;
+      }
+
+      if (from == 2 && to == 4) {
+        await _createPackage3Schema(database, migrator);
+        await _createPackage4Schema(database, migrator);
+        return;
+      }
+
+      if (from == 1 && to == 4) {
+        await _createPackage2Schema(database, migrator);
+        await _createPackage3Schema(database, migrator);
+        await _createPackage4Schema(database, migrator);
         return;
       }
 
@@ -58,6 +76,14 @@ Future<void> _createPackage3Schema(
   await migrator.createTable(database.students);
   await migrator.createTable(database.studentProgressPlans);
   await migrator.createTable(database.studentActivityPeriods);
+}
+
+Future<void> _createPackage4Schema(
+  AppDatabase database,
+  Migrator migrator,
+) async {
+  await migrator.createTable(database.halaqahDays);
+  await migrator.createTable(database.attendanceRecords);
 }
 
 Future<void> verifyDatabaseAfterSchemaChange(AppDatabase database) async {

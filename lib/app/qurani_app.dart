@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qurani/app/widgets/developer_footer.dart';
 import 'package:qurani/features/setup/presentation/initial_setup_gate.dart';
 
 class QuraniApp extends StatelessWidget {
@@ -20,7 +21,12 @@ class QuraniApp extends StatelessWidget {
       builder: (context, child) {
         return Directionality(
           textDirection: TextDirection.rtl,
-          child: child ?? const SizedBox.shrink(),
+          child: Column(
+            children: <Widget>[
+              Expanded(child: child ?? const SizedBox.shrink()),
+              const DeveloperFooter(),
+            ],
+          ),
         );
       },
       home: const InitialSetupGate(),

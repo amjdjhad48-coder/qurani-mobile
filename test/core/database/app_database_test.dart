@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' show Variable;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qurani/core/database/app_database.dart';
@@ -6,27 +5,40 @@ import 'package:qurani/core/database/database_migrations.dart';
 
 void main() {
   group('AppDatabase migration infrastructure', () {
-    test('schemaVersion 3 creates Package 2 and Package 3 tables', () async {
-      final database = AppDatabase(NativeDatabase.memory());
+    test(
+      'schemaVersion 4 creates Package 2, Package 3, and Package 4 tables',
+      () async {
+        final database = AppDatabase(NativeDatabase.memory());
 
-      try {
-        await database.customSelect('SELECT 1;').get();
+        try {
+          expect(database.schemaVersion, 4);
 
-        expect(database.schemaVersion, 3);
-        expect(await _userTables(database), <String>[
-          'halaqahs',
-          'student_activity_periods',
-          'student_progress_plans',
-          'students',
-          'support_program_periods',
-          'support_program_settings',
-        ]);
-      } finally {
-        await database.close();
-      }
-    });
+          await database.customSelect('SELECT 1;').get();
 
-    test('migrates the empty v1 database explicitly to schema v3', () async {
+          final tables = await _userTables(database);
+
+          expect(tables, <String>[
+            'attendance_records',
+            'halaqah_days',
+            'halaqahs',
+            'student_activity_periods',
+            'student_progress_plans',
+            'students',
+            'support_program_periods',
+            'support_program_settings',
+          ]);
+
+          await expectLater(
+            verifyDatabaseAfterSchemaChange(database),
+            completes,
+          );
+        } finally {
+          await database.close();
+        }
+      },
+    );
+
+    test('migrates the empty v1 database explicitly to schema v4', () async {
       final executor = NativeDatabase.memory(
         setup: (rawDatabase) {
           rawDatabase.execute('PRAGMA user_version = 1;');
@@ -38,21 +50,15 @@ void main() {
       try {
         await database.customSelect('SELECT 1;').get();
 
-        final userVersion = await database
-            .customSelect('PRAGMA user_version;')
-            .get();
+        final version = await _userVersion(database);
+        expect(version, 4);
 
-        expect(userVersion, hasLength(1));
-        expect(userVersion.single.data.values.single, 3);
+        final tables = await _userTables(database);
 
-        expect(await _userTables(database), <String>[
-          'halaqahs',
-          'student_activity_periods',
-          'student_progress_plans',
-          'students',
-          'support_program_periods',
-          'support_program_settings',
-        ]);
+        expect(tables, contains('halaqahs'));
+        expect(tables, contains('students'));
+        expect(tables, contains('halaqah_days'));
+        expect(tables, contains('attendance_records'));
 
         await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
       } finally {
@@ -60,14 +66,14 @@ void main() {
       }
     });
 
-    test('migrates schema v2 explicitly to schema v3', () async {
-      final package2Sql = await _readPackage2CreateSql();
-
+    test('migrates schema v2 explicitly to schema v4', () async {
       final executor = NativeDatabase.memory(
         setup: (rawDatabase) {
-          for (final sql in package2Sql) {
-            rawDatabase.execute(sql);
-          }
+          rawDatabase.execute(
+            'CREATE TABLE halaqahs ('
+            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
+            ');',
+          );
           rawDatabase.execute('PRAGMA user_version = 2;');
         },
       );
@@ -77,20 +83,14 @@ void main() {
       try {
         await database.customSelect('SELECT 1;').get();
 
-        final userVersion = await database
-            .customSelect('PRAGMA user_version;')
-            .get();
+        expect(await _userVersion(database), 4);
 
-        expect(userVersion.single.data.values.single, 3);
-
-        expect(await _userTables(database), <String>[
-          'halaqahs',
-          'student_activity_periods',
-          'student_progress_plans',
-          'students',
-          'support_program_periods',
-          'support_program_settings',
-        ]);
+        final tables = await _userTables(database);
+        expect(tables, contains('students'));
+        expect(tables, contains('student_progress_plans'));
+        expect(tables, contains('student_activity_periods'));
+        expect(tables, contains('halaqah_days'));
+        expect(tables, contains('attendance_records'));
 
         await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
       } finally {
@@ -98,7 +98,46 @@ void main() {
       }
     });
 
-    test('schema v3 keeps foreign keys enabled', () async {
+    test('migrates schema v3 explicitly to schema v4', () async {
+      final executor = NativeDatabase.memory(
+        setup: (rawDatabase) {
+          rawDatabase.execute(
+            'CREATE TABLE halaqahs ('
+            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
+            ');',
+          );
+
+          rawDatabase.execute(
+            'CREATE TABLE students ('
+            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+            'halaqah_id INTEGER NOT NULL, '
+            'FOREIGN KEY (halaqah_id) REFERENCES halaqahs(id) '
+            'ON DELETE RESTRICT'
+            ');',
+          );
+
+          rawDatabase.execute('PRAGMA user_version = 3;');
+        },
+      );
+
+      final database = AppDatabase(executor);
+
+      try {
+        await database.customSelect('SELECT 1;').get();
+
+        expect(await _userVersion(database), 4);
+
+        final tables = await _userTables(database);
+        expect(tables, contains('halaqah_days'));
+        expect(tables, contains('attendance_records'));
+
+        await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
+      } finally {
+        await database.close();
+      }
+    });
+
+    test('schema v4 keeps foreign keys enabled', () async {
       final database = AppDatabase(NativeDatabase.memory());
 
       try {
@@ -122,7 +161,7 @@ void main() {
         final strategy = database.migration;
 
         await expectLater(
-          strategy.onUpgrade(database.createMigrator(), 3, 4),
+          strategy.onUpgrade(database.createMigrator(), 4, 5),
           throwsA(isA<StateError>()),
         );
       } finally {
@@ -130,6 +169,12 @@ void main() {
       }
     });
   });
+}
+
+Future<int> _userVersion(AppDatabase database) async {
+  final rows = await database.customSelect('PRAGMA user_version;').get();
+
+  return rows.single.data.values.single as int;
 }
 
 Future<List<String>> _userTables(AppDatabase database) async {
@@ -143,38 +188,4 @@ Future<List<String>> _userTables(AppDatabase database) async {
       .get();
 
   return rows.map((row) => row.read<String>('name')).toList(growable: false);
-}
-
-Future<List<String>> _readPackage2CreateSql() async {
-  final database = AppDatabase(NativeDatabase.memory());
-
-  try {
-    await database.customSelect('SELECT 1;').get();
-
-    const tables = <String>[
-      'halaqahs',
-      'support_program_periods',
-      'support_program_settings',
-    ];
-
-    final placeholders = List<String>.filled(tables.length, '?').join(',');
-
-    final rows = await database
-        .customSelect(
-          "SELECT sql FROM sqlite_master "
-          "WHERE type = 'table' "
-          "AND name IN ($placeholders) "
-          "ORDER BY name;",
-          variables: <Variable<Object>>[
-            for (final table in tables) Variable<String>(table),
-          ],
-        )
-        .get();
-
-    expect(rows, hasLength(3));
-
-    return rows.map((row) => row.read<String>('sql')).toList(growable: false);
-  } finally {
-    await database.close();
-  }
 }

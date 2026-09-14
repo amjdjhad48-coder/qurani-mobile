@@ -2680,6 +2680,622 @@ class StudentActivityPeriodsCompanion
   }
 }
 
+class $HalaqahDaysTable extends HalaqahDays
+    with TableInfo<$HalaqahDaysTable, HalaqahDay> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HalaqahDaysTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _halaqahIdMeta = const VerificationMeta(
+    'halaqahId',
+  );
+  @override
+  late final GeneratedColumn<int> halaqahId = GeneratedColumn<int>(
+    'halaqah_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES halaqahs (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _dayDateMeta = const VerificationMeta(
+    'dayDate',
+  );
+  @override
+  late final GeneratedColumn<String> dayDate = GeneratedColumn<String>(
+    'day_date',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 10,
+      maxTextLength: 10,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, halaqahId, dayDate, status];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'halaqah_days';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HalaqahDay> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('halaqah_id')) {
+      context.handle(
+        _halaqahIdMeta,
+        halaqahId.isAcceptableOrUnknown(data['halaqah_id']!, _halaqahIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_halaqahIdMeta);
+    }
+    if (data.containsKey('day_date')) {
+      context.handle(
+        _dayDateMeta,
+        dayDate.isAcceptableOrUnknown(data['day_date']!, _dayDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayDateMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {halaqahId, dayDate},
+  ];
+  @override
+  HalaqahDay map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HalaqahDay(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      halaqahId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}halaqah_id'],
+      )!,
+      dayDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day_date'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+    );
+  }
+
+  @override
+  $HalaqahDaysTable createAlias(String alias) {
+    return $HalaqahDaysTable(attachedDatabase, alias);
+  }
+}
+
+class HalaqahDay extends DataClass implements Insertable<HalaqahDay> {
+  final int id;
+  final int halaqahId;
+  final String dayDate;
+  final String status;
+  const HalaqahDay({
+    required this.id,
+    required this.halaqahId,
+    required this.dayDate,
+    required this.status,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['halaqah_id'] = Variable<int>(halaqahId);
+    map['day_date'] = Variable<String>(dayDate);
+    map['status'] = Variable<String>(status);
+    return map;
+  }
+
+  HalaqahDaysCompanion toCompanion(bool nullToAbsent) {
+    return HalaqahDaysCompanion(
+      id: Value(id),
+      halaqahId: Value(halaqahId),
+      dayDate: Value(dayDate),
+      status: Value(status),
+    );
+  }
+
+  factory HalaqahDay.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HalaqahDay(
+      id: serializer.fromJson<int>(json['id']),
+      halaqahId: serializer.fromJson<int>(json['halaqahId']),
+      dayDate: serializer.fromJson<String>(json['dayDate']),
+      status: serializer.fromJson<String>(json['status']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'halaqahId': serializer.toJson<int>(halaqahId),
+      'dayDate': serializer.toJson<String>(dayDate),
+      'status': serializer.toJson<String>(status),
+    };
+  }
+
+  HalaqahDay copyWith({
+    int? id,
+    int? halaqahId,
+    String? dayDate,
+    String? status,
+  }) => HalaqahDay(
+    id: id ?? this.id,
+    halaqahId: halaqahId ?? this.halaqahId,
+    dayDate: dayDate ?? this.dayDate,
+    status: status ?? this.status,
+  );
+  HalaqahDay copyWithCompanion(HalaqahDaysCompanion data) {
+    return HalaqahDay(
+      id: data.id.present ? data.id.value : this.id,
+      halaqahId: data.halaqahId.present ? data.halaqahId.value : this.halaqahId,
+      dayDate: data.dayDate.present ? data.dayDate.value : this.dayDate,
+      status: data.status.present ? data.status.value : this.status,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HalaqahDay(')
+          ..write('id: $id, ')
+          ..write('halaqahId: $halaqahId, ')
+          ..write('dayDate: $dayDate, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, halaqahId, dayDate, status);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HalaqahDay &&
+          other.id == this.id &&
+          other.halaqahId == this.halaqahId &&
+          other.dayDate == this.dayDate &&
+          other.status == this.status);
+}
+
+class HalaqahDaysCompanion extends UpdateCompanion<HalaqahDay> {
+  final Value<int> id;
+  final Value<int> halaqahId;
+  final Value<String> dayDate;
+  final Value<String> status;
+  const HalaqahDaysCompanion({
+    this.id = const Value.absent(),
+    this.halaqahId = const Value.absent(),
+    this.dayDate = const Value.absent(),
+    this.status = const Value.absent(),
+  });
+  HalaqahDaysCompanion.insert({
+    this.id = const Value.absent(),
+    required int halaqahId,
+    required String dayDate,
+    required String status,
+  }) : halaqahId = Value(halaqahId),
+       dayDate = Value(dayDate),
+       status = Value(status);
+  static Insertable<HalaqahDay> custom({
+    Expression<int>? id,
+    Expression<int>? halaqahId,
+    Expression<String>? dayDate,
+    Expression<String>? status,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (halaqahId != null) 'halaqah_id': halaqahId,
+      if (dayDate != null) 'day_date': dayDate,
+      if (status != null) 'status': status,
+    });
+  }
+
+  HalaqahDaysCompanion copyWith({
+    Value<int>? id,
+    Value<int>? halaqahId,
+    Value<String>? dayDate,
+    Value<String>? status,
+  }) {
+    return HalaqahDaysCompanion(
+      id: id ?? this.id,
+      halaqahId: halaqahId ?? this.halaqahId,
+      dayDate: dayDate ?? this.dayDate,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (halaqahId.present) {
+      map['halaqah_id'] = Variable<int>(halaqahId.value);
+    }
+    if (dayDate.present) {
+      map['day_date'] = Variable<String>(dayDate.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HalaqahDaysCompanion(')
+          ..write('id: $id, ')
+          ..write('halaqahId: $halaqahId, ')
+          ..write('dayDate: $dayDate, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AttendanceRecordsTable extends AttendanceRecords
+    with TableInfo<$AttendanceRecordsTable, AttendanceRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AttendanceRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _dayIdMeta = const VerificationMeta('dayId');
+  @override
+  late final GeneratedColumn<int> dayId = GeneratedColumn<int>(
+    'day_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES halaqah_days (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _studentIdMeta = const VerificationMeta(
+    'studentId',
+  );
+  @override
+  late final GeneratedColumn<int> studentId = GeneratedColumn<int>(
+    'student_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES students (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, dayId, studentId, status];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'attendance_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AttendanceRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('day_id')) {
+      context.handle(
+        _dayIdMeta,
+        dayId.isAcceptableOrUnknown(data['day_id']!, _dayIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayIdMeta);
+    }
+    if (data.containsKey('student_id')) {
+      context.handle(
+        _studentIdMeta,
+        studentId.isAcceptableOrUnknown(data['student_id']!, _studentIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_studentIdMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {dayId, studentId},
+  ];
+  @override
+  AttendanceRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AttendanceRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      dayId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}day_id'],
+      )!,
+      studentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}student_id'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+    );
+  }
+
+  @override
+  $AttendanceRecordsTable createAlias(String alias) {
+    return $AttendanceRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class AttendanceRecord extends DataClass
+    implements Insertable<AttendanceRecord> {
+  final int id;
+  final int dayId;
+  final int studentId;
+  final String status;
+  const AttendanceRecord({
+    required this.id,
+    required this.dayId,
+    required this.studentId,
+    required this.status,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['day_id'] = Variable<int>(dayId);
+    map['student_id'] = Variable<int>(studentId);
+    map['status'] = Variable<String>(status);
+    return map;
+  }
+
+  AttendanceRecordsCompanion toCompanion(bool nullToAbsent) {
+    return AttendanceRecordsCompanion(
+      id: Value(id),
+      dayId: Value(dayId),
+      studentId: Value(studentId),
+      status: Value(status),
+    );
+  }
+
+  factory AttendanceRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AttendanceRecord(
+      id: serializer.fromJson<int>(json['id']),
+      dayId: serializer.fromJson<int>(json['dayId']),
+      studentId: serializer.fromJson<int>(json['studentId']),
+      status: serializer.fromJson<String>(json['status']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'dayId': serializer.toJson<int>(dayId),
+      'studentId': serializer.toJson<int>(studentId),
+      'status': serializer.toJson<String>(status),
+    };
+  }
+
+  AttendanceRecord copyWith({
+    int? id,
+    int? dayId,
+    int? studentId,
+    String? status,
+  }) => AttendanceRecord(
+    id: id ?? this.id,
+    dayId: dayId ?? this.dayId,
+    studentId: studentId ?? this.studentId,
+    status: status ?? this.status,
+  );
+  AttendanceRecord copyWithCompanion(AttendanceRecordsCompanion data) {
+    return AttendanceRecord(
+      id: data.id.present ? data.id.value : this.id,
+      dayId: data.dayId.present ? data.dayId.value : this.dayId,
+      studentId: data.studentId.present ? data.studentId.value : this.studentId,
+      status: data.status.present ? data.status.value : this.status,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceRecord(')
+          ..write('id: $id, ')
+          ..write('dayId: $dayId, ')
+          ..write('studentId: $studentId, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, dayId, studentId, status);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AttendanceRecord &&
+          other.id == this.id &&
+          other.dayId == this.dayId &&
+          other.studentId == this.studentId &&
+          other.status == this.status);
+}
+
+class AttendanceRecordsCompanion extends UpdateCompanion<AttendanceRecord> {
+  final Value<int> id;
+  final Value<int> dayId;
+  final Value<int> studentId;
+  final Value<String> status;
+  const AttendanceRecordsCompanion({
+    this.id = const Value.absent(),
+    this.dayId = const Value.absent(),
+    this.studentId = const Value.absent(),
+    this.status = const Value.absent(),
+  });
+  AttendanceRecordsCompanion.insert({
+    this.id = const Value.absent(),
+    required int dayId,
+    required int studentId,
+    required String status,
+  }) : dayId = Value(dayId),
+       studentId = Value(studentId),
+       status = Value(status);
+  static Insertable<AttendanceRecord> custom({
+    Expression<int>? id,
+    Expression<int>? dayId,
+    Expression<int>? studentId,
+    Expression<String>? status,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (dayId != null) 'day_id': dayId,
+      if (studentId != null) 'student_id': studentId,
+      if (status != null) 'status': status,
+    });
+  }
+
+  AttendanceRecordsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? dayId,
+    Value<int>? studentId,
+    Value<String>? status,
+  }) {
+    return AttendanceRecordsCompanion(
+      id: id ?? this.id,
+      dayId: dayId ?? this.dayId,
+      studentId: studentId ?? this.studentId,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (dayId.present) {
+      map['day_id'] = Variable<int>(dayId.value);
+    }
+    if (studentId.present) {
+      map['student_id'] = Variable<int>(studentId.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('dayId: $dayId, ')
+          ..write('studentId: $studentId, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -2693,6 +3309,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $StudentProgressPlansTable(this);
   late final $StudentActivityPeriodsTable studentActivityPeriods =
       $StudentActivityPeriodsTable(this);
+  late final $HalaqahDaysTable halaqahDays = $HalaqahDaysTable(this);
+  late final $AttendanceRecordsTable attendanceRecords =
+      $AttendanceRecordsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2704,6 +3323,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     students,
     studentProgressPlans,
     studentActivityPeriods,
+    halaqahDays,
+    attendanceRecords,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -2797,6 +3418,24 @@ final class $$HalaqahsTableReferences
     ).filter((f) => f.halaqahId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_studentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$HalaqahDaysTable, List<HalaqahDay>>
+  _halaqahDaysRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.halaqahDays,
+    aliasName: 'halaqahs__id__halaqah_days__halaqah_id',
+  );
+
+  $$HalaqahDaysTableProcessedTableManager get halaqahDaysRefs {
+    final manager = $$HalaqahDaysTableTableManager(
+      $_db,
+      $_db.halaqahDays,
+    ).filter((f) => f.halaqahId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_halaqahDaysRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -2910,6 +3549,31 @@ class $$HalaqahsTableFilterComposer
           }) => $$StudentsTableFilterComposer(
             $db: $db,
             $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> halaqahDaysRefs(
+    Expression<bool> Function($$HalaqahDaysTableFilterComposer f) f,
+  ) {
+    final $$HalaqahDaysTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.halaqahId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableFilterComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3073,6 +3737,31 @@ class $$HalaqahsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> halaqahDaysRefs<T extends Object>(
+    Expression<T> Function($$HalaqahDaysTableAnnotationComposer a) f,
+  ) {
+    final $$HalaqahDaysTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.halaqahId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableAnnotationComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$HalaqahsTableTableManager
@@ -3092,6 +3781,7 @@ class $$HalaqahsTableTableManager
             bool supportProgramSettingsRefs,
             bool supportProgramPeriodsRefs,
             bool studentsRefs,
+            bool halaqahDaysRefs,
           })
         > {
   $$HalaqahsTableTableManager(_$AppDatabase db, $HalaqahsTable table)
@@ -3150,6 +3840,7 @@ class $$HalaqahsTableTableManager
                 supportProgramSettingsRefs = false,
                 supportProgramPeriodsRefs = false,
                 studentsRefs = false,
+                halaqahDaysRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -3157,6 +3848,7 @@ class $$HalaqahsTableTableManager
                     if (supportProgramSettingsRefs) db.supportProgramSettings,
                     if (supportProgramPeriodsRefs) db.supportProgramPeriods,
                     if (studentsRefs) db.students,
+                    if (halaqahDaysRefs) db.halaqahDays,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -3224,6 +3916,27 @@ class $$HalaqahsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (halaqahDaysRefs)
+                        await $_getPrefetchedData<
+                          Halaqah,
+                          $HalaqahsTable,
+                          HalaqahDay
+                        >(
+                          currentTable: table,
+                          referencedTable: $$HalaqahsTableReferences
+                              ._halaqahDaysRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$HalaqahsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).halaqahDaysRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.halaqahId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -3248,6 +3961,7 @@ typedef $$HalaqahsTableProcessedTableManager =
         bool supportProgramSettingsRefs,
         bool supportProgramPeriodsRefs,
         bool studentsRefs,
+        bool halaqahDaysRefs,
       })
     >;
 typedef $$SupportProgramSettingsTableCreateCompanionBuilder =
@@ -4050,6 +4764,27 @@ final class $$StudentsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$AttendanceRecordsTable, List<AttendanceRecord>>
+  _attendanceRecordsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.attendanceRecords,
+        aliasName: 'students__id__attendance_records__student_id',
+      );
+
+  $$AttendanceRecordsTableProcessedTableManager get attendanceRecordsRefs {
+    final manager = $$AttendanceRecordsTableTableManager(
+      $_db,
+      $_db.attendanceRecords,
+    ).filter((f) => f.studentId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _attendanceRecordsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$StudentsTableFilterComposer
@@ -4192,6 +4927,31 @@ class $$StudentsTableFilterComposer
                     $removeJoinBuilderFromRootComposer,
               ),
         );
+    return f(composer);
+  }
+
+  Expression<bool> attendanceRecordsRefs(
+    Expression<bool> Function($$AttendanceRecordsTableFilterComposer f) f,
+  ) {
+    final $$AttendanceRecordsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.attendanceRecords,
+      getReferencedColumn: (t) => t.studentId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AttendanceRecordsTableFilterComposer(
+            $db: $db,
+            $table: $db.attendanceRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 }
@@ -4424,6 +5184,32 @@ class $$StudentsTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> attendanceRecordsRefs<T extends Object>(
+    Expression<T> Function($$AttendanceRecordsTableAnnotationComposer a) f,
+  ) {
+    final $$AttendanceRecordsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.attendanceRecords,
+          getReferencedColumn: (t) => t.studentId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$AttendanceRecordsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.attendanceRecords,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$StudentsTableTableManager
@@ -4443,6 +5229,7 @@ class $$StudentsTableTableManager
             bool halaqahId,
             bool studentProgressPlansRefs,
             bool studentActivityPeriodsRefs,
+            bool attendanceRecordsRefs,
           })
         > {
   $$StudentsTableTableManager(_$AppDatabase db, $StudentsTable table)
@@ -4529,12 +5316,14 @@ class $$StudentsTableTableManager
                 halaqahId = false,
                 studentProgressPlansRefs = false,
                 studentActivityPeriodsRefs = false,
+                attendanceRecordsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (studentProgressPlansRefs) db.studentProgressPlans,
                     if (studentActivityPeriodsRefs) db.studentActivityPeriods,
+                    if (attendanceRecordsRefs) db.attendanceRecords,
                   ],
                   addJoins:
                       <
@@ -4612,6 +5401,27 @@ class $$StudentsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (attendanceRecordsRefs)
+                        await $_getPrefetchedData<
+                          Student,
+                          $StudentsTable,
+                          AttendanceRecord
+                        >(
+                          currentTable: table,
+                          referencedTable: $$StudentsTableReferences
+                              ._attendanceRecordsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$StudentsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).attendanceRecordsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.studentId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -4636,6 +5446,7 @@ typedef $$StudentsTableProcessedTableManager =
         bool halaqahId,
         bool studentProgressPlansRefs,
         bool studentActivityPeriodsRefs,
+        bool attendanceRecordsRefs,
       })
     >;
 typedef $$StudentProgressPlansTableCreateCompanionBuilder =
@@ -5252,6 +6063,793 @@ typedef $$StudentActivityPeriodsTableProcessedTableManager =
       StudentActivityPeriod,
       PrefetchHooks Function({bool studentId})
     >;
+typedef $$HalaqahDaysTableCreateCompanionBuilder =
+    HalaqahDaysCompanion Function({
+      Value<int> id,
+      required int halaqahId,
+      required String dayDate,
+      required String status,
+    });
+typedef $$HalaqahDaysTableUpdateCompanionBuilder =
+    HalaqahDaysCompanion Function({
+      Value<int> id,
+      Value<int> halaqahId,
+      Value<String> dayDate,
+      Value<String> status,
+    });
+
+final class $$HalaqahDaysTableReferences
+    extends BaseReferences<_$AppDatabase, $HalaqahDaysTable, HalaqahDay> {
+  $$HalaqahDaysTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $HalaqahsTable _halaqahIdTable(_$AppDatabase db) =>
+      db.halaqahs.createAlias('halaqah_days__halaqah_id__halaqahs__id');
+
+  $$HalaqahsTableProcessedTableManager get halaqahId {
+    final $_column = $_itemColumn<int>('halaqah_id')!;
+
+    final manager = $$HalaqahsTableTableManager(
+      $_db,
+      $_db.halaqahs,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_halaqahIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$AttendanceRecordsTable, List<AttendanceRecord>>
+  _attendanceRecordsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.attendanceRecords,
+        aliasName: 'halaqah_days__id__attendance_records__day_id',
+      );
+
+  $$AttendanceRecordsTableProcessedTableManager get attendanceRecordsRefs {
+    final manager = $$AttendanceRecordsTableTableManager(
+      $_db,
+      $_db.attendanceRecords,
+    ).filter((f) => f.dayId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _attendanceRecordsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$HalaqahDaysTableFilterComposer
+    extends Composer<_$AppDatabase, $HalaqahDaysTable> {
+  $$HalaqahDaysTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dayDate => $composableBuilder(
+    column: $table.dayDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$HalaqahsTableFilterComposer get halaqahId {
+    final $$HalaqahsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableFilterComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> attendanceRecordsRefs(
+    Expression<bool> Function($$AttendanceRecordsTableFilterComposer f) f,
+  ) {
+    final $$AttendanceRecordsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.attendanceRecords,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AttendanceRecordsTableFilterComposer(
+            $db: $db,
+            $table: $db.attendanceRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$HalaqahDaysTableOrderingComposer
+    extends Composer<_$AppDatabase, $HalaqahDaysTable> {
+  $$HalaqahDaysTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dayDate => $composableBuilder(
+    column: $table.dayDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$HalaqahsTableOrderingComposer get halaqahId {
+    final $$HalaqahsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableOrderingComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HalaqahDaysTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HalaqahDaysTable> {
+  $$HalaqahDaysTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get dayDate =>
+      $composableBuilder(column: $table.dayDate, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  $$HalaqahsTableAnnotationComposer get halaqahId {
+    final $$HalaqahsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> attendanceRecordsRefs<T extends Object>(
+    Expression<T> Function($$AttendanceRecordsTableAnnotationComposer a) f,
+  ) {
+    final $$AttendanceRecordsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.attendanceRecords,
+          getReferencedColumn: (t) => t.dayId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$AttendanceRecordsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.attendanceRecords,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$HalaqahDaysTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HalaqahDaysTable,
+          HalaqahDay,
+          $$HalaqahDaysTableFilterComposer,
+          $$HalaqahDaysTableOrderingComposer,
+          $$HalaqahDaysTableAnnotationComposer,
+          $$HalaqahDaysTableCreateCompanionBuilder,
+          $$HalaqahDaysTableUpdateCompanionBuilder,
+          (HalaqahDay, $$HalaqahDaysTableReferences),
+          HalaqahDay,
+          PrefetchHooks Function({bool halaqahId, bool attendanceRecordsRefs})
+        > {
+  $$HalaqahDaysTableTableManager(_$AppDatabase db, $HalaqahDaysTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HalaqahDaysTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HalaqahDaysTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HalaqahDaysTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> halaqahId = const Value.absent(),
+                Value<String> dayDate = const Value.absent(),
+                Value<String> status = const Value.absent(),
+              }) => HalaqahDaysCompanion(
+                id: id,
+                halaqahId: halaqahId,
+                dayDate: dayDate,
+                status: status,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int halaqahId,
+                required String dayDate,
+                required String status,
+              }) => HalaqahDaysCompanion.insert(
+                id: id,
+                halaqahId: halaqahId,
+                dayDate: dayDate,
+                status: status,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$HalaqahDaysTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({halaqahId = false, attendanceRecordsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (attendanceRecordsRefs) db.attendanceRecords,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (halaqahId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.halaqahId,
+                                    referencedTable:
+                                        $$HalaqahDaysTableReferences
+                                            ._halaqahIdTable(db),
+                                    referencedColumn:
+                                        $$HalaqahDaysTableReferences
+                                            ._halaqahIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (attendanceRecordsRefs)
+                        await $_getPrefetchedData<
+                          HalaqahDay,
+                          $HalaqahDaysTable,
+                          AttendanceRecord
+                        >(
+                          currentTable: table,
+                          referencedTable: $$HalaqahDaysTableReferences
+                              ._attendanceRecordsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$HalaqahDaysTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).attendanceRecordsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.dayId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$HalaqahDaysTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HalaqahDaysTable,
+      HalaqahDay,
+      $$HalaqahDaysTableFilterComposer,
+      $$HalaqahDaysTableOrderingComposer,
+      $$HalaqahDaysTableAnnotationComposer,
+      $$HalaqahDaysTableCreateCompanionBuilder,
+      $$HalaqahDaysTableUpdateCompanionBuilder,
+      (HalaqahDay, $$HalaqahDaysTableReferences),
+      HalaqahDay,
+      PrefetchHooks Function({bool halaqahId, bool attendanceRecordsRefs})
+    >;
+typedef $$AttendanceRecordsTableCreateCompanionBuilder =
+    AttendanceRecordsCompanion Function({
+      Value<int> id,
+      required int dayId,
+      required int studentId,
+      required String status,
+    });
+typedef $$AttendanceRecordsTableUpdateCompanionBuilder =
+    AttendanceRecordsCompanion Function({
+      Value<int> id,
+      Value<int> dayId,
+      Value<int> studentId,
+      Value<String> status,
+    });
+
+final class $$AttendanceRecordsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $AttendanceRecordsTable,
+          AttendanceRecord
+        > {
+  $$AttendanceRecordsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $HalaqahDaysTable _dayIdTable(_$AppDatabase db) => db.halaqahDays
+      .createAlias('attendance_records__day_id__halaqah_days__id');
+
+  $$HalaqahDaysTableProcessedTableManager get dayId {
+    final $_column = $_itemColumn<int>('day_id')!;
+
+    final manager = $$HalaqahDaysTableTableManager(
+      $_db,
+      $_db.halaqahDays,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_dayIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $StudentsTable _studentIdTable(_$AppDatabase db) =>
+      db.students.createAlias('attendance_records__student_id__students__id');
+
+  $$StudentsTableProcessedTableManager get studentId {
+    final $_column = $_itemColumn<int>('student_id')!;
+
+    final manager = $$StudentsTableTableManager(
+      $_db,
+      $_db.students,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_studentIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$AttendanceRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $AttendanceRecordsTable> {
+  $$AttendanceRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$HalaqahDaysTableFilterComposer get dayId {
+    final $$HalaqahDaysTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableFilterComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableFilterComposer get studentId {
+    final $$StudentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableFilterComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$AttendanceRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $AttendanceRecordsTable> {
+  $$AttendanceRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$HalaqahDaysTableOrderingComposer get dayId {
+    final $$HalaqahDaysTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableOrderingComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableOrderingComposer get studentId {
+    final $$StudentsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableOrderingComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$AttendanceRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AttendanceRecordsTable> {
+  $$AttendanceRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  $$HalaqahDaysTableAnnotationComposer get dayId {
+    final $$HalaqahDaysTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableAnnotationComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableAnnotationComposer get studentId {
+    final $$StudentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$AttendanceRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AttendanceRecordsTable,
+          AttendanceRecord,
+          $$AttendanceRecordsTableFilterComposer,
+          $$AttendanceRecordsTableOrderingComposer,
+          $$AttendanceRecordsTableAnnotationComposer,
+          $$AttendanceRecordsTableCreateCompanionBuilder,
+          $$AttendanceRecordsTableUpdateCompanionBuilder,
+          (AttendanceRecord, $$AttendanceRecordsTableReferences),
+          AttendanceRecord,
+          PrefetchHooks Function({bool dayId, bool studentId})
+        > {
+  $$AttendanceRecordsTableTableManager(
+    _$AppDatabase db,
+    $AttendanceRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AttendanceRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AttendanceRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AttendanceRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> dayId = const Value.absent(),
+                Value<int> studentId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+              }) => AttendanceRecordsCompanion(
+                id: id,
+                dayId: dayId,
+                studentId: studentId,
+                status: status,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int dayId,
+                required int studentId,
+                required String status,
+              }) => AttendanceRecordsCompanion.insert(
+                id: id,
+                dayId: dayId,
+                studentId: studentId,
+                status: status,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$AttendanceRecordsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({dayId = false, studentId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (dayId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.dayId,
+                                referencedTable:
+                                    $$AttendanceRecordsTableReferences
+                                        ._dayIdTable(db),
+                                referencedColumn:
+                                    $$AttendanceRecordsTableReferences
+                                        ._dayIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (studentId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.studentId,
+                                referencedTable:
+                                    $$AttendanceRecordsTableReferences
+                                        ._studentIdTable(db),
+                                referencedColumn:
+                                    $$AttendanceRecordsTableReferences
+                                        ._studentIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$AttendanceRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AttendanceRecordsTable,
+      AttendanceRecord,
+      $$AttendanceRecordsTableFilterComposer,
+      $$AttendanceRecordsTableOrderingComposer,
+      $$AttendanceRecordsTableAnnotationComposer,
+      $$AttendanceRecordsTableCreateCompanionBuilder,
+      $$AttendanceRecordsTableUpdateCompanionBuilder,
+      (AttendanceRecord, $$AttendanceRecordsTableReferences),
+      AttendanceRecord,
+      PrefetchHooks Function({bool dayId, bool studentId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -5274,4 +6872,8 @@ class $AppDatabaseManager {
         _db,
         _db.studentActivityPeriods,
       );
+  $$HalaqahDaysTableTableManager get halaqahDays =>
+      $$HalaqahDaysTableTableManager(_db, _db.halaqahDays);
+  $$AttendanceRecordsTableTableManager get attendanceRecords =>
+      $$AttendanceRecordsTableTableManager(_db, _db.attendanceRecords);
 }

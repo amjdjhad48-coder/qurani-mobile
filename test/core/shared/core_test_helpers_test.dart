@@ -50,6 +50,8 @@ void main() {
         expect(
           userTables.map((row) => row.read<String>('name')).toList(),
           <String>[
+            'attendance_records',
+            'halaqah_days',
             'halaqahs',
             'student_activity_periods',
             'student_progress_plans',
