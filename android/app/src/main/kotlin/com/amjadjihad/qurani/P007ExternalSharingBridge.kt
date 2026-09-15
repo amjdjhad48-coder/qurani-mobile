@@ -39,6 +39,10 @@ class P007ExternalSharingBridge(
                 "shareImoProbe" -> result.success(shareImoProbe())
                 "shareWhatsAppText" -> result.success(shareWhatsAppText())
                 "openSmsComposer" -> result.success(openSmsComposer())
+                "openParentWhatsApp" ->
+                    result.success(openParentWhatsApp(call))
+                "openParentSms" ->
+                    result.success(openParentSms(call))
                 "getState" -> result.success(getState())
                 "cleanupShareProbe" -> result.success(cleanupShareProbe())
                 else -> result.notImplemented()
@@ -111,6 +115,121 @@ class P007ExternalSharingBridge(
         )
     }
 
+    private fun openParentWhatsApp(
+        call: MethodCall,
+    ): Map<String, Any?> {
+        val recipient =
+            requireParentFollowUpRecipient(call, "recipient")
+        val message =
+            requireParentFollowUpText(call, "message")
+
+        beginExternal(KIND_WHATSAPP)
+        P007ChooserSelectionStore.clear(KIND_WHATSAPP)
+
+        val digits = recipient.removePrefix("+")
+        val uri =
+            Uri.parse("https://wa.me/$digits")
+                .buildUpon()
+                .appendQueryParameter("text", message)
+                .build()
+
+        val intent =
+            Intent(
+                Intent.ACTION_VIEW,
+                uri,
+            )
+
+        try {
+            activity.startActivity(intent)
+        } catch (error: ActivityNotFoundException) {
+            resetFailedLaunch(KIND_WHATSAPP)
+            throw error
+        }
+
+        return mapOf(
+            "launched" to true,
+            "kind" to KIND_WHATSAPP,
+            "action" to Intent.ACTION_VIEW,
+            "uriScheme" to (uri.scheme ?: ""),
+            "recipient" to recipient,
+        )
+    }
+
+    private fun openParentSms(
+        call: MethodCall,
+    ): Map<String, Any?> {
+        val recipient =
+            requireParentFollowUpRecipient(call, "recipient")
+        val message =
+            requireParentFollowUpText(call, "message")
+
+        beginExternal(KIND_SMS)
+
+        val uri =
+            Uri.fromParts(
+                "smsto",
+                recipient,
+                null,
+            )
+
+        val intent =
+            Intent(
+                Intent.ACTION_SENDTO,
+                uri,
+            ).apply {
+                putExtra("sms_body", message)
+            }
+
+        try {
+            activity.startActivity(intent)
+        } catch (error: ActivityNotFoundException) {
+            resetFailedLaunch(KIND_SMS)
+            throw error
+        }
+
+        return mapOf(
+            "launched" to true,
+            "kind" to KIND_SMS,
+            "action" to Intent.ACTION_SENDTO,
+            "uriScheme" to "smsto",
+            "recipient" to recipient,
+            "directSendPermissionRequired" to false,
+        )
+    }
+
+    private fun requireParentFollowUpText(
+        call: MethodCall,
+        key: String,
+    ): String {
+        val value =
+            call.argument<String>(key)?.trim()
+                ?: throw IllegalArgumentException(
+                    "Missing $key.",
+                )
+
+        require(value.isNotEmpty()) {
+            "$key must not be blank."
+        }
+
+        return value
+    }
+
+    private fun requireParentFollowUpRecipient(
+        call: MethodCall,
+        key: String,
+    ): String {
+        val recipient =
+            requireParentFollowUpText(call, key)
+
+        require(
+            Regex("^\\+[0-9]{8,15}$")
+                .matches(recipient),
+        ) {
+            "Recipient must be a normalized E.164 number."
+        }
+
+        return recipient
+    }
     private fun shareWhatsAppText(): Map<String, Any?> {
         beginExternal(KIND_WHATSAPP)
         P007ChooserSelectionStore.clear(KIND_WHATSAPP)

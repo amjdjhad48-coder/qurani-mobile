@@ -4224,6 +4224,658 @@ class RecitationsCompanion extends UpdateCompanion<Recitation> {
   }
 }
 
+class $ParentFollowUpsTable extends ParentFollowUps
+    with TableInfo<$ParentFollowUpsTable, ParentFollowUp> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ParentFollowUpsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _dayIdMeta = const VerificationMeta('dayId');
+  @override
+  late final GeneratedColumn<int> dayId = GeneratedColumn<int>(
+    'day_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES halaqah_days (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _studentIdMeta = const VerificationMeta(
+    'studentId',
+  );
+  @override
+  late final GeneratedColumn<int> studentId = GeneratedColumn<int>(
+    'student_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES students (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('pending'),
+  );
+  static const VerificationMeta _correctsFollowUpIdMeta =
+      const VerificationMeta('correctsFollowUpId');
+  @override
+  late final GeneratedColumn<int> correctsFollowUpId = GeneratedColumn<int>(
+    'corrects_follow_up_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES parent_follow_ups (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _attendanceStatusSnapshotMeta =
+      const VerificationMeta('attendanceStatusSnapshot');
+  @override
+  late final GeneratedColumn<String> attendanceStatusSnapshot =
+      GeneratedColumn<String>(
+        'attendance_status_snapshot',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _snapshotMessageMeta = const VerificationMeta(
+    'snapshotMessage',
+  );
+  @override
+  late final GeneratedColumn<String> snapshotMessage = GeneratedColumn<String>(
+    'snapshot_message',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _channelSnapshotMeta = const VerificationMeta(
+    'channelSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> channelSnapshot = GeneratedColumn<String>(
+    'channel_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recipientSnapshotMeta = const VerificationMeta(
+    'recipientSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> recipientSnapshot =
+      GeneratedColumn<String>(
+        'recipient_snapshot',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    dayId,
+    studentId,
+    type,
+    status,
+    correctsFollowUpId,
+    attendanceStatusSnapshot,
+    snapshotMessage,
+    channelSnapshot,
+    recipientSnapshot,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'parent_follow_ups';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ParentFollowUp> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('day_id')) {
+      context.handle(
+        _dayIdMeta,
+        dayId.isAcceptableOrUnknown(data['day_id']!, _dayIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayIdMeta);
+    }
+    if (data.containsKey('student_id')) {
+      context.handle(
+        _studentIdMeta,
+        studentId.isAcceptableOrUnknown(data['student_id']!, _studentIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_studentIdMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('corrects_follow_up_id')) {
+      context.handle(
+        _correctsFollowUpIdMeta,
+        correctsFollowUpId.isAcceptableOrUnknown(
+          data['corrects_follow_up_id']!,
+          _correctsFollowUpIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('attendance_status_snapshot')) {
+      context.handle(
+        _attendanceStatusSnapshotMeta,
+        attendanceStatusSnapshot.isAcceptableOrUnknown(
+          data['attendance_status_snapshot']!,
+          _attendanceStatusSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('snapshot_message')) {
+      context.handle(
+        _snapshotMessageMeta,
+        snapshotMessage.isAcceptableOrUnknown(
+          data['snapshot_message']!,
+          _snapshotMessageMeta,
+        ),
+      );
+    }
+    if (data.containsKey('channel_snapshot')) {
+      context.handle(
+        _channelSnapshotMeta,
+        channelSnapshot.isAcceptableOrUnknown(
+          data['channel_snapshot']!,
+          _channelSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('recipient_snapshot')) {
+      context.handle(
+        _recipientSnapshotMeta,
+        recipientSnapshot.isAcceptableOrUnknown(
+          data['recipient_snapshot']!,
+          _recipientSnapshotMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ParentFollowUp map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ParentFollowUp(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      dayId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}day_id'],
+      )!,
+      studentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}student_id'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      correctsFollowUpId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}corrects_follow_up_id'],
+      ),
+      attendanceStatusSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}attendance_status_snapshot'],
+      ),
+      snapshotMessage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}snapshot_message'],
+      ),
+      channelSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}channel_snapshot'],
+      ),
+      recipientSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}recipient_snapshot'],
+      ),
+    );
+  }
+
+  @override
+  $ParentFollowUpsTable createAlias(String alias) {
+    return $ParentFollowUpsTable(attachedDatabase, alias);
+  }
+}
+
+class ParentFollowUp extends DataClass implements Insertable<ParentFollowUp> {
+  final int id;
+  final int dayId;
+  final int studentId;
+  final String type;
+  final String status;
+  final int? correctsFollowUpId;
+  final String? attendanceStatusSnapshot;
+  final String? snapshotMessage;
+  final String? channelSnapshot;
+  final String? recipientSnapshot;
+  const ParentFollowUp({
+    required this.id,
+    required this.dayId,
+    required this.studentId,
+    required this.type,
+    required this.status,
+    this.correctsFollowUpId,
+    this.attendanceStatusSnapshot,
+    this.snapshotMessage,
+    this.channelSnapshot,
+    this.recipientSnapshot,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['day_id'] = Variable<int>(dayId);
+    map['student_id'] = Variable<int>(studentId);
+    map['type'] = Variable<String>(type);
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || correctsFollowUpId != null) {
+      map['corrects_follow_up_id'] = Variable<int>(correctsFollowUpId);
+    }
+    if (!nullToAbsent || attendanceStatusSnapshot != null) {
+      map['attendance_status_snapshot'] = Variable<String>(
+        attendanceStatusSnapshot,
+      );
+    }
+    if (!nullToAbsent || snapshotMessage != null) {
+      map['snapshot_message'] = Variable<String>(snapshotMessage);
+    }
+    if (!nullToAbsent || channelSnapshot != null) {
+      map['channel_snapshot'] = Variable<String>(channelSnapshot);
+    }
+    if (!nullToAbsent || recipientSnapshot != null) {
+      map['recipient_snapshot'] = Variable<String>(recipientSnapshot);
+    }
+    return map;
+  }
+
+  ParentFollowUpsCompanion toCompanion(bool nullToAbsent) {
+    return ParentFollowUpsCompanion(
+      id: Value(id),
+      dayId: Value(dayId),
+      studentId: Value(studentId),
+      type: Value(type),
+      status: Value(status),
+      correctsFollowUpId: correctsFollowUpId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(correctsFollowUpId),
+      attendanceStatusSnapshot: attendanceStatusSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(attendanceStatusSnapshot),
+      snapshotMessage: snapshotMessage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(snapshotMessage),
+      channelSnapshot: channelSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(channelSnapshot),
+      recipientSnapshot: recipientSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(recipientSnapshot),
+    );
+  }
+
+  factory ParentFollowUp.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ParentFollowUp(
+      id: serializer.fromJson<int>(json['id']),
+      dayId: serializer.fromJson<int>(json['dayId']),
+      studentId: serializer.fromJson<int>(json['studentId']),
+      type: serializer.fromJson<String>(json['type']),
+      status: serializer.fromJson<String>(json['status']),
+      correctsFollowUpId: serializer.fromJson<int?>(json['correctsFollowUpId']),
+      attendanceStatusSnapshot: serializer.fromJson<String?>(
+        json['attendanceStatusSnapshot'],
+      ),
+      snapshotMessage: serializer.fromJson<String?>(json['snapshotMessage']),
+      channelSnapshot: serializer.fromJson<String?>(json['channelSnapshot']),
+      recipientSnapshot: serializer.fromJson<String?>(
+        json['recipientSnapshot'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'dayId': serializer.toJson<int>(dayId),
+      'studentId': serializer.toJson<int>(studentId),
+      'type': serializer.toJson<String>(type),
+      'status': serializer.toJson<String>(status),
+      'correctsFollowUpId': serializer.toJson<int?>(correctsFollowUpId),
+      'attendanceStatusSnapshot': serializer.toJson<String?>(
+        attendanceStatusSnapshot,
+      ),
+      'snapshotMessage': serializer.toJson<String?>(snapshotMessage),
+      'channelSnapshot': serializer.toJson<String?>(channelSnapshot),
+      'recipientSnapshot': serializer.toJson<String?>(recipientSnapshot),
+    };
+  }
+
+  ParentFollowUp copyWith({
+    int? id,
+    int? dayId,
+    int? studentId,
+    String? type,
+    String? status,
+    Value<int?> correctsFollowUpId = const Value.absent(),
+    Value<String?> attendanceStatusSnapshot = const Value.absent(),
+    Value<String?> snapshotMessage = const Value.absent(),
+    Value<String?> channelSnapshot = const Value.absent(),
+    Value<String?> recipientSnapshot = const Value.absent(),
+  }) => ParentFollowUp(
+    id: id ?? this.id,
+    dayId: dayId ?? this.dayId,
+    studentId: studentId ?? this.studentId,
+    type: type ?? this.type,
+    status: status ?? this.status,
+    correctsFollowUpId: correctsFollowUpId.present
+        ? correctsFollowUpId.value
+        : this.correctsFollowUpId,
+    attendanceStatusSnapshot: attendanceStatusSnapshot.present
+        ? attendanceStatusSnapshot.value
+        : this.attendanceStatusSnapshot,
+    snapshotMessage: snapshotMessage.present
+        ? snapshotMessage.value
+        : this.snapshotMessage,
+    channelSnapshot: channelSnapshot.present
+        ? channelSnapshot.value
+        : this.channelSnapshot,
+    recipientSnapshot: recipientSnapshot.present
+        ? recipientSnapshot.value
+        : this.recipientSnapshot,
+  );
+  ParentFollowUp copyWithCompanion(ParentFollowUpsCompanion data) {
+    return ParentFollowUp(
+      id: data.id.present ? data.id.value : this.id,
+      dayId: data.dayId.present ? data.dayId.value : this.dayId,
+      studentId: data.studentId.present ? data.studentId.value : this.studentId,
+      type: data.type.present ? data.type.value : this.type,
+      status: data.status.present ? data.status.value : this.status,
+      correctsFollowUpId: data.correctsFollowUpId.present
+          ? data.correctsFollowUpId.value
+          : this.correctsFollowUpId,
+      attendanceStatusSnapshot: data.attendanceStatusSnapshot.present
+          ? data.attendanceStatusSnapshot.value
+          : this.attendanceStatusSnapshot,
+      snapshotMessage: data.snapshotMessage.present
+          ? data.snapshotMessage.value
+          : this.snapshotMessage,
+      channelSnapshot: data.channelSnapshot.present
+          ? data.channelSnapshot.value
+          : this.channelSnapshot,
+      recipientSnapshot: data.recipientSnapshot.present
+          ? data.recipientSnapshot.value
+          : this.recipientSnapshot,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ParentFollowUp(')
+          ..write('id: $id, ')
+          ..write('dayId: $dayId, ')
+          ..write('studentId: $studentId, ')
+          ..write('type: $type, ')
+          ..write('status: $status, ')
+          ..write('correctsFollowUpId: $correctsFollowUpId, ')
+          ..write('attendanceStatusSnapshot: $attendanceStatusSnapshot, ')
+          ..write('snapshotMessage: $snapshotMessage, ')
+          ..write('channelSnapshot: $channelSnapshot, ')
+          ..write('recipientSnapshot: $recipientSnapshot')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    dayId,
+    studentId,
+    type,
+    status,
+    correctsFollowUpId,
+    attendanceStatusSnapshot,
+    snapshotMessage,
+    channelSnapshot,
+    recipientSnapshot,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ParentFollowUp &&
+          other.id == this.id &&
+          other.dayId == this.dayId &&
+          other.studentId == this.studentId &&
+          other.type == this.type &&
+          other.status == this.status &&
+          other.correctsFollowUpId == this.correctsFollowUpId &&
+          other.attendanceStatusSnapshot == this.attendanceStatusSnapshot &&
+          other.snapshotMessage == this.snapshotMessage &&
+          other.channelSnapshot == this.channelSnapshot &&
+          other.recipientSnapshot == this.recipientSnapshot);
+}
+
+class ParentFollowUpsCompanion extends UpdateCompanion<ParentFollowUp> {
+  final Value<int> id;
+  final Value<int> dayId;
+  final Value<int> studentId;
+  final Value<String> type;
+  final Value<String> status;
+  final Value<int?> correctsFollowUpId;
+  final Value<String?> attendanceStatusSnapshot;
+  final Value<String?> snapshotMessage;
+  final Value<String?> channelSnapshot;
+  final Value<String?> recipientSnapshot;
+  const ParentFollowUpsCompanion({
+    this.id = const Value.absent(),
+    this.dayId = const Value.absent(),
+    this.studentId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.status = const Value.absent(),
+    this.correctsFollowUpId = const Value.absent(),
+    this.attendanceStatusSnapshot = const Value.absent(),
+    this.snapshotMessage = const Value.absent(),
+    this.channelSnapshot = const Value.absent(),
+    this.recipientSnapshot = const Value.absent(),
+  });
+  ParentFollowUpsCompanion.insert({
+    this.id = const Value.absent(),
+    required int dayId,
+    required int studentId,
+    required String type,
+    this.status = const Value.absent(),
+    this.correctsFollowUpId = const Value.absent(),
+    this.attendanceStatusSnapshot = const Value.absent(),
+    this.snapshotMessage = const Value.absent(),
+    this.channelSnapshot = const Value.absent(),
+    this.recipientSnapshot = const Value.absent(),
+  }) : dayId = Value(dayId),
+       studentId = Value(studentId),
+       type = Value(type);
+  static Insertable<ParentFollowUp> custom({
+    Expression<int>? id,
+    Expression<int>? dayId,
+    Expression<int>? studentId,
+    Expression<String>? type,
+    Expression<String>? status,
+    Expression<int>? correctsFollowUpId,
+    Expression<String>? attendanceStatusSnapshot,
+    Expression<String>? snapshotMessage,
+    Expression<String>? channelSnapshot,
+    Expression<String>? recipientSnapshot,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (dayId != null) 'day_id': dayId,
+      if (studentId != null) 'student_id': studentId,
+      if (type != null) 'type': type,
+      if (status != null) 'status': status,
+      if (correctsFollowUpId != null)
+        'corrects_follow_up_id': correctsFollowUpId,
+      if (attendanceStatusSnapshot != null)
+        'attendance_status_snapshot': attendanceStatusSnapshot,
+      if (snapshotMessage != null) 'snapshot_message': snapshotMessage,
+      if (channelSnapshot != null) 'channel_snapshot': channelSnapshot,
+      if (recipientSnapshot != null) 'recipient_snapshot': recipientSnapshot,
+    });
+  }
+
+  ParentFollowUpsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? dayId,
+    Value<int>? studentId,
+    Value<String>? type,
+    Value<String>? status,
+    Value<int?>? correctsFollowUpId,
+    Value<String?>? attendanceStatusSnapshot,
+    Value<String?>? snapshotMessage,
+    Value<String?>? channelSnapshot,
+    Value<String?>? recipientSnapshot,
+  }) {
+    return ParentFollowUpsCompanion(
+      id: id ?? this.id,
+      dayId: dayId ?? this.dayId,
+      studentId: studentId ?? this.studentId,
+      type: type ?? this.type,
+      status: status ?? this.status,
+      correctsFollowUpId: correctsFollowUpId ?? this.correctsFollowUpId,
+      attendanceStatusSnapshot:
+          attendanceStatusSnapshot ?? this.attendanceStatusSnapshot,
+      snapshotMessage: snapshotMessage ?? this.snapshotMessage,
+      channelSnapshot: channelSnapshot ?? this.channelSnapshot,
+      recipientSnapshot: recipientSnapshot ?? this.recipientSnapshot,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (dayId.present) {
+      map['day_id'] = Variable<int>(dayId.value);
+    }
+    if (studentId.present) {
+      map['student_id'] = Variable<int>(studentId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (correctsFollowUpId.present) {
+      map['corrects_follow_up_id'] = Variable<int>(correctsFollowUpId.value);
+    }
+    if (attendanceStatusSnapshot.present) {
+      map['attendance_status_snapshot'] = Variable<String>(
+        attendanceStatusSnapshot.value,
+      );
+    }
+    if (snapshotMessage.present) {
+      map['snapshot_message'] = Variable<String>(snapshotMessage.value);
+    }
+    if (channelSnapshot.present) {
+      map['channel_snapshot'] = Variable<String>(channelSnapshot.value);
+    }
+    if (recipientSnapshot.present) {
+      map['recipient_snapshot'] = Variable<String>(recipientSnapshot.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ParentFollowUpsCompanion(')
+          ..write('id: $id, ')
+          ..write('dayId: $dayId, ')
+          ..write('studentId: $studentId, ')
+          ..write('type: $type, ')
+          ..write('status: $status, ')
+          ..write('correctsFollowUpId: $correctsFollowUpId, ')
+          ..write('attendanceStatusSnapshot: $attendanceStatusSnapshot, ')
+          ..write('snapshotMessage: $snapshotMessage, ')
+          ..write('channelSnapshot: $channelSnapshot, ')
+          ..write('recipientSnapshot: $recipientSnapshot')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -4241,6 +4893,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $AttendanceRecordsTable attendanceRecords =
       $AttendanceRecordsTable(this);
   late final $RecitationsTable recitations = $RecitationsTable(this);
+  late final $ParentFollowUpsTable parentFollowUps = $ParentFollowUpsTable(
+    this,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4255,6 +4910,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     halaqahDays,
     attendanceRecords,
     recitations,
+    parentFollowUps,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -5733,6 +6389,26 @@ final class $$StudentsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$ParentFollowUpsTable, List<ParentFollowUp>>
+  _parentFollowUpsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.parentFollowUps,
+    aliasName: 'students__id__parent_follow_ups__student_id',
+  );
+
+  $$ParentFollowUpsTableProcessedTableManager get parentFollowUpsRefs {
+    final manager = $$ParentFollowUpsTableTableManager(
+      $_db,
+      $_db.parentFollowUps,
+    ).filter((f) => f.studentId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _parentFollowUpsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$StudentsTableFilterComposer
@@ -5919,6 +6595,31 @@ class $$StudentsTableFilterComposer
           }) => $$RecitationsTableFilterComposer(
             $db: $db,
             $table: $db.recitations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> parentFollowUpsRefs(
+    Expression<bool> Function($$ParentFollowUpsTableFilterComposer f) f,
+  ) {
+    final $$ParentFollowUpsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.parentFollowUps,
+      getReferencedColumn: (t) => t.studentId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ParentFollowUpsTableFilterComposer(
+            $db: $db,
+            $table: $db.parentFollowUps,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -6208,6 +6909,31 @@ class $$StudentsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> parentFollowUpsRefs<T extends Object>(
+    Expression<T> Function($$ParentFollowUpsTableAnnotationComposer a) f,
+  ) {
+    final $$ParentFollowUpsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.parentFollowUps,
+      getReferencedColumn: (t) => t.studentId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ParentFollowUpsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.parentFollowUps,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$StudentsTableTableManager
@@ -6229,6 +6955,7 @@ class $$StudentsTableTableManager
             bool studentActivityPeriodsRefs,
             bool attendanceRecordsRefs,
             bool recitationsRefs,
+            bool parentFollowUpsRefs,
           })
         > {
   $$StudentsTableTableManager(_$AppDatabase db, $StudentsTable table)
@@ -6317,6 +7044,7 @@ class $$StudentsTableTableManager
                 studentActivityPeriodsRefs = false,
                 attendanceRecordsRefs = false,
                 recitationsRefs = false,
+                parentFollowUpsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -6325,6 +7053,7 @@ class $$StudentsTableTableManager
                     if (studentActivityPeriodsRefs) db.studentActivityPeriods,
                     if (attendanceRecordsRefs) db.attendanceRecords,
                     if (recitationsRefs) db.recitations,
+                    if (parentFollowUpsRefs) db.parentFollowUps,
                   ],
                   addJoins:
                       <
@@ -6444,6 +7173,27 @@ class $$StudentsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (parentFollowUpsRefs)
+                        await $_getPrefetchedData<
+                          Student,
+                          $StudentsTable,
+                          ParentFollowUp
+                        >(
+                          currentTable: table,
+                          referencedTable: $$StudentsTableReferences
+                              ._parentFollowUpsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$StudentsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).parentFollowUpsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.studentId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -6470,6 +7220,7 @@ typedef $$StudentsTableProcessedTableManager =
         bool studentActivityPeriodsRefs,
         bool attendanceRecordsRefs,
         bool recitationsRefs,
+        bool parentFollowUpsRefs,
       })
     >;
 typedef $$StudentProgressPlansTableCreateCompanionBuilder =
@@ -7160,6 +7911,26 @@ final class $$HalaqahDaysTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$ParentFollowUpsTable, List<ParentFollowUp>>
+  _parentFollowUpsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.parentFollowUps,
+    aliasName: 'halaqah_days__id__parent_follow_ups__day_id',
+  );
+
+  $$ParentFollowUpsTableProcessedTableManager get parentFollowUpsRefs {
+    final manager = $$ParentFollowUpsTableTableManager(
+      $_db,
+      $_db.parentFollowUps,
+    ).filter((f) => f.dayId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _parentFollowUpsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$HalaqahDaysTableFilterComposer
@@ -7250,6 +8021,31 @@ class $$HalaqahDaysTableFilterComposer
           }) => $$RecitationsTableFilterComposer(
             $db: $db,
             $table: $db.recitations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> parentFollowUpsRefs(
+    Expression<bool> Function($$ParentFollowUpsTableFilterComposer f) f,
+  ) {
+    final $$ParentFollowUpsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.parentFollowUps,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ParentFollowUpsTableFilterComposer(
+            $db: $db,
+            $table: $db.parentFollowUps,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -7399,6 +8195,31 @@ class $$HalaqahDaysTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> parentFollowUpsRefs<T extends Object>(
+    Expression<T> Function($$ParentFollowUpsTableAnnotationComposer a) f,
+  ) {
+    final $$ParentFollowUpsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.parentFollowUps,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ParentFollowUpsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.parentFollowUps,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$HalaqahDaysTableTableManager
@@ -7418,6 +8239,7 @@ class $$HalaqahDaysTableTableManager
             bool halaqahId,
             bool attendanceRecordsRefs,
             bool recitationsRefs,
+            bool parentFollowUpsRefs,
           })
         > {
   $$HalaqahDaysTableTableManager(_$AppDatabase db, $HalaqahDaysTable table)
@@ -7468,12 +8290,14 @@ class $$HalaqahDaysTableTableManager
                 halaqahId = false,
                 attendanceRecordsRefs = false,
                 recitationsRefs = false,
+                parentFollowUpsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (attendanceRecordsRefs) db.attendanceRecords,
                     if (recitationsRefs) db.recitations,
+                    if (parentFollowUpsRefs) db.parentFollowUps,
                   ],
                   addJoins:
                       <
@@ -7553,6 +8377,27 @@ class $$HalaqahDaysTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (parentFollowUpsRefs)
+                        await $_getPrefetchedData<
+                          HalaqahDay,
+                          $HalaqahDaysTable,
+                          ParentFollowUp
+                        >(
+                          currentTable: table,
+                          referencedTable: $$HalaqahDaysTableReferences
+                              ._parentFollowUpsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$HalaqahDaysTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).parentFollowUpsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.dayId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -7577,6 +8422,7 @@ typedef $$HalaqahDaysTableProcessedTableManager =
         bool halaqahId,
         bool attendanceRecordsRefs,
         bool recitationsRefs,
+        bool parentFollowUpsRefs,
       })
     >;
 typedef $$AttendanceRecordsTableCreateCompanionBuilder =
@@ -8597,6 +9443,616 @@ typedef $$RecitationsTableProcessedTableManager =
       Recitation,
       PrefetchHooks Function({bool dayId, bool studentId})
     >;
+typedef $$ParentFollowUpsTableCreateCompanionBuilder =
+    ParentFollowUpsCompanion Function({
+      Value<int> id,
+      required int dayId,
+      required int studentId,
+      required String type,
+      Value<String> status,
+      Value<int?> correctsFollowUpId,
+      Value<String?> attendanceStatusSnapshot,
+      Value<String?> snapshotMessage,
+      Value<String?> channelSnapshot,
+      Value<String?> recipientSnapshot,
+    });
+typedef $$ParentFollowUpsTableUpdateCompanionBuilder =
+    ParentFollowUpsCompanion Function({
+      Value<int> id,
+      Value<int> dayId,
+      Value<int> studentId,
+      Value<String> type,
+      Value<String> status,
+      Value<int?> correctsFollowUpId,
+      Value<String?> attendanceStatusSnapshot,
+      Value<String?> snapshotMessage,
+      Value<String?> channelSnapshot,
+      Value<String?> recipientSnapshot,
+    });
+
+final class $$ParentFollowUpsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $ParentFollowUpsTable, ParentFollowUp> {
+  $$ParentFollowUpsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $HalaqahDaysTable _dayIdTable(_$AppDatabase db) =>
+      db.halaqahDays.createAlias('parent_follow_ups__day_id__halaqah_days__id');
+
+  $$HalaqahDaysTableProcessedTableManager get dayId {
+    final $_column = $_itemColumn<int>('day_id')!;
+
+    final manager = $$HalaqahDaysTableTableManager(
+      $_db,
+      $_db.halaqahDays,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_dayIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $StudentsTable _studentIdTable(_$AppDatabase db) =>
+      db.students.createAlias('parent_follow_ups__student_id__students__id');
+
+  $$StudentsTableProcessedTableManager get studentId {
+    final $_column = $_itemColumn<int>('student_id')!;
+
+    final manager = $$StudentsTableTableManager(
+      $_db,
+      $_db.students,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_studentIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $ParentFollowUpsTable _correctsFollowUpIdTable(_$AppDatabase db) =>
+      db.parentFollowUps.createAlias(
+        'parent_follow_ups__corrects_follow_up_id__parent_follow_ups__id',
+      );
+
+  $$ParentFollowUpsTableProcessedTableManager? get correctsFollowUpId {
+    final $_column = $_itemColumn<int>('corrects_follow_up_id');
+    if ($_column == null) return null;
+    final manager = $$ParentFollowUpsTableTableManager(
+      $_db,
+      $_db.parentFollowUps,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_correctsFollowUpIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$ParentFollowUpsTableFilterComposer
+    extends Composer<_$AppDatabase, $ParentFollowUpsTable> {
+  $$ParentFollowUpsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get attendanceStatusSnapshot => $composableBuilder(
+    column: $table.attendanceStatusSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get snapshotMessage => $composableBuilder(
+    column: $table.snapshotMessage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get channelSnapshot => $composableBuilder(
+    column: $table.channelSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recipientSnapshot => $composableBuilder(
+    column: $table.recipientSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$HalaqahDaysTableFilterComposer get dayId {
+    final $$HalaqahDaysTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableFilterComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableFilterComposer get studentId {
+    final $$StudentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableFilterComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ParentFollowUpsTableFilterComposer get correctsFollowUpId {
+    final $$ParentFollowUpsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.correctsFollowUpId,
+      referencedTable: $db.parentFollowUps,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ParentFollowUpsTableFilterComposer(
+            $db: $db,
+            $table: $db.parentFollowUps,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ParentFollowUpsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ParentFollowUpsTable> {
+  $$ParentFollowUpsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get attendanceStatusSnapshot => $composableBuilder(
+    column: $table.attendanceStatusSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get snapshotMessage => $composableBuilder(
+    column: $table.snapshotMessage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get channelSnapshot => $composableBuilder(
+    column: $table.channelSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recipientSnapshot => $composableBuilder(
+    column: $table.recipientSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$HalaqahDaysTableOrderingComposer get dayId {
+    final $$HalaqahDaysTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableOrderingComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableOrderingComposer get studentId {
+    final $$StudentsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableOrderingComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ParentFollowUpsTableOrderingComposer get correctsFollowUpId {
+    final $$ParentFollowUpsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.correctsFollowUpId,
+      referencedTable: $db.parentFollowUps,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ParentFollowUpsTableOrderingComposer(
+            $db: $db,
+            $table: $db.parentFollowUps,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ParentFollowUpsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ParentFollowUpsTable> {
+  $$ParentFollowUpsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get attendanceStatusSnapshot => $composableBuilder(
+    column: $table.attendanceStatusSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get snapshotMessage => $composableBuilder(
+    column: $table.snapshotMessage,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get channelSnapshot => $composableBuilder(
+    column: $table.channelSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get recipientSnapshot => $composableBuilder(
+    column: $table.recipientSnapshot,
+    builder: (column) => column,
+  );
+
+  $$HalaqahDaysTableAnnotationComposer get dayId {
+    final $$HalaqahDaysTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.halaqahDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahDaysTableAnnotationComposer(
+            $db: $db,
+            $table: $db.halaqahDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableAnnotationComposer get studentId {
+    final $$StudentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.studentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ParentFollowUpsTableAnnotationComposer get correctsFollowUpId {
+    final $$ParentFollowUpsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.correctsFollowUpId,
+      referencedTable: $db.parentFollowUps,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ParentFollowUpsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.parentFollowUps,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ParentFollowUpsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ParentFollowUpsTable,
+          ParentFollowUp,
+          $$ParentFollowUpsTableFilterComposer,
+          $$ParentFollowUpsTableOrderingComposer,
+          $$ParentFollowUpsTableAnnotationComposer,
+          $$ParentFollowUpsTableCreateCompanionBuilder,
+          $$ParentFollowUpsTableUpdateCompanionBuilder,
+          (ParentFollowUp, $$ParentFollowUpsTableReferences),
+          ParentFollowUp,
+          PrefetchHooks Function({
+            bool dayId,
+            bool studentId,
+            bool correctsFollowUpId,
+          })
+        > {
+  $$ParentFollowUpsTableTableManager(
+    _$AppDatabase db,
+    $ParentFollowUpsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ParentFollowUpsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ParentFollowUpsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ParentFollowUpsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> dayId = const Value.absent(),
+                Value<int> studentId = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int?> correctsFollowUpId = const Value.absent(),
+                Value<String?> attendanceStatusSnapshot = const Value.absent(),
+                Value<String?> snapshotMessage = const Value.absent(),
+                Value<String?> channelSnapshot = const Value.absent(),
+                Value<String?> recipientSnapshot = const Value.absent(),
+              }) => ParentFollowUpsCompanion(
+                id: id,
+                dayId: dayId,
+                studentId: studentId,
+                type: type,
+                status: status,
+                correctsFollowUpId: correctsFollowUpId,
+                attendanceStatusSnapshot: attendanceStatusSnapshot,
+                snapshotMessage: snapshotMessage,
+                channelSnapshot: channelSnapshot,
+                recipientSnapshot: recipientSnapshot,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int dayId,
+                required int studentId,
+                required String type,
+                Value<String> status = const Value.absent(),
+                Value<int?> correctsFollowUpId = const Value.absent(),
+                Value<String?> attendanceStatusSnapshot = const Value.absent(),
+                Value<String?> snapshotMessage = const Value.absent(),
+                Value<String?> channelSnapshot = const Value.absent(),
+                Value<String?> recipientSnapshot = const Value.absent(),
+              }) => ParentFollowUpsCompanion.insert(
+                id: id,
+                dayId: dayId,
+                studentId: studentId,
+                type: type,
+                status: status,
+                correctsFollowUpId: correctsFollowUpId,
+                attendanceStatusSnapshot: attendanceStatusSnapshot,
+                snapshotMessage: snapshotMessage,
+                channelSnapshot: channelSnapshot,
+                recipientSnapshot: recipientSnapshot,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ParentFollowUpsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({dayId = false, studentId = false, correctsFollowUpId = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (dayId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.dayId,
+                                    referencedTable:
+                                        $$ParentFollowUpsTableReferences
+                                            ._dayIdTable(db),
+                                    referencedColumn:
+                                        $$ParentFollowUpsTableReferences
+                                            ._dayIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (studentId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.studentId,
+                                    referencedTable:
+                                        $$ParentFollowUpsTableReferences
+                                            ._studentIdTable(db),
+                                    referencedColumn:
+                                        $$ParentFollowUpsTableReferences
+                                            ._studentIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (correctsFollowUpId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.correctsFollowUpId,
+                                    referencedTable:
+                                        $$ParentFollowUpsTableReferences
+                                            ._correctsFollowUpIdTable(db),
+                                    referencedColumn:
+                                        $$ParentFollowUpsTableReferences
+                                            ._correctsFollowUpIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$ParentFollowUpsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ParentFollowUpsTable,
+      ParentFollowUp,
+      $$ParentFollowUpsTableFilterComposer,
+      $$ParentFollowUpsTableOrderingComposer,
+      $$ParentFollowUpsTableAnnotationComposer,
+      $$ParentFollowUpsTableCreateCompanionBuilder,
+      $$ParentFollowUpsTableUpdateCompanionBuilder,
+      (ParentFollowUp, $$ParentFollowUpsTableReferences),
+      ParentFollowUp,
+      PrefetchHooks Function({
+        bool dayId,
+        bool studentId,
+        bool correctsFollowUpId,
+      })
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -8625,4 +10081,6 @@ class $AppDatabaseManager {
       $$AttendanceRecordsTableTableManager(_db, _db.attendanceRecords);
   $$RecitationsTableTableManager get recitations =>
       $$RecitationsTableTableManager(_db, _db.recitations);
+  $$ParentFollowUpsTableTableManager get parentFollowUps =>
+      $$ParentFollowUpsTableTableManager(_db, _db.parentFollowUps);
 }

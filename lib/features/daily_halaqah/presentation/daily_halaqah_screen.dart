@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:qurani/features/daily_halaqah/application/close_halaqah_day_core.dart';
 import 'package:qurani/features/daily_halaqah/application/daily_halaqah_runtime_providers.dart';
+import 'package:qurani/features/parent_follow_up/domain/parent_follow_up_repository.dart';
 import 'package:qurani/features/daily_halaqah/domain/daily_halaqah.dart';
 import 'package:qurani/features/daily_halaqah/presentation/attendance_status_selector.dart';
 import 'package:qurani/features/daily_halaqah/presentation/halaqah_day_history_screen.dart';
@@ -283,14 +284,30 @@ class _DailyHalaqahScreenState extends State<DailyHalaqahScreen> {
     });
 
     try {
-      final closed = await widget.runtimeContext.closeDayCore(
-        halaqahId: widget.runtimeContext.halaqahId,
-        dayId: summary.day.id,
-      );
+      final endDayService =
+          widget.runtimeContext.endDayAndPrepareParentFollowUps;
+
+      late final int closedDayId;
+
+      if (endDayService != null) {
+        final result = await endDayService(
+          halaqahId: widget.runtimeContext.halaqahId,
+          dayId: summary.day.id,
+        );
+
+        closedDayId = result.day.id;
+      } else {
+        final closed = await widget.runtimeContext.closeDayCore(
+          halaqahId: widget.runtimeContext.halaqahId,
+          dayId: summary.day.id,
+        );
+
+        closedDayId = closed.id;
+      }
 
       final reloaded = await widget.runtimeContext.readService.summary(
         halaqahId: widget.runtimeContext.halaqahId,
-        dayId: closed.id,
+        dayId: closedDayId,
       );
 
       if (!mounted) {
@@ -306,13 +323,34 @@ class _DailyHalaqahScreenState extends State<DailyHalaqahScreen> {
         MaterialPageRoute<void>(
           builder: (context) => HalaqahDaySummaryScreen(
             runtimeContext: widget.runtimeContext,
-            dayId: closed.id,
+            dayId: closedDayId,
           ),
         ),
       );
 
       if (mounted) {
         await _reloadSummary();
+      }
+    } on ParentFollowUpIncompleteAttendanceException catch (error) {
+      final reloaded = await widget.runtimeContext.readService.summary(
+        halaqahId: widget.runtimeContext.halaqahId,
+        dayId: summary.day.id,
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _summary = reloaded;
+        _busy = false;
+        _errorText =
+            'بقي ${error.missingCount} طالب دون حالة حضور. '
+            'أكمل الحضور أولًا.';
+      });
+
+      if (error.missingStudentIds.isNotEmpty) {
+        _scrollToStudent(error.missingStudentIds.first);
       }
     } on IncompleteAttendanceException catch (error) {
       final reloaded = await widget.runtimeContext.readService.summary(

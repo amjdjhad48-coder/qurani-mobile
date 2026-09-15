@@ -5,6 +5,7 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
   return MigrationStrategy(
     onCreate: (migrator) async {
       await migrator.createAll();
+      await _createPackage6Indexes(database);
     },
     onUpgrade: (migrator, from, to) async {
       if (from == to) {
@@ -28,6 +29,11 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
 
       if (from == 4 && to == 5) {
         await _createPackage5Schema(database, migrator);
+        return;
+      }
+
+      if (from == 5 && to == 6) {
+        await _createPackage6Schema(database, migrator);
         return;
       }
 
@@ -68,6 +74,36 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
         await _createPackage3Schema(database, migrator);
         await _createPackage4Schema(database, migrator);
         await _createPackage5Schema(database, migrator);
+        return;
+      }
+
+      if (from == 4 && to == 6) {
+        await _createPackage5Schema(database, migrator);
+        await _createPackage6Schema(database, migrator);
+        return;
+      }
+
+      if (from == 3 && to == 6) {
+        await _createPackage4Schema(database, migrator);
+        await _createPackage5Schema(database, migrator);
+        await _createPackage6Schema(database, migrator);
+        return;
+      }
+
+      if (from == 2 && to == 6) {
+        await _createPackage3Schema(database, migrator);
+        await _createPackage4Schema(database, migrator);
+        await _createPackage5Schema(database, migrator);
+        await _createPackage6Schema(database, migrator);
+        return;
+      }
+
+      if (from == 1 && to == 6) {
+        await _createPackage2Schema(database, migrator);
+        await _createPackage3Schema(database, migrator);
+        await _createPackage4Schema(database, migrator);
+        await _createPackage5Schema(database, migrator);
+        await _createPackage6Schema(database, migrator);
         return;
       }
 
@@ -117,6 +153,31 @@ Future<void> _createPackage5Schema(
   Migrator migrator,
 ) async {
   await migrator.createTable(database.recitations);
+}
+
+Future<void> _createPackage6Schema(
+  AppDatabase database,
+  Migrator migrator,
+) async {
+  await migrator.createTable(database.parentFollowUps);
+  await _createPackage6Indexes(database);
+}
+
+Future<void> _createPackage6Indexes(AppDatabase database) async {
+  await database.customStatement(
+    'CREATE UNIQUE INDEX IF NOT EXISTS '
+    'idx_parent_follow_ups_daily_unique '
+    'ON parent_follow_ups(day_id, student_id) '
+    "WHERE type = 'daily';",
+  );
+
+  await database.customStatement(
+    'CREATE UNIQUE INDEX IF NOT EXISTS '
+    'idx_parent_follow_ups_pending_correction_unique '
+    'ON parent_follow_ups(day_id, student_id) '
+    "WHERE type = 'attendance_correction' "
+    "AND status = 'pending';",
+  );
 }
 
 Future<void> verifyDatabaseAfterSchemaChange(AppDatabase database) async {

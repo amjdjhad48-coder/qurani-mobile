@@ -6,12 +6,12 @@ import 'package:qurani/core/database/database_migrations.dart';
 void main() {
   group('AppDatabase migration infrastructure', () {
     test(
-      'schemaVersion 5 creates Package 2 through Package 5 tables',
+      'schemaVersion 6 creates Package 2 through Package 6 tables',
       () async {
         final database = AppDatabase(NativeDatabase.memory());
 
         try {
-          expect(database.schemaVersion, 5);
+          expect(database.schemaVersion, 6);
 
           await database.customSelect('SELECT 1;').get();
 
@@ -21,6 +21,7 @@ void main() {
             'attendance_records',
             'halaqah_days',
             'halaqahs',
+            'parent_follow_ups',
             'recitations',
             'student_activity_periods',
             'student_progress_plans',
@@ -39,157 +40,35 @@ void main() {
       },
     );
 
-    test('migrates the empty v1 database explicitly to schema v5', () async {
-      final executor = NativeDatabase.memory(
-        setup: (rawDatabase) {
-          rawDatabase.execute('PRAGMA user_version = 1;');
-        },
-      );
+    for (final version in <int>[1, 2, 3, 4, 5]) {
+      test('migrates schema v$version explicitly to schema v6', () async {
+        final executor = _legacyExecutor(version);
+        final database = AppDatabase(executor);
 
-      final database = AppDatabase(executor);
+        try {
+          await database.customSelect('SELECT 1;').get();
 
-      try {
-        await database.customSelect('SELECT 1;').get();
+          expect(await _userVersion(database), 6);
 
-        expect(await _userVersion(database), 5);
+          final tables = await _userTables(database);
 
-        final tables = await _userTables(database);
+          expect(tables, contains('parent_follow_ups'));
 
-        expect(tables, contains('halaqahs'));
-        expect(tables, contains('students'));
-        expect(tables, contains('halaqah_days'));
-        expect(tables, contains('attendance_records'));
-        expect(tables, contains('recitations'));
+          if (version <= 4) {
+            expect(tables, contains('recitations'));
+          }
 
-        await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
-      } finally {
-        await database.close();
-      }
-    });
-
-    test('migrates schema v2 explicitly to schema v5', () async {
-      final executor = NativeDatabase.memory(
-        setup: (rawDatabase) {
-          rawDatabase.execute(
-            'CREATE TABLE halaqahs ('
-            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
-            ');',
+          await expectLater(
+            verifyDatabaseAfterSchemaChange(database),
+            completes,
           );
-          rawDatabase.execute('PRAGMA user_version = 2;');
-        },
-      );
+        } finally {
+          await database.close();
+        }
+      });
+    }
 
-      final database = AppDatabase(executor);
-
-      try {
-        await database.customSelect('SELECT 1;').get();
-
-        expect(await _userVersion(database), 5);
-
-        final tables = await _userTables(database);
-        expect(tables, contains('students'));
-        expect(tables, contains('student_progress_plans'));
-        expect(tables, contains('student_activity_periods'));
-        expect(tables, contains('halaqah_days'));
-        expect(tables, contains('attendance_records'));
-        expect(tables, contains('recitations'));
-
-        await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
-      } finally {
-        await database.close();
-      }
-    });
-
-    test('migrates schema v3 explicitly to schema v5', () async {
-      final executor = NativeDatabase.memory(
-        setup: (rawDatabase) {
-          rawDatabase.execute(
-            'CREATE TABLE halaqahs ('
-            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
-            ');',
-          );
-
-          rawDatabase.execute(
-            'CREATE TABLE students ('
-            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-            'halaqah_id INTEGER NOT NULL, '
-            'FOREIGN KEY (halaqah_id) REFERENCES halaqahs(id) '
-            'ON DELETE RESTRICT'
-            ');',
-          );
-
-          rawDatabase.execute('PRAGMA user_version = 3;');
-        },
-      );
-
-      final database = AppDatabase(executor);
-
-      try {
-        await database.customSelect('SELECT 1;').get();
-
-        expect(await _userVersion(database), 5);
-
-        final tables = await _userTables(database);
-        expect(tables, contains('halaqah_days'));
-        expect(tables, contains('attendance_records'));
-        expect(tables, contains('recitations'));
-
-        await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
-      } finally {
-        await database.close();
-      }
-    });
-
-    test('migrates schema v4 explicitly to schema v5', () async {
-      final executor = NativeDatabase.memory(
-        setup: (rawDatabase) {
-          rawDatabase.execute(
-            'CREATE TABLE halaqahs ('
-            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
-            ');',
-          );
-
-          rawDatabase.execute(
-            'CREATE TABLE students ('
-            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-            'halaqah_id INTEGER NOT NULL, '
-            'FOREIGN KEY (halaqah_id) REFERENCES halaqahs(id) '
-            'ON DELETE RESTRICT'
-            ');',
-          );
-
-          rawDatabase.execute(
-            'CREATE TABLE halaqah_days ('
-            'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-            'halaqah_id INTEGER NOT NULL, '
-            'day_date TEXT NOT NULL, '
-            'status TEXT NOT NULL, '
-            'FOREIGN KEY (halaqah_id) REFERENCES halaqahs(id) '
-            'ON DELETE RESTRICT'
-            ');',
-          );
-
-          rawDatabase.execute('PRAGMA user_version = 4;');
-        },
-      );
-
-      final database = AppDatabase(executor);
-
-      try {
-        await database.customSelect('SELECT 1;').get();
-
-        expect(await _userVersion(database), 5);
-
-        final tables = await _userTables(database);
-        expect(tables, contains('recitations'));
-
-        await expectLater(verifyDatabaseAfterSchemaChange(database), completes);
-      } finally {
-        await database.close();
-      }
-    });
-
-    test('schema v5 keeps foreign keys enabled', () async {
+    test('schema v6 keeps foreign keys enabled', () async {
       final database = AppDatabase(NativeDatabase.memory());
 
       try {
@@ -213,7 +92,7 @@ void main() {
         final strategy = database.migration;
 
         await expectLater(
-          strategy.onUpgrade(database.createMigrator(), 5, 6),
+          strategy.onUpgrade(database.createMigrator(), 6, 7),
           throwsA(isA<StateError>()),
         );
       } finally {
@@ -221,6 +100,75 @@ void main() {
       }
     });
   });
+}
+
+NativeDatabase _legacyExecutor(int version) {
+  return NativeDatabase.memory(
+    setup: (rawDatabase) {
+      rawDatabase.execute('PRAGMA foreign_keys = ON;');
+
+      if (version >= 2) {
+        rawDatabase.execute(
+          'CREATE TABLE halaqahs ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
+          ');',
+        );
+      }
+
+      if (version >= 3) {
+        rawDatabase.execute(
+          'CREATE TABLE students ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+          'halaqah_id INTEGER NOT NULL, '
+          'FOREIGN KEY (halaqah_id) REFERENCES halaqahs(id) '
+          'ON DELETE RESTRICT'
+          ');',
+        );
+      }
+
+      if (version >= 4) {
+        rawDatabase.execute(
+          'CREATE TABLE halaqah_days ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+          'halaqah_id INTEGER NOT NULL, '
+          'day_date TEXT NOT NULL, '
+          'status TEXT NOT NULL, '
+          'FOREIGN KEY (halaqah_id) REFERENCES halaqahs(id) '
+          'ON DELETE RESTRICT'
+          ');',
+        );
+
+        rawDatabase.execute(
+          'CREATE TABLE attendance_records ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+          'day_id INTEGER NOT NULL, '
+          'student_id INTEGER NOT NULL, '
+          'status TEXT NOT NULL, '
+          'FOREIGN KEY (day_id) REFERENCES halaqah_days(id) '
+          'ON DELETE RESTRICT, '
+          'FOREIGN KEY (student_id) REFERENCES students(id) '
+          'ON DELETE RESTRICT'
+          ');',
+        );
+      }
+
+      if (version >= 5) {
+        rawDatabase.execute(
+          'CREATE TABLE recitations ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+          'day_id INTEGER NOT NULL, '
+          'student_id INTEGER NOT NULL, '
+          'FOREIGN KEY (day_id) REFERENCES halaqah_days(id) '
+          'ON DELETE RESTRICT, '
+          'FOREIGN KEY (student_id) REFERENCES students(id) '
+          'ON DELETE RESTRICT'
+          ');',
+        );
+      }
+
+      rawDatabase.execute('PRAGMA user_version = $version;');
+    },
+  );
 }
 
 Future<int> _userVersion(AppDatabase database) async {
