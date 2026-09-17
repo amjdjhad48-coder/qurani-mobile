@@ -107,6 +107,26 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
         return;
       }
 
+      if (to == 7 && from >= 1 && from <= 6) {
+        if (from <= 1) {
+          await _createPackage2Schema(database, migrator);
+        }
+        if (from <= 2) {
+          await _createPackage3Schema(database, migrator);
+        }
+        if (from <= 3) {
+          await _createPackage4Schema(database, migrator);
+        }
+        if (from <= 4) {
+          await _createPackage5Schema(database, migrator);
+        }
+        if (from <= 5) {
+          await _createPackage6Schema(database, migrator);
+        }
+
+        await _createPackage7Schema(database, migrator);
+        return;
+      }
       throw StateError(
         'Unsupported Qurani database migration path: $from -> $to. '
         'Every schema change must add an explicit tested migration.',
@@ -161,6 +181,18 @@ Future<void> _createPackage6Schema(
 ) async {
   await migrator.createTable(database.parentFollowUps);
   await _createPackage6Indexes(database);
+}
+
+Future<void> _createPackage7Schema(
+  AppDatabase database,
+  Migrator migrator,
+) async {
+  await migrator.createTable(database.supportWeeklyReports);
+  await migrator.createTable(database.supportWeeklyReportStudents);
+  await migrator.createTable(database.supportWeeklyReportDays);
+  await migrator.createTable(database.supportWeeklyReportDayEntries);
+  await migrator.createTable(database.supportMonthlyReports);
+  await migrator.createTable(database.supportMonthlyReportStudents);
 }
 
 Future<void> _createPackage6Indexes(AppDatabase database) async {

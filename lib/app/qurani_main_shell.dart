@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qurani/features/daily_halaqah/application/daily_halaqah_runtime_providers.dart';
 import 'package:qurani/features/daily_halaqah/presentation/qurani_home_screen.dart';
-import 'package:qurani/features/students/application/student_runtime_providers.dart';
+import 'package:qurani/features/reports/application/support_reports_runtime_providers.dart';
+import 'package:qurani/features/reports/presentation/support_reports_screen.dart';
 import 'package:qurani/features/students/presentation/students_list_screen.dart';
 
 class QuraniMainShell extends ConsumerStatefulWidget {
@@ -27,44 +28,39 @@ class QuraniMainShell extends ConsumerStatefulWidget {
 
 class _QuraniMainShellState extends ConsumerState<QuraniMainShell> {
   _MainSection _section = _MainSection.home;
-  bool? _supportEnabled;
+  SupportReportsRuntimeContext? _reportsRuntimeContext;
 
   @override
   void initState() {
     super.initState();
-    Future<void>.microtask(_refreshSupportStatus);
+    Future<void>.microtask(_refreshReportsAccess);
   }
 
-  Future<void> _refreshSupportStatus() async {
+  Future<void> _refreshReportsAccess() async {
+    ref.invalidate(supportReportsRuntimeContextProvider);
     try {
-      final studentContext = await ref.read(
-        studentRuntimeContextProvider.future,
+      final reportsContext = await ref.read(
+        supportReportsRuntimeContextProvider.future,
       );
-
-      final status = await studentContext.service.supportStatusForHalaqah(
-        studentContext.halaqahId,
-      );
-
       if (!mounted) {
         return;
       }
-
-      final enabled = status == 'enabled';
-
       setState(() {
-        _supportEnabled = enabled;
-
-        if (!enabled && _section == _MainSection.reports) {
+        _reportsRuntimeContext = reportsContext;
+        if (!reportsContext.canOpenReports &&
+            _section == _MainSection.reports) {
           _section = _MainSection.home;
         }
       });
     } catch (_) {
-      if (!mounted || _supportEnabled != null) {
+      if (!mounted || _reportsRuntimeContext != null) {
         return;
       }
-
       setState(() {
-        _supportEnabled = false;
+        _reportsRuntimeContext = null;
+        if (_section == _MainSection.reports) {
+          _section = _MainSection.home;
+        }
       });
     }
   }
@@ -76,7 +72,7 @@ class _QuraniMainShellState extends ConsumerState<QuraniMainShell> {
       _section = next;
     });
 
-    unawaited(_refreshSupportStatus());
+    unawaited(_refreshReportsAccess());
   }
 
   @override
@@ -84,7 +80,7 @@ class _QuraniMainShellState extends ConsumerState<QuraniMainShell> {
     final sections = <_MainSection>[
       _MainSection.home,
       _MainSection.students,
-      if (_supportEnabled == true) _MainSection.reports,
+      if (_reportsRuntimeContext?.canOpenReports == true) _MainSection.reports,
       _MainSection.settings,
     ];
 
@@ -113,8 +109,9 @@ class _QuraniMainShellState extends ConsumerState<QuraniMainShell> {
         onChangePin: widget.onChangePin,
         onLockNow: widget.onLockNow,
       ),
-      _MainSection.reports => _ReportsPlaceholderScreen(
+      _MainSection.reports => SupportReportsScreen(
         actionsEnabled: widget.actionsEnabled,
+        noticeText: widget.noticeText,
         onChangePin: widget.onChangePin,
         onLockNow: widget.onLockNow,
       ),
@@ -305,43 +302,6 @@ class _SettingsScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ReportsPlaceholderScreen extends StatelessWidget {
-  const _ReportsPlaceholderScreen({
-    required this.actionsEnabled,
-    required this.onChangePin,
-    required this.onLockNow,
-  });
-
-  final bool actionsEnabled;
-  final VoidCallback onChangePin;
-  final VoidCallback onLockNow;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: const Key('reports_placeholder_screen'),
-      appBar: _runtimeAppBar(
-        title: 'التقارير',
-        actionsEnabled: actionsEnabled,
-        onChangePin: onChangePin,
-        onLockNow: onLockNow,
-      ),
-      body: const SafeArea(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: Text(
-              'تم تثبيت بوابة التقارير في التنقل. '
-              'وظائف التقارير نفسها تُنفذ في الحزمة المخصصة لها.',
-              textAlign: TextAlign.center,
-            ),
-          ),
         ),
       ),
     );

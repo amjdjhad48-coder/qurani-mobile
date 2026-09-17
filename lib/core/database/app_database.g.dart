@@ -4876,6 +4876,4270 @@ class ParentFollowUpsCompanion extends UpdateCompanion<ParentFollowUp> {
   }
 }
 
+class $SupportWeeklyReportsTable extends SupportWeeklyReports
+    with TableInfo<$SupportWeeklyReportsTable, SupportWeeklyReport> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SupportWeeklyReportsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _halaqahIdMeta = const VerificationMeta(
+    'halaqahId',
+  );
+  @override
+  late final GeneratedColumn<int> halaqahId = GeneratedColumn<int>(
+    'halaqah_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES halaqahs (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _weekStartDateMeta = const VerificationMeta(
+    'weekStartDate',
+  );
+  @override
+  late final GeneratedColumn<String> weekStartDate = GeneratedColumn<String>(
+    'week_start_date',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 10,
+      maxTextLength: 10,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _weekEndDateMeta = const VerificationMeta(
+    'weekEndDate',
+  );
+  @override
+  late final GeneratedColumn<String> weekEndDate = GeneratedColumn<String>(
+    'week_end_date',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 10,
+      maxTextLength: 10,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _teacherNameSnapshotMeta =
+      const VerificationMeta('teacherNameSnapshot');
+  @override
+  late final GeneratedColumn<String> teacherNameSnapshot =
+      GeneratedColumn<String>(
+        'teacher_name_snapshot',
+        aliasedName,
+        false,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 1,
+          maxTextLength: 200,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _halaqahNameSnapshotMeta =
+      const VerificationMeta('halaqahNameSnapshot');
+  @override
+  late final GeneratedColumn<String> halaqahNameSnapshot =
+      GeneratedColumn<String>(
+        'halaqah_name_snapshot',
+        aliasedName,
+        false,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 1,
+          maxTextLength: 200,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _organizationNameSnapshotMeta =
+      const VerificationMeta('organizationNameSnapshot');
+  @override
+  late final GeneratedColumn<String> organizationNameSnapshot =
+      GeneratedColumn<String>(
+        'organization_name_snapshot',
+        aliasedName,
+        false,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 1,
+          maxTextLength: 200,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _policyVersionMeta = const VerificationMeta(
+    'policyVersion',
+  );
+  @override
+  late final GeneratedColumn<int> policyVersion = GeneratedColumn<int>(
+    'policy_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _templateVersionMeta = const VerificationMeta(
+    'templateVersion',
+  );
+  @override
+  late final GeneratedColumn<int> templateVersion = GeneratedColumn<int>(
+    'template_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceFingerprintMeta = const VerificationMeta(
+    'sourceFingerprint',
+  );
+  @override
+  late final GeneratedColumn<String> sourceFingerprint =
+      GeneratedColumn<String>(
+        'source_fingerprint',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _approvedAtUtcMeta = const VerificationMeta(
+    'approvedAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> approvedAtUtc =
+      GeneratedColumn<DateTime>(
+        'approved_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    halaqahId,
+    weekStartDate,
+    weekEndDate,
+    status,
+    teacherNameSnapshot,
+    halaqahNameSnapshot,
+    organizationNameSnapshot,
+    policyVersion,
+    templateVersion,
+    sourceFingerprint,
+    approvedAtUtc,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'support_weekly_reports';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SupportWeeklyReport> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('halaqah_id')) {
+      context.handle(
+        _halaqahIdMeta,
+        halaqahId.isAcceptableOrUnknown(data['halaqah_id']!, _halaqahIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_halaqahIdMeta);
+    }
+    if (data.containsKey('week_start_date')) {
+      context.handle(
+        _weekStartDateMeta,
+        weekStartDate.isAcceptableOrUnknown(
+          data['week_start_date']!,
+          _weekStartDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_weekStartDateMeta);
+    }
+    if (data.containsKey('week_end_date')) {
+      context.handle(
+        _weekEndDateMeta,
+        weekEndDate.isAcceptableOrUnknown(
+          data['week_end_date']!,
+          _weekEndDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_weekEndDateMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('teacher_name_snapshot')) {
+      context.handle(
+        _teacherNameSnapshotMeta,
+        teacherNameSnapshot.isAcceptableOrUnknown(
+          data['teacher_name_snapshot']!,
+          _teacherNameSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_teacherNameSnapshotMeta);
+    }
+    if (data.containsKey('halaqah_name_snapshot')) {
+      context.handle(
+        _halaqahNameSnapshotMeta,
+        halaqahNameSnapshot.isAcceptableOrUnknown(
+          data['halaqah_name_snapshot']!,
+          _halaqahNameSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_halaqahNameSnapshotMeta);
+    }
+    if (data.containsKey('organization_name_snapshot')) {
+      context.handle(
+        _organizationNameSnapshotMeta,
+        organizationNameSnapshot.isAcceptableOrUnknown(
+          data['organization_name_snapshot']!,
+          _organizationNameSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_organizationNameSnapshotMeta);
+    }
+    if (data.containsKey('policy_version')) {
+      context.handle(
+        _policyVersionMeta,
+        policyVersion.isAcceptableOrUnknown(
+          data['policy_version']!,
+          _policyVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_policyVersionMeta);
+    }
+    if (data.containsKey('template_version')) {
+      context.handle(
+        _templateVersionMeta,
+        templateVersion.isAcceptableOrUnknown(
+          data['template_version']!,
+          _templateVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_templateVersionMeta);
+    }
+    if (data.containsKey('source_fingerprint')) {
+      context.handle(
+        _sourceFingerprintMeta,
+        sourceFingerprint.isAcceptableOrUnknown(
+          data['source_fingerprint']!,
+          _sourceFingerprintMeta,
+        ),
+      );
+    }
+    if (data.containsKey('approved_at_utc')) {
+      context.handle(
+        _approvedAtUtcMeta,
+        approvedAtUtc.isAcceptableOrUnknown(
+          data['approved_at_utc']!,
+          _approvedAtUtcMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {halaqahId, weekStartDate},
+  ];
+  @override
+  SupportWeeklyReport map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupportWeeklyReport(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      halaqahId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}halaqah_id'],
+      )!,
+      weekStartDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}week_start_date'],
+      )!,
+      weekEndDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}week_end_date'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      teacherNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}teacher_name_snapshot'],
+      )!,
+      halaqahNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}halaqah_name_snapshot'],
+      )!,
+      organizationNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}organization_name_snapshot'],
+      )!,
+      policyVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}policy_version'],
+      )!,
+      templateVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}template_version'],
+      )!,
+      sourceFingerprint: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_fingerprint'],
+      ),
+      approvedAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}approved_at_utc'],
+      ),
+    );
+  }
+
+  @override
+  $SupportWeeklyReportsTable createAlias(String alias) {
+    return $SupportWeeklyReportsTable(attachedDatabase, alias);
+  }
+}
+
+class SupportWeeklyReport extends DataClass
+    implements Insertable<SupportWeeklyReport> {
+  final int id;
+  final int halaqahId;
+  final String weekStartDate;
+  final String weekEndDate;
+  final String status;
+  final String teacherNameSnapshot;
+  final String halaqahNameSnapshot;
+  final String organizationNameSnapshot;
+  final int policyVersion;
+  final int templateVersion;
+  final String? sourceFingerprint;
+  final DateTime? approvedAtUtc;
+  const SupportWeeklyReport({
+    required this.id,
+    required this.halaqahId,
+    required this.weekStartDate,
+    required this.weekEndDate,
+    required this.status,
+    required this.teacherNameSnapshot,
+    required this.halaqahNameSnapshot,
+    required this.organizationNameSnapshot,
+    required this.policyVersion,
+    required this.templateVersion,
+    this.sourceFingerprint,
+    this.approvedAtUtc,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['halaqah_id'] = Variable<int>(halaqahId);
+    map['week_start_date'] = Variable<String>(weekStartDate);
+    map['week_end_date'] = Variable<String>(weekEndDate);
+    map['status'] = Variable<String>(status);
+    map['teacher_name_snapshot'] = Variable<String>(teacherNameSnapshot);
+    map['halaqah_name_snapshot'] = Variable<String>(halaqahNameSnapshot);
+    map['organization_name_snapshot'] = Variable<String>(
+      organizationNameSnapshot,
+    );
+    map['policy_version'] = Variable<int>(policyVersion);
+    map['template_version'] = Variable<int>(templateVersion);
+    if (!nullToAbsent || sourceFingerprint != null) {
+      map['source_fingerprint'] = Variable<String>(sourceFingerprint);
+    }
+    if (!nullToAbsent || approvedAtUtc != null) {
+      map['approved_at_utc'] = Variable<DateTime>(approvedAtUtc);
+    }
+    return map;
+  }
+
+  SupportWeeklyReportsCompanion toCompanion(bool nullToAbsent) {
+    return SupportWeeklyReportsCompanion(
+      id: Value(id),
+      halaqahId: Value(halaqahId),
+      weekStartDate: Value(weekStartDate),
+      weekEndDate: Value(weekEndDate),
+      status: Value(status),
+      teacherNameSnapshot: Value(teacherNameSnapshot),
+      halaqahNameSnapshot: Value(halaqahNameSnapshot),
+      organizationNameSnapshot: Value(organizationNameSnapshot),
+      policyVersion: Value(policyVersion),
+      templateVersion: Value(templateVersion),
+      sourceFingerprint: sourceFingerprint == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceFingerprint),
+      approvedAtUtc: approvedAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(approvedAtUtc),
+    );
+  }
+
+  factory SupportWeeklyReport.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SupportWeeklyReport(
+      id: serializer.fromJson<int>(json['id']),
+      halaqahId: serializer.fromJson<int>(json['halaqahId']),
+      weekStartDate: serializer.fromJson<String>(json['weekStartDate']),
+      weekEndDate: serializer.fromJson<String>(json['weekEndDate']),
+      status: serializer.fromJson<String>(json['status']),
+      teacherNameSnapshot: serializer.fromJson<String>(
+        json['teacherNameSnapshot'],
+      ),
+      halaqahNameSnapshot: serializer.fromJson<String>(
+        json['halaqahNameSnapshot'],
+      ),
+      organizationNameSnapshot: serializer.fromJson<String>(
+        json['organizationNameSnapshot'],
+      ),
+      policyVersion: serializer.fromJson<int>(json['policyVersion']),
+      templateVersion: serializer.fromJson<int>(json['templateVersion']),
+      sourceFingerprint: serializer.fromJson<String?>(
+        json['sourceFingerprint'],
+      ),
+      approvedAtUtc: serializer.fromJson<DateTime?>(json['approvedAtUtc']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'halaqahId': serializer.toJson<int>(halaqahId),
+      'weekStartDate': serializer.toJson<String>(weekStartDate),
+      'weekEndDate': serializer.toJson<String>(weekEndDate),
+      'status': serializer.toJson<String>(status),
+      'teacherNameSnapshot': serializer.toJson<String>(teacherNameSnapshot),
+      'halaqahNameSnapshot': serializer.toJson<String>(halaqahNameSnapshot),
+      'organizationNameSnapshot': serializer.toJson<String>(
+        organizationNameSnapshot,
+      ),
+      'policyVersion': serializer.toJson<int>(policyVersion),
+      'templateVersion': serializer.toJson<int>(templateVersion),
+      'sourceFingerprint': serializer.toJson<String?>(sourceFingerprint),
+      'approvedAtUtc': serializer.toJson<DateTime?>(approvedAtUtc),
+    };
+  }
+
+  SupportWeeklyReport copyWith({
+    int? id,
+    int? halaqahId,
+    String? weekStartDate,
+    String? weekEndDate,
+    String? status,
+    String? teacherNameSnapshot,
+    String? halaqahNameSnapshot,
+    String? organizationNameSnapshot,
+    int? policyVersion,
+    int? templateVersion,
+    Value<String?> sourceFingerprint = const Value.absent(),
+    Value<DateTime?> approvedAtUtc = const Value.absent(),
+  }) => SupportWeeklyReport(
+    id: id ?? this.id,
+    halaqahId: halaqahId ?? this.halaqahId,
+    weekStartDate: weekStartDate ?? this.weekStartDate,
+    weekEndDate: weekEndDate ?? this.weekEndDate,
+    status: status ?? this.status,
+    teacherNameSnapshot: teacherNameSnapshot ?? this.teacherNameSnapshot,
+    halaqahNameSnapshot: halaqahNameSnapshot ?? this.halaqahNameSnapshot,
+    organizationNameSnapshot:
+        organizationNameSnapshot ?? this.organizationNameSnapshot,
+    policyVersion: policyVersion ?? this.policyVersion,
+    templateVersion: templateVersion ?? this.templateVersion,
+    sourceFingerprint: sourceFingerprint.present
+        ? sourceFingerprint.value
+        : this.sourceFingerprint,
+    approvedAtUtc: approvedAtUtc.present
+        ? approvedAtUtc.value
+        : this.approvedAtUtc,
+  );
+  SupportWeeklyReport copyWithCompanion(SupportWeeklyReportsCompanion data) {
+    return SupportWeeklyReport(
+      id: data.id.present ? data.id.value : this.id,
+      halaqahId: data.halaqahId.present ? data.halaqahId.value : this.halaqahId,
+      weekStartDate: data.weekStartDate.present
+          ? data.weekStartDate.value
+          : this.weekStartDate,
+      weekEndDate: data.weekEndDate.present
+          ? data.weekEndDate.value
+          : this.weekEndDate,
+      status: data.status.present ? data.status.value : this.status,
+      teacherNameSnapshot: data.teacherNameSnapshot.present
+          ? data.teacherNameSnapshot.value
+          : this.teacherNameSnapshot,
+      halaqahNameSnapshot: data.halaqahNameSnapshot.present
+          ? data.halaqahNameSnapshot.value
+          : this.halaqahNameSnapshot,
+      organizationNameSnapshot: data.organizationNameSnapshot.present
+          ? data.organizationNameSnapshot.value
+          : this.organizationNameSnapshot,
+      policyVersion: data.policyVersion.present
+          ? data.policyVersion.value
+          : this.policyVersion,
+      templateVersion: data.templateVersion.present
+          ? data.templateVersion.value
+          : this.templateVersion,
+      sourceFingerprint: data.sourceFingerprint.present
+          ? data.sourceFingerprint.value
+          : this.sourceFingerprint,
+      approvedAtUtc: data.approvedAtUtc.present
+          ? data.approvedAtUtc.value
+          : this.approvedAtUtc,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportWeeklyReport(')
+          ..write('id: $id, ')
+          ..write('halaqahId: $halaqahId, ')
+          ..write('weekStartDate: $weekStartDate, ')
+          ..write('weekEndDate: $weekEndDate, ')
+          ..write('status: $status, ')
+          ..write('teacherNameSnapshot: $teacherNameSnapshot, ')
+          ..write('halaqahNameSnapshot: $halaqahNameSnapshot, ')
+          ..write('organizationNameSnapshot: $organizationNameSnapshot, ')
+          ..write('policyVersion: $policyVersion, ')
+          ..write('templateVersion: $templateVersion, ')
+          ..write('sourceFingerprint: $sourceFingerprint, ')
+          ..write('approvedAtUtc: $approvedAtUtc')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    halaqahId,
+    weekStartDate,
+    weekEndDate,
+    status,
+    teacherNameSnapshot,
+    halaqahNameSnapshot,
+    organizationNameSnapshot,
+    policyVersion,
+    templateVersion,
+    sourceFingerprint,
+    approvedAtUtc,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SupportWeeklyReport &&
+          other.id == this.id &&
+          other.halaqahId == this.halaqahId &&
+          other.weekStartDate == this.weekStartDate &&
+          other.weekEndDate == this.weekEndDate &&
+          other.status == this.status &&
+          other.teacherNameSnapshot == this.teacherNameSnapshot &&
+          other.halaqahNameSnapshot == this.halaqahNameSnapshot &&
+          other.organizationNameSnapshot == this.organizationNameSnapshot &&
+          other.policyVersion == this.policyVersion &&
+          other.templateVersion == this.templateVersion &&
+          other.sourceFingerprint == this.sourceFingerprint &&
+          other.approvedAtUtc == this.approvedAtUtc);
+}
+
+class SupportWeeklyReportsCompanion
+    extends UpdateCompanion<SupportWeeklyReport> {
+  final Value<int> id;
+  final Value<int> halaqahId;
+  final Value<String> weekStartDate;
+  final Value<String> weekEndDate;
+  final Value<String> status;
+  final Value<String> teacherNameSnapshot;
+  final Value<String> halaqahNameSnapshot;
+  final Value<String> organizationNameSnapshot;
+  final Value<int> policyVersion;
+  final Value<int> templateVersion;
+  final Value<String?> sourceFingerprint;
+  final Value<DateTime?> approvedAtUtc;
+  const SupportWeeklyReportsCompanion({
+    this.id = const Value.absent(),
+    this.halaqahId = const Value.absent(),
+    this.weekStartDate = const Value.absent(),
+    this.weekEndDate = const Value.absent(),
+    this.status = const Value.absent(),
+    this.teacherNameSnapshot = const Value.absent(),
+    this.halaqahNameSnapshot = const Value.absent(),
+    this.organizationNameSnapshot = const Value.absent(),
+    this.policyVersion = const Value.absent(),
+    this.templateVersion = const Value.absent(),
+    this.sourceFingerprint = const Value.absent(),
+    this.approvedAtUtc = const Value.absent(),
+  });
+  SupportWeeklyReportsCompanion.insert({
+    this.id = const Value.absent(),
+    required int halaqahId,
+    required String weekStartDate,
+    required String weekEndDate,
+    required String status,
+    required String teacherNameSnapshot,
+    required String halaqahNameSnapshot,
+    required String organizationNameSnapshot,
+    required int policyVersion,
+    required int templateVersion,
+    this.sourceFingerprint = const Value.absent(),
+    this.approvedAtUtc = const Value.absent(),
+  }) : halaqahId = Value(halaqahId),
+       weekStartDate = Value(weekStartDate),
+       weekEndDate = Value(weekEndDate),
+       status = Value(status),
+       teacherNameSnapshot = Value(teacherNameSnapshot),
+       halaqahNameSnapshot = Value(halaqahNameSnapshot),
+       organizationNameSnapshot = Value(organizationNameSnapshot),
+       policyVersion = Value(policyVersion),
+       templateVersion = Value(templateVersion);
+  static Insertable<SupportWeeklyReport> custom({
+    Expression<int>? id,
+    Expression<int>? halaqahId,
+    Expression<String>? weekStartDate,
+    Expression<String>? weekEndDate,
+    Expression<String>? status,
+    Expression<String>? teacherNameSnapshot,
+    Expression<String>? halaqahNameSnapshot,
+    Expression<String>? organizationNameSnapshot,
+    Expression<int>? policyVersion,
+    Expression<int>? templateVersion,
+    Expression<String>? sourceFingerprint,
+    Expression<DateTime>? approvedAtUtc,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (halaqahId != null) 'halaqah_id': halaqahId,
+      if (weekStartDate != null) 'week_start_date': weekStartDate,
+      if (weekEndDate != null) 'week_end_date': weekEndDate,
+      if (status != null) 'status': status,
+      if (teacherNameSnapshot != null)
+        'teacher_name_snapshot': teacherNameSnapshot,
+      if (halaqahNameSnapshot != null)
+        'halaqah_name_snapshot': halaqahNameSnapshot,
+      if (organizationNameSnapshot != null)
+        'organization_name_snapshot': organizationNameSnapshot,
+      if (policyVersion != null) 'policy_version': policyVersion,
+      if (templateVersion != null) 'template_version': templateVersion,
+      if (sourceFingerprint != null) 'source_fingerprint': sourceFingerprint,
+      if (approvedAtUtc != null) 'approved_at_utc': approvedAtUtc,
+    });
+  }
+
+  SupportWeeklyReportsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? halaqahId,
+    Value<String>? weekStartDate,
+    Value<String>? weekEndDate,
+    Value<String>? status,
+    Value<String>? teacherNameSnapshot,
+    Value<String>? halaqahNameSnapshot,
+    Value<String>? organizationNameSnapshot,
+    Value<int>? policyVersion,
+    Value<int>? templateVersion,
+    Value<String?>? sourceFingerprint,
+    Value<DateTime?>? approvedAtUtc,
+  }) {
+    return SupportWeeklyReportsCompanion(
+      id: id ?? this.id,
+      halaqahId: halaqahId ?? this.halaqahId,
+      weekStartDate: weekStartDate ?? this.weekStartDate,
+      weekEndDate: weekEndDate ?? this.weekEndDate,
+      status: status ?? this.status,
+      teacherNameSnapshot: teacherNameSnapshot ?? this.teacherNameSnapshot,
+      halaqahNameSnapshot: halaqahNameSnapshot ?? this.halaqahNameSnapshot,
+      organizationNameSnapshot:
+          organizationNameSnapshot ?? this.organizationNameSnapshot,
+      policyVersion: policyVersion ?? this.policyVersion,
+      templateVersion: templateVersion ?? this.templateVersion,
+      sourceFingerprint: sourceFingerprint ?? this.sourceFingerprint,
+      approvedAtUtc: approvedAtUtc ?? this.approvedAtUtc,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (halaqahId.present) {
+      map['halaqah_id'] = Variable<int>(halaqahId.value);
+    }
+    if (weekStartDate.present) {
+      map['week_start_date'] = Variable<String>(weekStartDate.value);
+    }
+    if (weekEndDate.present) {
+      map['week_end_date'] = Variable<String>(weekEndDate.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (teacherNameSnapshot.present) {
+      map['teacher_name_snapshot'] = Variable<String>(
+        teacherNameSnapshot.value,
+      );
+    }
+    if (halaqahNameSnapshot.present) {
+      map['halaqah_name_snapshot'] = Variable<String>(
+        halaqahNameSnapshot.value,
+      );
+    }
+    if (organizationNameSnapshot.present) {
+      map['organization_name_snapshot'] = Variable<String>(
+        organizationNameSnapshot.value,
+      );
+    }
+    if (policyVersion.present) {
+      map['policy_version'] = Variable<int>(policyVersion.value);
+    }
+    if (templateVersion.present) {
+      map['template_version'] = Variable<int>(templateVersion.value);
+    }
+    if (sourceFingerprint.present) {
+      map['source_fingerprint'] = Variable<String>(sourceFingerprint.value);
+    }
+    if (approvedAtUtc.present) {
+      map['approved_at_utc'] = Variable<DateTime>(approvedAtUtc.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportWeeklyReportsCompanion(')
+          ..write('id: $id, ')
+          ..write('halaqahId: $halaqahId, ')
+          ..write('weekStartDate: $weekStartDate, ')
+          ..write('weekEndDate: $weekEndDate, ')
+          ..write('status: $status, ')
+          ..write('teacherNameSnapshot: $teacherNameSnapshot, ')
+          ..write('halaqahNameSnapshot: $halaqahNameSnapshot, ')
+          ..write('organizationNameSnapshot: $organizationNameSnapshot, ')
+          ..write('policyVersion: $policyVersion, ')
+          ..write('templateVersion: $templateVersion, ')
+          ..write('sourceFingerprint: $sourceFingerprint, ')
+          ..write('approvedAtUtc: $approvedAtUtc')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SupportWeeklyReportStudentsTable extends SupportWeeklyReportStudents
+    with
+        TableInfo<
+          $SupportWeeklyReportStudentsTable,
+          SupportWeeklyReportStudent
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SupportWeeklyReportStudentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _reportIdMeta = const VerificationMeta(
+    'reportId',
+  );
+  @override
+  late final GeneratedColumn<int> reportId = GeneratedColumn<int>(
+    'report_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES support_weekly_reports (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _sourceStudentIdMeta = const VerificationMeta(
+    'sourceStudentId',
+  );
+  @override
+  late final GeneratedColumn<int> sourceStudentId = GeneratedColumn<int>(
+    'source_student_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES students (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _supportStudentNumberSnapshotMeta =
+      const VerificationMeta('supportStudentNumberSnapshot');
+  @override
+  late final GeneratedColumn<String> supportStudentNumberSnapshot =
+      GeneratedColumn<String>(
+        'support_student_number_snapshot',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _studentNameSnapshotMeta =
+      const VerificationMeta('studentNameSnapshot');
+  @override
+  late final GeneratedColumn<String> studentNameSnapshot =
+      GeneratedColumn<String>(
+        'student_name_snapshot',
+        aliasedName,
+        false,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 1,
+          maxTextLength: 200,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _currentJuzSnapshotMeta =
+      const VerificationMeta('currentJuzSnapshot');
+  @override
+  late final GeneratedColumn<int> currentJuzSnapshot = GeneratedColumn<int>(
+    'current_juz_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dailyPlanTextSnapshotMeta =
+      const VerificationMeta('dailyPlanTextSnapshot');
+  @override
+  late final GeneratedColumn<String> dailyPlanTextSnapshot =
+      GeneratedColumn<String>(
+        'daily_plan_text_snapshot',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _monthlyGoalQuarterFacesSnapshotMeta =
+      const VerificationMeta('monthlyGoalQuarterFacesSnapshot');
+  @override
+  late final GeneratedColumn<int> monthlyGoalQuarterFacesSnapshot =
+      GeneratedColumn<int>(
+        'monthly_goal_quarter_faces_snapshot',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _studentNoteSnapshotMeta =
+      const VerificationMeta('studentNoteSnapshot');
+  @override
+  late final GeneratedColumn<String> studentNoteSnapshot =
+      GeneratedColumn<String>(
+        'student_note_snapshot',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _displayOrderSnapshotMeta =
+      const VerificationMeta('displayOrderSnapshot');
+  @override
+  late final GeneratedColumn<int> displayOrderSnapshot = GeneratedColumn<int>(
+    'display_order_snapshot',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    reportId,
+    sourceStudentId,
+    supportStudentNumberSnapshot,
+    studentNameSnapshot,
+    currentJuzSnapshot,
+    dailyPlanTextSnapshot,
+    monthlyGoalQuarterFacesSnapshot,
+    studentNoteSnapshot,
+    displayOrderSnapshot,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'support_weekly_report_students';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SupportWeeklyReportStudent> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('report_id')) {
+      context.handle(
+        _reportIdMeta,
+        reportId.isAcceptableOrUnknown(data['report_id']!, _reportIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reportIdMeta);
+    }
+    if (data.containsKey('source_student_id')) {
+      context.handle(
+        _sourceStudentIdMeta,
+        sourceStudentId.isAcceptableOrUnknown(
+          data['source_student_id']!,
+          _sourceStudentIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceStudentIdMeta);
+    }
+    if (data.containsKey('support_student_number_snapshot')) {
+      context.handle(
+        _supportStudentNumberSnapshotMeta,
+        supportStudentNumberSnapshot.isAcceptableOrUnknown(
+          data['support_student_number_snapshot']!,
+          _supportStudentNumberSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('student_name_snapshot')) {
+      context.handle(
+        _studentNameSnapshotMeta,
+        studentNameSnapshot.isAcceptableOrUnknown(
+          data['student_name_snapshot']!,
+          _studentNameSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_studentNameSnapshotMeta);
+    }
+    if (data.containsKey('current_juz_snapshot')) {
+      context.handle(
+        _currentJuzSnapshotMeta,
+        currentJuzSnapshot.isAcceptableOrUnknown(
+          data['current_juz_snapshot']!,
+          _currentJuzSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('daily_plan_text_snapshot')) {
+      context.handle(
+        _dailyPlanTextSnapshotMeta,
+        dailyPlanTextSnapshot.isAcceptableOrUnknown(
+          data['daily_plan_text_snapshot']!,
+          _dailyPlanTextSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('monthly_goal_quarter_faces_snapshot')) {
+      context.handle(
+        _monthlyGoalQuarterFacesSnapshotMeta,
+        monthlyGoalQuarterFacesSnapshot.isAcceptableOrUnknown(
+          data['monthly_goal_quarter_faces_snapshot']!,
+          _monthlyGoalQuarterFacesSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_monthlyGoalQuarterFacesSnapshotMeta);
+    }
+    if (data.containsKey('student_note_snapshot')) {
+      context.handle(
+        _studentNoteSnapshotMeta,
+        studentNoteSnapshot.isAcceptableOrUnknown(
+          data['student_note_snapshot']!,
+          _studentNoteSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('display_order_snapshot')) {
+      context.handle(
+        _displayOrderSnapshotMeta,
+        displayOrderSnapshot.isAcceptableOrUnknown(
+          data['display_order_snapshot']!,
+          _displayOrderSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayOrderSnapshotMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {reportId, sourceStudentId},
+  ];
+  @override
+  SupportWeeklyReportStudent map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupportWeeklyReportStudent(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      reportId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}report_id'],
+      )!,
+      sourceStudentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}source_student_id'],
+      )!,
+      supportStudentNumberSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}support_student_number_snapshot'],
+      ),
+      studentNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}student_name_snapshot'],
+      )!,
+      currentJuzSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}current_juz_snapshot'],
+      ),
+      dailyPlanTextSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}daily_plan_text_snapshot'],
+      ),
+      monthlyGoalQuarterFacesSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}monthly_goal_quarter_faces_snapshot'],
+      )!,
+      studentNoteSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}student_note_snapshot'],
+      ),
+      displayOrderSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}display_order_snapshot'],
+      )!,
+    );
+  }
+
+  @override
+  $SupportWeeklyReportStudentsTable createAlias(String alias) {
+    return $SupportWeeklyReportStudentsTable(attachedDatabase, alias);
+  }
+}
+
+class SupportWeeklyReportStudent extends DataClass
+    implements Insertable<SupportWeeklyReportStudent> {
+  final int id;
+  final int reportId;
+  final int sourceStudentId;
+  final String? supportStudentNumberSnapshot;
+  final String studentNameSnapshot;
+  final int? currentJuzSnapshot;
+  final String? dailyPlanTextSnapshot;
+  final int monthlyGoalQuarterFacesSnapshot;
+  final String? studentNoteSnapshot;
+  final int displayOrderSnapshot;
+  const SupportWeeklyReportStudent({
+    required this.id,
+    required this.reportId,
+    required this.sourceStudentId,
+    this.supportStudentNumberSnapshot,
+    required this.studentNameSnapshot,
+    this.currentJuzSnapshot,
+    this.dailyPlanTextSnapshot,
+    required this.monthlyGoalQuarterFacesSnapshot,
+    this.studentNoteSnapshot,
+    required this.displayOrderSnapshot,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['report_id'] = Variable<int>(reportId);
+    map['source_student_id'] = Variable<int>(sourceStudentId);
+    if (!nullToAbsent || supportStudentNumberSnapshot != null) {
+      map['support_student_number_snapshot'] = Variable<String>(
+        supportStudentNumberSnapshot,
+      );
+    }
+    map['student_name_snapshot'] = Variable<String>(studentNameSnapshot);
+    if (!nullToAbsent || currentJuzSnapshot != null) {
+      map['current_juz_snapshot'] = Variable<int>(currentJuzSnapshot);
+    }
+    if (!nullToAbsent || dailyPlanTextSnapshot != null) {
+      map['daily_plan_text_snapshot'] = Variable<String>(dailyPlanTextSnapshot);
+    }
+    map['monthly_goal_quarter_faces_snapshot'] = Variable<int>(
+      monthlyGoalQuarterFacesSnapshot,
+    );
+    if (!nullToAbsent || studentNoteSnapshot != null) {
+      map['student_note_snapshot'] = Variable<String>(studentNoteSnapshot);
+    }
+    map['display_order_snapshot'] = Variable<int>(displayOrderSnapshot);
+    return map;
+  }
+
+  SupportWeeklyReportStudentsCompanion toCompanion(bool nullToAbsent) {
+    return SupportWeeklyReportStudentsCompanion(
+      id: Value(id),
+      reportId: Value(reportId),
+      sourceStudentId: Value(sourceStudentId),
+      supportStudentNumberSnapshot:
+          supportStudentNumberSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supportStudentNumberSnapshot),
+      studentNameSnapshot: Value(studentNameSnapshot),
+      currentJuzSnapshot: currentJuzSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentJuzSnapshot),
+      dailyPlanTextSnapshot: dailyPlanTextSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyPlanTextSnapshot),
+      monthlyGoalQuarterFacesSnapshot: Value(monthlyGoalQuarterFacesSnapshot),
+      studentNoteSnapshot: studentNoteSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(studentNoteSnapshot),
+      displayOrderSnapshot: Value(displayOrderSnapshot),
+    );
+  }
+
+  factory SupportWeeklyReportStudent.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SupportWeeklyReportStudent(
+      id: serializer.fromJson<int>(json['id']),
+      reportId: serializer.fromJson<int>(json['reportId']),
+      sourceStudentId: serializer.fromJson<int>(json['sourceStudentId']),
+      supportStudentNumberSnapshot: serializer.fromJson<String?>(
+        json['supportStudentNumberSnapshot'],
+      ),
+      studentNameSnapshot: serializer.fromJson<String>(
+        json['studentNameSnapshot'],
+      ),
+      currentJuzSnapshot: serializer.fromJson<int?>(json['currentJuzSnapshot']),
+      dailyPlanTextSnapshot: serializer.fromJson<String?>(
+        json['dailyPlanTextSnapshot'],
+      ),
+      monthlyGoalQuarterFacesSnapshot: serializer.fromJson<int>(
+        json['monthlyGoalQuarterFacesSnapshot'],
+      ),
+      studentNoteSnapshot: serializer.fromJson<String?>(
+        json['studentNoteSnapshot'],
+      ),
+      displayOrderSnapshot: serializer.fromJson<int>(
+        json['displayOrderSnapshot'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'reportId': serializer.toJson<int>(reportId),
+      'sourceStudentId': serializer.toJson<int>(sourceStudentId),
+      'supportStudentNumberSnapshot': serializer.toJson<String?>(
+        supportStudentNumberSnapshot,
+      ),
+      'studentNameSnapshot': serializer.toJson<String>(studentNameSnapshot),
+      'currentJuzSnapshot': serializer.toJson<int?>(currentJuzSnapshot),
+      'dailyPlanTextSnapshot': serializer.toJson<String?>(
+        dailyPlanTextSnapshot,
+      ),
+      'monthlyGoalQuarterFacesSnapshot': serializer.toJson<int>(
+        monthlyGoalQuarterFacesSnapshot,
+      ),
+      'studentNoteSnapshot': serializer.toJson<String?>(studentNoteSnapshot),
+      'displayOrderSnapshot': serializer.toJson<int>(displayOrderSnapshot),
+    };
+  }
+
+  SupportWeeklyReportStudent copyWith({
+    int? id,
+    int? reportId,
+    int? sourceStudentId,
+    Value<String?> supportStudentNumberSnapshot = const Value.absent(),
+    String? studentNameSnapshot,
+    Value<int?> currentJuzSnapshot = const Value.absent(),
+    Value<String?> dailyPlanTextSnapshot = const Value.absent(),
+    int? monthlyGoalQuarterFacesSnapshot,
+    Value<String?> studentNoteSnapshot = const Value.absent(),
+    int? displayOrderSnapshot,
+  }) => SupportWeeklyReportStudent(
+    id: id ?? this.id,
+    reportId: reportId ?? this.reportId,
+    sourceStudentId: sourceStudentId ?? this.sourceStudentId,
+    supportStudentNumberSnapshot: supportStudentNumberSnapshot.present
+        ? supportStudentNumberSnapshot.value
+        : this.supportStudentNumberSnapshot,
+    studentNameSnapshot: studentNameSnapshot ?? this.studentNameSnapshot,
+    currentJuzSnapshot: currentJuzSnapshot.present
+        ? currentJuzSnapshot.value
+        : this.currentJuzSnapshot,
+    dailyPlanTextSnapshot: dailyPlanTextSnapshot.present
+        ? dailyPlanTextSnapshot.value
+        : this.dailyPlanTextSnapshot,
+    monthlyGoalQuarterFacesSnapshot:
+        monthlyGoalQuarterFacesSnapshot ?? this.monthlyGoalQuarterFacesSnapshot,
+    studentNoteSnapshot: studentNoteSnapshot.present
+        ? studentNoteSnapshot.value
+        : this.studentNoteSnapshot,
+    displayOrderSnapshot: displayOrderSnapshot ?? this.displayOrderSnapshot,
+  );
+  SupportWeeklyReportStudent copyWithCompanion(
+    SupportWeeklyReportStudentsCompanion data,
+  ) {
+    return SupportWeeklyReportStudent(
+      id: data.id.present ? data.id.value : this.id,
+      reportId: data.reportId.present ? data.reportId.value : this.reportId,
+      sourceStudentId: data.sourceStudentId.present
+          ? data.sourceStudentId.value
+          : this.sourceStudentId,
+      supportStudentNumberSnapshot: data.supportStudentNumberSnapshot.present
+          ? data.supportStudentNumberSnapshot.value
+          : this.supportStudentNumberSnapshot,
+      studentNameSnapshot: data.studentNameSnapshot.present
+          ? data.studentNameSnapshot.value
+          : this.studentNameSnapshot,
+      currentJuzSnapshot: data.currentJuzSnapshot.present
+          ? data.currentJuzSnapshot.value
+          : this.currentJuzSnapshot,
+      dailyPlanTextSnapshot: data.dailyPlanTextSnapshot.present
+          ? data.dailyPlanTextSnapshot.value
+          : this.dailyPlanTextSnapshot,
+      monthlyGoalQuarterFacesSnapshot:
+          data.monthlyGoalQuarterFacesSnapshot.present
+          ? data.monthlyGoalQuarterFacesSnapshot.value
+          : this.monthlyGoalQuarterFacesSnapshot,
+      studentNoteSnapshot: data.studentNoteSnapshot.present
+          ? data.studentNoteSnapshot.value
+          : this.studentNoteSnapshot,
+      displayOrderSnapshot: data.displayOrderSnapshot.present
+          ? data.displayOrderSnapshot.value
+          : this.displayOrderSnapshot,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportWeeklyReportStudent(')
+          ..write('id: $id, ')
+          ..write('reportId: $reportId, ')
+          ..write('sourceStudentId: $sourceStudentId, ')
+          ..write(
+            'supportStudentNumberSnapshot: $supportStudentNumberSnapshot, ',
+          )
+          ..write('studentNameSnapshot: $studentNameSnapshot, ')
+          ..write('currentJuzSnapshot: $currentJuzSnapshot, ')
+          ..write('dailyPlanTextSnapshot: $dailyPlanTextSnapshot, ')
+          ..write(
+            'monthlyGoalQuarterFacesSnapshot: $monthlyGoalQuarterFacesSnapshot, ',
+          )
+          ..write('studentNoteSnapshot: $studentNoteSnapshot, ')
+          ..write('displayOrderSnapshot: $displayOrderSnapshot')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    reportId,
+    sourceStudentId,
+    supportStudentNumberSnapshot,
+    studentNameSnapshot,
+    currentJuzSnapshot,
+    dailyPlanTextSnapshot,
+    monthlyGoalQuarterFacesSnapshot,
+    studentNoteSnapshot,
+    displayOrderSnapshot,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SupportWeeklyReportStudent &&
+          other.id == this.id &&
+          other.reportId == this.reportId &&
+          other.sourceStudentId == this.sourceStudentId &&
+          other.supportStudentNumberSnapshot ==
+              this.supportStudentNumberSnapshot &&
+          other.studentNameSnapshot == this.studentNameSnapshot &&
+          other.currentJuzSnapshot == this.currentJuzSnapshot &&
+          other.dailyPlanTextSnapshot == this.dailyPlanTextSnapshot &&
+          other.monthlyGoalQuarterFacesSnapshot ==
+              this.monthlyGoalQuarterFacesSnapshot &&
+          other.studentNoteSnapshot == this.studentNoteSnapshot &&
+          other.displayOrderSnapshot == this.displayOrderSnapshot);
+}
+
+class SupportWeeklyReportStudentsCompanion
+    extends UpdateCompanion<SupportWeeklyReportStudent> {
+  final Value<int> id;
+  final Value<int> reportId;
+  final Value<int> sourceStudentId;
+  final Value<String?> supportStudentNumberSnapshot;
+  final Value<String> studentNameSnapshot;
+  final Value<int?> currentJuzSnapshot;
+  final Value<String?> dailyPlanTextSnapshot;
+  final Value<int> monthlyGoalQuarterFacesSnapshot;
+  final Value<String?> studentNoteSnapshot;
+  final Value<int> displayOrderSnapshot;
+  const SupportWeeklyReportStudentsCompanion({
+    this.id = const Value.absent(),
+    this.reportId = const Value.absent(),
+    this.sourceStudentId = const Value.absent(),
+    this.supportStudentNumberSnapshot = const Value.absent(),
+    this.studentNameSnapshot = const Value.absent(),
+    this.currentJuzSnapshot = const Value.absent(),
+    this.dailyPlanTextSnapshot = const Value.absent(),
+    this.monthlyGoalQuarterFacesSnapshot = const Value.absent(),
+    this.studentNoteSnapshot = const Value.absent(),
+    this.displayOrderSnapshot = const Value.absent(),
+  });
+  SupportWeeklyReportStudentsCompanion.insert({
+    this.id = const Value.absent(),
+    required int reportId,
+    required int sourceStudentId,
+    this.supportStudentNumberSnapshot = const Value.absent(),
+    required String studentNameSnapshot,
+    this.currentJuzSnapshot = const Value.absent(),
+    this.dailyPlanTextSnapshot = const Value.absent(),
+    required int monthlyGoalQuarterFacesSnapshot,
+    this.studentNoteSnapshot = const Value.absent(),
+    required int displayOrderSnapshot,
+  }) : reportId = Value(reportId),
+       sourceStudentId = Value(sourceStudentId),
+       studentNameSnapshot = Value(studentNameSnapshot),
+       monthlyGoalQuarterFacesSnapshot = Value(monthlyGoalQuarterFacesSnapshot),
+       displayOrderSnapshot = Value(displayOrderSnapshot);
+  static Insertable<SupportWeeklyReportStudent> custom({
+    Expression<int>? id,
+    Expression<int>? reportId,
+    Expression<int>? sourceStudentId,
+    Expression<String>? supportStudentNumberSnapshot,
+    Expression<String>? studentNameSnapshot,
+    Expression<int>? currentJuzSnapshot,
+    Expression<String>? dailyPlanTextSnapshot,
+    Expression<int>? monthlyGoalQuarterFacesSnapshot,
+    Expression<String>? studentNoteSnapshot,
+    Expression<int>? displayOrderSnapshot,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (reportId != null) 'report_id': reportId,
+      if (sourceStudentId != null) 'source_student_id': sourceStudentId,
+      if (supportStudentNumberSnapshot != null)
+        'support_student_number_snapshot': supportStudentNumberSnapshot,
+      if (studentNameSnapshot != null)
+        'student_name_snapshot': studentNameSnapshot,
+      if (currentJuzSnapshot != null)
+        'current_juz_snapshot': currentJuzSnapshot,
+      if (dailyPlanTextSnapshot != null)
+        'daily_plan_text_snapshot': dailyPlanTextSnapshot,
+      if (monthlyGoalQuarterFacesSnapshot != null)
+        'monthly_goal_quarter_faces_snapshot': monthlyGoalQuarterFacesSnapshot,
+      if (studentNoteSnapshot != null)
+        'student_note_snapshot': studentNoteSnapshot,
+      if (displayOrderSnapshot != null)
+        'display_order_snapshot': displayOrderSnapshot,
+    });
+  }
+
+  SupportWeeklyReportStudentsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? reportId,
+    Value<int>? sourceStudentId,
+    Value<String?>? supportStudentNumberSnapshot,
+    Value<String>? studentNameSnapshot,
+    Value<int?>? currentJuzSnapshot,
+    Value<String?>? dailyPlanTextSnapshot,
+    Value<int>? monthlyGoalQuarterFacesSnapshot,
+    Value<String?>? studentNoteSnapshot,
+    Value<int>? displayOrderSnapshot,
+  }) {
+    return SupportWeeklyReportStudentsCompanion(
+      id: id ?? this.id,
+      reportId: reportId ?? this.reportId,
+      sourceStudentId: sourceStudentId ?? this.sourceStudentId,
+      supportStudentNumberSnapshot:
+          supportStudentNumberSnapshot ?? this.supportStudentNumberSnapshot,
+      studentNameSnapshot: studentNameSnapshot ?? this.studentNameSnapshot,
+      currentJuzSnapshot: currentJuzSnapshot ?? this.currentJuzSnapshot,
+      dailyPlanTextSnapshot:
+          dailyPlanTextSnapshot ?? this.dailyPlanTextSnapshot,
+      monthlyGoalQuarterFacesSnapshot:
+          monthlyGoalQuarterFacesSnapshot ??
+          this.monthlyGoalQuarterFacesSnapshot,
+      studentNoteSnapshot: studentNoteSnapshot ?? this.studentNoteSnapshot,
+      displayOrderSnapshot: displayOrderSnapshot ?? this.displayOrderSnapshot,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (reportId.present) {
+      map['report_id'] = Variable<int>(reportId.value);
+    }
+    if (sourceStudentId.present) {
+      map['source_student_id'] = Variable<int>(sourceStudentId.value);
+    }
+    if (supportStudentNumberSnapshot.present) {
+      map['support_student_number_snapshot'] = Variable<String>(
+        supportStudentNumberSnapshot.value,
+      );
+    }
+    if (studentNameSnapshot.present) {
+      map['student_name_snapshot'] = Variable<String>(
+        studentNameSnapshot.value,
+      );
+    }
+    if (currentJuzSnapshot.present) {
+      map['current_juz_snapshot'] = Variable<int>(currentJuzSnapshot.value);
+    }
+    if (dailyPlanTextSnapshot.present) {
+      map['daily_plan_text_snapshot'] = Variable<String>(
+        dailyPlanTextSnapshot.value,
+      );
+    }
+    if (monthlyGoalQuarterFacesSnapshot.present) {
+      map['monthly_goal_quarter_faces_snapshot'] = Variable<int>(
+        monthlyGoalQuarterFacesSnapshot.value,
+      );
+    }
+    if (studentNoteSnapshot.present) {
+      map['student_note_snapshot'] = Variable<String>(
+        studentNoteSnapshot.value,
+      );
+    }
+    if (displayOrderSnapshot.present) {
+      map['display_order_snapshot'] = Variable<int>(displayOrderSnapshot.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportWeeklyReportStudentsCompanion(')
+          ..write('id: $id, ')
+          ..write('reportId: $reportId, ')
+          ..write('sourceStudentId: $sourceStudentId, ')
+          ..write(
+            'supportStudentNumberSnapshot: $supportStudentNumberSnapshot, ',
+          )
+          ..write('studentNameSnapshot: $studentNameSnapshot, ')
+          ..write('currentJuzSnapshot: $currentJuzSnapshot, ')
+          ..write('dailyPlanTextSnapshot: $dailyPlanTextSnapshot, ')
+          ..write(
+            'monthlyGoalQuarterFacesSnapshot: $monthlyGoalQuarterFacesSnapshot, ',
+          )
+          ..write('studentNoteSnapshot: $studentNoteSnapshot, ')
+          ..write('displayOrderSnapshot: $displayOrderSnapshot')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SupportWeeklyReportDaysTable extends SupportWeeklyReportDays
+    with TableInfo<$SupportWeeklyReportDaysTable, SupportWeeklyReportDay> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SupportWeeklyReportDaysTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _reportIdMeta = const VerificationMeta(
+    'reportId',
+  );
+  @override
+  late final GeneratedColumn<int> reportId = GeneratedColumn<int>(
+    'report_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES support_weekly_reports (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _dayDateMeta = const VerificationMeta(
+    'dayDate',
+  );
+  @override
+  late final GeneratedColumn<String> dayDate = GeneratedColumn<String>(
+    'day_date',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 10,
+      maxTextLength: 10,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dayKindMeta = const VerificationMeta(
+    'dayKind',
+  );
+  @override
+  late final GeneratedColumn<String> dayKind = GeneratedColumn<String>(
+    'day_kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, reportId, dayDate, dayKind];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'support_weekly_report_days';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SupportWeeklyReportDay> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('report_id')) {
+      context.handle(
+        _reportIdMeta,
+        reportId.isAcceptableOrUnknown(data['report_id']!, _reportIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reportIdMeta);
+    }
+    if (data.containsKey('day_date')) {
+      context.handle(
+        _dayDateMeta,
+        dayDate.isAcceptableOrUnknown(data['day_date']!, _dayDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayDateMeta);
+    }
+    if (data.containsKey('day_kind')) {
+      context.handle(
+        _dayKindMeta,
+        dayKind.isAcceptableOrUnknown(data['day_kind']!, _dayKindMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayKindMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {reportId, dayDate},
+  ];
+  @override
+  SupportWeeklyReportDay map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupportWeeklyReportDay(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      reportId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}report_id'],
+      )!,
+      dayDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day_date'],
+      )!,
+      dayKind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day_kind'],
+      )!,
+    );
+  }
+
+  @override
+  $SupportWeeklyReportDaysTable createAlias(String alias) {
+    return $SupportWeeklyReportDaysTable(attachedDatabase, alias);
+  }
+}
+
+class SupportWeeklyReportDay extends DataClass
+    implements Insertable<SupportWeeklyReportDay> {
+  final int id;
+  final int reportId;
+  final String dayDate;
+  final String dayKind;
+  const SupportWeeklyReportDay({
+    required this.id,
+    required this.reportId,
+    required this.dayDate,
+    required this.dayKind,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['report_id'] = Variable<int>(reportId);
+    map['day_date'] = Variable<String>(dayDate);
+    map['day_kind'] = Variable<String>(dayKind);
+    return map;
+  }
+
+  SupportWeeklyReportDaysCompanion toCompanion(bool nullToAbsent) {
+    return SupportWeeklyReportDaysCompanion(
+      id: Value(id),
+      reportId: Value(reportId),
+      dayDate: Value(dayDate),
+      dayKind: Value(dayKind),
+    );
+  }
+
+  factory SupportWeeklyReportDay.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SupportWeeklyReportDay(
+      id: serializer.fromJson<int>(json['id']),
+      reportId: serializer.fromJson<int>(json['reportId']),
+      dayDate: serializer.fromJson<String>(json['dayDate']),
+      dayKind: serializer.fromJson<String>(json['dayKind']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'reportId': serializer.toJson<int>(reportId),
+      'dayDate': serializer.toJson<String>(dayDate),
+      'dayKind': serializer.toJson<String>(dayKind),
+    };
+  }
+
+  SupportWeeklyReportDay copyWith({
+    int? id,
+    int? reportId,
+    String? dayDate,
+    String? dayKind,
+  }) => SupportWeeklyReportDay(
+    id: id ?? this.id,
+    reportId: reportId ?? this.reportId,
+    dayDate: dayDate ?? this.dayDate,
+    dayKind: dayKind ?? this.dayKind,
+  );
+  SupportWeeklyReportDay copyWithCompanion(
+    SupportWeeklyReportDaysCompanion data,
+  ) {
+    return SupportWeeklyReportDay(
+      id: data.id.present ? data.id.value : this.id,
+      reportId: data.reportId.present ? data.reportId.value : this.reportId,
+      dayDate: data.dayDate.present ? data.dayDate.value : this.dayDate,
+      dayKind: data.dayKind.present ? data.dayKind.value : this.dayKind,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportWeeklyReportDay(')
+          ..write('id: $id, ')
+          ..write('reportId: $reportId, ')
+          ..write('dayDate: $dayDate, ')
+          ..write('dayKind: $dayKind')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, reportId, dayDate, dayKind);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SupportWeeklyReportDay &&
+          other.id == this.id &&
+          other.reportId == this.reportId &&
+          other.dayDate == this.dayDate &&
+          other.dayKind == this.dayKind);
+}
+
+class SupportWeeklyReportDaysCompanion
+    extends UpdateCompanion<SupportWeeklyReportDay> {
+  final Value<int> id;
+  final Value<int> reportId;
+  final Value<String> dayDate;
+  final Value<String> dayKind;
+  const SupportWeeklyReportDaysCompanion({
+    this.id = const Value.absent(),
+    this.reportId = const Value.absent(),
+    this.dayDate = const Value.absent(),
+    this.dayKind = const Value.absent(),
+  });
+  SupportWeeklyReportDaysCompanion.insert({
+    this.id = const Value.absent(),
+    required int reportId,
+    required String dayDate,
+    required String dayKind,
+  }) : reportId = Value(reportId),
+       dayDate = Value(dayDate),
+       dayKind = Value(dayKind);
+  static Insertable<SupportWeeklyReportDay> custom({
+    Expression<int>? id,
+    Expression<int>? reportId,
+    Expression<String>? dayDate,
+    Expression<String>? dayKind,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (reportId != null) 'report_id': reportId,
+      if (dayDate != null) 'day_date': dayDate,
+      if (dayKind != null) 'day_kind': dayKind,
+    });
+  }
+
+  SupportWeeklyReportDaysCompanion copyWith({
+    Value<int>? id,
+    Value<int>? reportId,
+    Value<String>? dayDate,
+    Value<String>? dayKind,
+  }) {
+    return SupportWeeklyReportDaysCompanion(
+      id: id ?? this.id,
+      reportId: reportId ?? this.reportId,
+      dayDate: dayDate ?? this.dayDate,
+      dayKind: dayKind ?? this.dayKind,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (reportId.present) {
+      map['report_id'] = Variable<int>(reportId.value);
+    }
+    if (dayDate.present) {
+      map['day_date'] = Variable<String>(dayDate.value);
+    }
+    if (dayKind.present) {
+      map['day_kind'] = Variable<String>(dayKind.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportWeeklyReportDaysCompanion(')
+          ..write('id: $id, ')
+          ..write('reportId: $reportId, ')
+          ..write('dayDate: $dayDate, ')
+          ..write('dayKind: $dayKind')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SupportWeeklyReportDayEntriesTable extends SupportWeeklyReportDayEntries
+    with
+        TableInfo<
+          $SupportWeeklyReportDayEntriesTable,
+          SupportWeeklyReportDayEntry
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SupportWeeklyReportDayEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _reportDayIdMeta = const VerificationMeta(
+    'reportDayId',
+  );
+  @override
+  late final GeneratedColumn<int> reportDayId = GeneratedColumn<int>(
+    'report_day_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES support_weekly_report_days (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _reportStudentIdMeta = const VerificationMeta(
+    'reportStudentId',
+  );
+  @override
+  late final GeneratedColumn<int> reportStudentId = GeneratedColumn<int>(
+    'report_student_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES support_weekly_report_students (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _attendanceStatusSnapshotMeta =
+      const VerificationMeta('attendanceStatusSnapshot');
+  @override
+  late final GeneratedColumn<String> attendanceStatusSnapshot =
+      GeneratedColumn<String>(
+        'attendance_status_snapshot',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _achievedQuarterFacesMeta =
+      const VerificationMeta('achievedQuarterFaces');
+  @override
+  late final GeneratedColumn<int> achievedQuarterFaces = GeneratedColumn<int>(
+    'achieved_quarter_faces',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _startSurahSnapshotMeta =
+      const VerificationMeta('startSurahSnapshot');
+  @override
+  late final GeneratedColumn<int> startSurahSnapshot = GeneratedColumn<int>(
+    'start_surah_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startAyahSnapshotMeta = const VerificationMeta(
+    'startAyahSnapshot',
+  );
+  @override
+  late final GeneratedColumn<int> startAyahSnapshot = GeneratedColumn<int>(
+    'start_ayah_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _endSurahSnapshotMeta = const VerificationMeta(
+    'endSurahSnapshot',
+  );
+  @override
+  late final GeneratedColumn<int> endSurahSnapshot = GeneratedColumn<int>(
+    'end_surah_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _endAyahSnapshotMeta = const VerificationMeta(
+    'endAyahSnapshot',
+  );
+  @override
+  late final GeneratedColumn<int> endAyahSnapshot = GeneratedColumn<int>(
+    'end_ayah_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _noteSnapshotMeta = const VerificationMeta(
+    'noteSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> noteSnapshot = GeneratedColumn<String>(
+    'note_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _entryOrderMeta = const VerificationMeta(
+    'entryOrder',
+  );
+  @override
+  late final GeneratedColumn<int> entryOrder = GeneratedColumn<int>(
+    'entry_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    reportDayId,
+    reportStudentId,
+    attendanceStatusSnapshot,
+    achievedQuarterFaces,
+    startSurahSnapshot,
+    startAyahSnapshot,
+    endSurahSnapshot,
+    endAyahSnapshot,
+    noteSnapshot,
+    entryOrder,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'support_weekly_report_day_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SupportWeeklyReportDayEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('report_day_id')) {
+      context.handle(
+        _reportDayIdMeta,
+        reportDayId.isAcceptableOrUnknown(
+          data['report_day_id']!,
+          _reportDayIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_reportDayIdMeta);
+    }
+    if (data.containsKey('report_student_id')) {
+      context.handle(
+        _reportStudentIdMeta,
+        reportStudentId.isAcceptableOrUnknown(
+          data['report_student_id']!,
+          _reportStudentIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_reportStudentIdMeta);
+    }
+    if (data.containsKey('attendance_status_snapshot')) {
+      context.handle(
+        _attendanceStatusSnapshotMeta,
+        attendanceStatusSnapshot.isAcceptableOrUnknown(
+          data['attendance_status_snapshot']!,
+          _attendanceStatusSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('achieved_quarter_faces')) {
+      context.handle(
+        _achievedQuarterFacesMeta,
+        achievedQuarterFaces.isAcceptableOrUnknown(
+          data['achieved_quarter_faces']!,
+          _achievedQuarterFacesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('start_surah_snapshot')) {
+      context.handle(
+        _startSurahSnapshotMeta,
+        startSurahSnapshot.isAcceptableOrUnknown(
+          data['start_surah_snapshot']!,
+          _startSurahSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('start_ayah_snapshot')) {
+      context.handle(
+        _startAyahSnapshotMeta,
+        startAyahSnapshot.isAcceptableOrUnknown(
+          data['start_ayah_snapshot']!,
+          _startAyahSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('end_surah_snapshot')) {
+      context.handle(
+        _endSurahSnapshotMeta,
+        endSurahSnapshot.isAcceptableOrUnknown(
+          data['end_surah_snapshot']!,
+          _endSurahSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('end_ayah_snapshot')) {
+      context.handle(
+        _endAyahSnapshotMeta,
+        endAyahSnapshot.isAcceptableOrUnknown(
+          data['end_ayah_snapshot']!,
+          _endAyahSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('note_snapshot')) {
+      context.handle(
+        _noteSnapshotMeta,
+        noteSnapshot.isAcceptableOrUnknown(
+          data['note_snapshot']!,
+          _noteSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('entry_order')) {
+      context.handle(
+        _entryOrderMeta,
+        entryOrder.isAcceptableOrUnknown(data['entry_order']!, _entryOrderMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entryOrderMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {reportDayId, reportStudentId, entryOrder},
+  ];
+  @override
+  SupportWeeklyReportDayEntry map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupportWeeklyReportDayEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      reportDayId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}report_day_id'],
+      )!,
+      reportStudentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}report_student_id'],
+      )!,
+      attendanceStatusSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}attendance_status_snapshot'],
+      ),
+      achievedQuarterFaces: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}achieved_quarter_faces'],
+      )!,
+      startSurahSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}start_surah_snapshot'],
+      ),
+      startAyahSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}start_ayah_snapshot'],
+      ),
+      endSurahSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}end_surah_snapshot'],
+      ),
+      endAyahSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}end_ayah_snapshot'],
+      ),
+      noteSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note_snapshot'],
+      ),
+      entryOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}entry_order'],
+      )!,
+    );
+  }
+
+  @override
+  $SupportWeeklyReportDayEntriesTable createAlias(String alias) {
+    return $SupportWeeklyReportDayEntriesTable(attachedDatabase, alias);
+  }
+}
+
+class SupportWeeklyReportDayEntry extends DataClass
+    implements Insertable<SupportWeeklyReportDayEntry> {
+  final int id;
+  final int reportDayId;
+  final int reportStudentId;
+  final String? attendanceStatusSnapshot;
+  final int achievedQuarterFaces;
+  final int? startSurahSnapshot;
+  final int? startAyahSnapshot;
+  final int? endSurahSnapshot;
+  final int? endAyahSnapshot;
+  final String? noteSnapshot;
+  final int entryOrder;
+  const SupportWeeklyReportDayEntry({
+    required this.id,
+    required this.reportDayId,
+    required this.reportStudentId,
+    this.attendanceStatusSnapshot,
+    required this.achievedQuarterFaces,
+    this.startSurahSnapshot,
+    this.startAyahSnapshot,
+    this.endSurahSnapshot,
+    this.endAyahSnapshot,
+    this.noteSnapshot,
+    required this.entryOrder,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['report_day_id'] = Variable<int>(reportDayId);
+    map['report_student_id'] = Variable<int>(reportStudentId);
+    if (!nullToAbsent || attendanceStatusSnapshot != null) {
+      map['attendance_status_snapshot'] = Variable<String>(
+        attendanceStatusSnapshot,
+      );
+    }
+    map['achieved_quarter_faces'] = Variable<int>(achievedQuarterFaces);
+    if (!nullToAbsent || startSurahSnapshot != null) {
+      map['start_surah_snapshot'] = Variable<int>(startSurahSnapshot);
+    }
+    if (!nullToAbsent || startAyahSnapshot != null) {
+      map['start_ayah_snapshot'] = Variable<int>(startAyahSnapshot);
+    }
+    if (!nullToAbsent || endSurahSnapshot != null) {
+      map['end_surah_snapshot'] = Variable<int>(endSurahSnapshot);
+    }
+    if (!nullToAbsent || endAyahSnapshot != null) {
+      map['end_ayah_snapshot'] = Variable<int>(endAyahSnapshot);
+    }
+    if (!nullToAbsent || noteSnapshot != null) {
+      map['note_snapshot'] = Variable<String>(noteSnapshot);
+    }
+    map['entry_order'] = Variable<int>(entryOrder);
+    return map;
+  }
+
+  SupportWeeklyReportDayEntriesCompanion toCompanion(bool nullToAbsent) {
+    return SupportWeeklyReportDayEntriesCompanion(
+      id: Value(id),
+      reportDayId: Value(reportDayId),
+      reportStudentId: Value(reportStudentId),
+      attendanceStatusSnapshot: attendanceStatusSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(attendanceStatusSnapshot),
+      achievedQuarterFaces: Value(achievedQuarterFaces),
+      startSurahSnapshot: startSurahSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startSurahSnapshot),
+      startAyahSnapshot: startAyahSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startAyahSnapshot),
+      endSurahSnapshot: endSurahSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endSurahSnapshot),
+      endAyahSnapshot: endAyahSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endAyahSnapshot),
+      noteSnapshot: noteSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(noteSnapshot),
+      entryOrder: Value(entryOrder),
+    );
+  }
+
+  factory SupportWeeklyReportDayEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SupportWeeklyReportDayEntry(
+      id: serializer.fromJson<int>(json['id']),
+      reportDayId: serializer.fromJson<int>(json['reportDayId']),
+      reportStudentId: serializer.fromJson<int>(json['reportStudentId']),
+      attendanceStatusSnapshot: serializer.fromJson<String?>(
+        json['attendanceStatusSnapshot'],
+      ),
+      achievedQuarterFaces: serializer.fromJson<int>(
+        json['achievedQuarterFaces'],
+      ),
+      startSurahSnapshot: serializer.fromJson<int?>(json['startSurahSnapshot']),
+      startAyahSnapshot: serializer.fromJson<int?>(json['startAyahSnapshot']),
+      endSurahSnapshot: serializer.fromJson<int?>(json['endSurahSnapshot']),
+      endAyahSnapshot: serializer.fromJson<int?>(json['endAyahSnapshot']),
+      noteSnapshot: serializer.fromJson<String?>(json['noteSnapshot']),
+      entryOrder: serializer.fromJson<int>(json['entryOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'reportDayId': serializer.toJson<int>(reportDayId),
+      'reportStudentId': serializer.toJson<int>(reportStudentId),
+      'attendanceStatusSnapshot': serializer.toJson<String?>(
+        attendanceStatusSnapshot,
+      ),
+      'achievedQuarterFaces': serializer.toJson<int>(achievedQuarterFaces),
+      'startSurahSnapshot': serializer.toJson<int?>(startSurahSnapshot),
+      'startAyahSnapshot': serializer.toJson<int?>(startAyahSnapshot),
+      'endSurahSnapshot': serializer.toJson<int?>(endSurahSnapshot),
+      'endAyahSnapshot': serializer.toJson<int?>(endAyahSnapshot),
+      'noteSnapshot': serializer.toJson<String?>(noteSnapshot),
+      'entryOrder': serializer.toJson<int>(entryOrder),
+    };
+  }
+
+  SupportWeeklyReportDayEntry copyWith({
+    int? id,
+    int? reportDayId,
+    int? reportStudentId,
+    Value<String?> attendanceStatusSnapshot = const Value.absent(),
+    int? achievedQuarterFaces,
+    Value<int?> startSurahSnapshot = const Value.absent(),
+    Value<int?> startAyahSnapshot = const Value.absent(),
+    Value<int?> endSurahSnapshot = const Value.absent(),
+    Value<int?> endAyahSnapshot = const Value.absent(),
+    Value<String?> noteSnapshot = const Value.absent(),
+    int? entryOrder,
+  }) => SupportWeeklyReportDayEntry(
+    id: id ?? this.id,
+    reportDayId: reportDayId ?? this.reportDayId,
+    reportStudentId: reportStudentId ?? this.reportStudentId,
+    attendanceStatusSnapshot: attendanceStatusSnapshot.present
+        ? attendanceStatusSnapshot.value
+        : this.attendanceStatusSnapshot,
+    achievedQuarterFaces: achievedQuarterFaces ?? this.achievedQuarterFaces,
+    startSurahSnapshot: startSurahSnapshot.present
+        ? startSurahSnapshot.value
+        : this.startSurahSnapshot,
+    startAyahSnapshot: startAyahSnapshot.present
+        ? startAyahSnapshot.value
+        : this.startAyahSnapshot,
+    endSurahSnapshot: endSurahSnapshot.present
+        ? endSurahSnapshot.value
+        : this.endSurahSnapshot,
+    endAyahSnapshot: endAyahSnapshot.present
+        ? endAyahSnapshot.value
+        : this.endAyahSnapshot,
+    noteSnapshot: noteSnapshot.present ? noteSnapshot.value : this.noteSnapshot,
+    entryOrder: entryOrder ?? this.entryOrder,
+  );
+  SupportWeeklyReportDayEntry copyWithCompanion(
+    SupportWeeklyReportDayEntriesCompanion data,
+  ) {
+    return SupportWeeklyReportDayEntry(
+      id: data.id.present ? data.id.value : this.id,
+      reportDayId: data.reportDayId.present
+          ? data.reportDayId.value
+          : this.reportDayId,
+      reportStudentId: data.reportStudentId.present
+          ? data.reportStudentId.value
+          : this.reportStudentId,
+      attendanceStatusSnapshot: data.attendanceStatusSnapshot.present
+          ? data.attendanceStatusSnapshot.value
+          : this.attendanceStatusSnapshot,
+      achievedQuarterFaces: data.achievedQuarterFaces.present
+          ? data.achievedQuarterFaces.value
+          : this.achievedQuarterFaces,
+      startSurahSnapshot: data.startSurahSnapshot.present
+          ? data.startSurahSnapshot.value
+          : this.startSurahSnapshot,
+      startAyahSnapshot: data.startAyahSnapshot.present
+          ? data.startAyahSnapshot.value
+          : this.startAyahSnapshot,
+      endSurahSnapshot: data.endSurahSnapshot.present
+          ? data.endSurahSnapshot.value
+          : this.endSurahSnapshot,
+      endAyahSnapshot: data.endAyahSnapshot.present
+          ? data.endAyahSnapshot.value
+          : this.endAyahSnapshot,
+      noteSnapshot: data.noteSnapshot.present
+          ? data.noteSnapshot.value
+          : this.noteSnapshot,
+      entryOrder: data.entryOrder.present
+          ? data.entryOrder.value
+          : this.entryOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportWeeklyReportDayEntry(')
+          ..write('id: $id, ')
+          ..write('reportDayId: $reportDayId, ')
+          ..write('reportStudentId: $reportStudentId, ')
+          ..write('attendanceStatusSnapshot: $attendanceStatusSnapshot, ')
+          ..write('achievedQuarterFaces: $achievedQuarterFaces, ')
+          ..write('startSurahSnapshot: $startSurahSnapshot, ')
+          ..write('startAyahSnapshot: $startAyahSnapshot, ')
+          ..write('endSurahSnapshot: $endSurahSnapshot, ')
+          ..write('endAyahSnapshot: $endAyahSnapshot, ')
+          ..write('noteSnapshot: $noteSnapshot, ')
+          ..write('entryOrder: $entryOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    reportDayId,
+    reportStudentId,
+    attendanceStatusSnapshot,
+    achievedQuarterFaces,
+    startSurahSnapshot,
+    startAyahSnapshot,
+    endSurahSnapshot,
+    endAyahSnapshot,
+    noteSnapshot,
+    entryOrder,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SupportWeeklyReportDayEntry &&
+          other.id == this.id &&
+          other.reportDayId == this.reportDayId &&
+          other.reportStudentId == this.reportStudentId &&
+          other.attendanceStatusSnapshot == this.attendanceStatusSnapshot &&
+          other.achievedQuarterFaces == this.achievedQuarterFaces &&
+          other.startSurahSnapshot == this.startSurahSnapshot &&
+          other.startAyahSnapshot == this.startAyahSnapshot &&
+          other.endSurahSnapshot == this.endSurahSnapshot &&
+          other.endAyahSnapshot == this.endAyahSnapshot &&
+          other.noteSnapshot == this.noteSnapshot &&
+          other.entryOrder == this.entryOrder);
+}
+
+class SupportWeeklyReportDayEntriesCompanion
+    extends UpdateCompanion<SupportWeeklyReportDayEntry> {
+  final Value<int> id;
+  final Value<int> reportDayId;
+  final Value<int> reportStudentId;
+  final Value<String?> attendanceStatusSnapshot;
+  final Value<int> achievedQuarterFaces;
+  final Value<int?> startSurahSnapshot;
+  final Value<int?> startAyahSnapshot;
+  final Value<int?> endSurahSnapshot;
+  final Value<int?> endAyahSnapshot;
+  final Value<String?> noteSnapshot;
+  final Value<int> entryOrder;
+  const SupportWeeklyReportDayEntriesCompanion({
+    this.id = const Value.absent(),
+    this.reportDayId = const Value.absent(),
+    this.reportStudentId = const Value.absent(),
+    this.attendanceStatusSnapshot = const Value.absent(),
+    this.achievedQuarterFaces = const Value.absent(),
+    this.startSurahSnapshot = const Value.absent(),
+    this.startAyahSnapshot = const Value.absent(),
+    this.endSurahSnapshot = const Value.absent(),
+    this.endAyahSnapshot = const Value.absent(),
+    this.noteSnapshot = const Value.absent(),
+    this.entryOrder = const Value.absent(),
+  });
+  SupportWeeklyReportDayEntriesCompanion.insert({
+    this.id = const Value.absent(),
+    required int reportDayId,
+    required int reportStudentId,
+    this.attendanceStatusSnapshot = const Value.absent(),
+    this.achievedQuarterFaces = const Value.absent(),
+    this.startSurahSnapshot = const Value.absent(),
+    this.startAyahSnapshot = const Value.absent(),
+    this.endSurahSnapshot = const Value.absent(),
+    this.endAyahSnapshot = const Value.absent(),
+    this.noteSnapshot = const Value.absent(),
+    required int entryOrder,
+  }) : reportDayId = Value(reportDayId),
+       reportStudentId = Value(reportStudentId),
+       entryOrder = Value(entryOrder);
+  static Insertable<SupportWeeklyReportDayEntry> custom({
+    Expression<int>? id,
+    Expression<int>? reportDayId,
+    Expression<int>? reportStudentId,
+    Expression<String>? attendanceStatusSnapshot,
+    Expression<int>? achievedQuarterFaces,
+    Expression<int>? startSurahSnapshot,
+    Expression<int>? startAyahSnapshot,
+    Expression<int>? endSurahSnapshot,
+    Expression<int>? endAyahSnapshot,
+    Expression<String>? noteSnapshot,
+    Expression<int>? entryOrder,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (reportDayId != null) 'report_day_id': reportDayId,
+      if (reportStudentId != null) 'report_student_id': reportStudentId,
+      if (attendanceStatusSnapshot != null)
+        'attendance_status_snapshot': attendanceStatusSnapshot,
+      if (achievedQuarterFaces != null)
+        'achieved_quarter_faces': achievedQuarterFaces,
+      if (startSurahSnapshot != null)
+        'start_surah_snapshot': startSurahSnapshot,
+      if (startAyahSnapshot != null) 'start_ayah_snapshot': startAyahSnapshot,
+      if (endSurahSnapshot != null) 'end_surah_snapshot': endSurahSnapshot,
+      if (endAyahSnapshot != null) 'end_ayah_snapshot': endAyahSnapshot,
+      if (noteSnapshot != null) 'note_snapshot': noteSnapshot,
+      if (entryOrder != null) 'entry_order': entryOrder,
+    });
+  }
+
+  SupportWeeklyReportDayEntriesCompanion copyWith({
+    Value<int>? id,
+    Value<int>? reportDayId,
+    Value<int>? reportStudentId,
+    Value<String?>? attendanceStatusSnapshot,
+    Value<int>? achievedQuarterFaces,
+    Value<int?>? startSurahSnapshot,
+    Value<int?>? startAyahSnapshot,
+    Value<int?>? endSurahSnapshot,
+    Value<int?>? endAyahSnapshot,
+    Value<String?>? noteSnapshot,
+    Value<int>? entryOrder,
+  }) {
+    return SupportWeeklyReportDayEntriesCompanion(
+      id: id ?? this.id,
+      reportDayId: reportDayId ?? this.reportDayId,
+      reportStudentId: reportStudentId ?? this.reportStudentId,
+      attendanceStatusSnapshot:
+          attendanceStatusSnapshot ?? this.attendanceStatusSnapshot,
+      achievedQuarterFaces: achievedQuarterFaces ?? this.achievedQuarterFaces,
+      startSurahSnapshot: startSurahSnapshot ?? this.startSurahSnapshot,
+      startAyahSnapshot: startAyahSnapshot ?? this.startAyahSnapshot,
+      endSurahSnapshot: endSurahSnapshot ?? this.endSurahSnapshot,
+      endAyahSnapshot: endAyahSnapshot ?? this.endAyahSnapshot,
+      noteSnapshot: noteSnapshot ?? this.noteSnapshot,
+      entryOrder: entryOrder ?? this.entryOrder,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (reportDayId.present) {
+      map['report_day_id'] = Variable<int>(reportDayId.value);
+    }
+    if (reportStudentId.present) {
+      map['report_student_id'] = Variable<int>(reportStudentId.value);
+    }
+    if (attendanceStatusSnapshot.present) {
+      map['attendance_status_snapshot'] = Variable<String>(
+        attendanceStatusSnapshot.value,
+      );
+    }
+    if (achievedQuarterFaces.present) {
+      map['achieved_quarter_faces'] = Variable<int>(achievedQuarterFaces.value);
+    }
+    if (startSurahSnapshot.present) {
+      map['start_surah_snapshot'] = Variable<int>(startSurahSnapshot.value);
+    }
+    if (startAyahSnapshot.present) {
+      map['start_ayah_snapshot'] = Variable<int>(startAyahSnapshot.value);
+    }
+    if (endSurahSnapshot.present) {
+      map['end_surah_snapshot'] = Variable<int>(endSurahSnapshot.value);
+    }
+    if (endAyahSnapshot.present) {
+      map['end_ayah_snapshot'] = Variable<int>(endAyahSnapshot.value);
+    }
+    if (noteSnapshot.present) {
+      map['note_snapshot'] = Variable<String>(noteSnapshot.value);
+    }
+    if (entryOrder.present) {
+      map['entry_order'] = Variable<int>(entryOrder.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportWeeklyReportDayEntriesCompanion(')
+          ..write('id: $id, ')
+          ..write('reportDayId: $reportDayId, ')
+          ..write('reportStudentId: $reportStudentId, ')
+          ..write('attendanceStatusSnapshot: $attendanceStatusSnapshot, ')
+          ..write('achievedQuarterFaces: $achievedQuarterFaces, ')
+          ..write('startSurahSnapshot: $startSurahSnapshot, ')
+          ..write('startAyahSnapshot: $startAyahSnapshot, ')
+          ..write('endSurahSnapshot: $endSurahSnapshot, ')
+          ..write('endAyahSnapshot: $endAyahSnapshot, ')
+          ..write('noteSnapshot: $noteSnapshot, ')
+          ..write('entryOrder: $entryOrder')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SupportMonthlyReportsTable extends SupportMonthlyReports
+    with TableInfo<$SupportMonthlyReportsTable, SupportMonthlyReport> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SupportMonthlyReportsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _halaqahIdMeta = const VerificationMeta(
+    'halaqahId',
+  );
+  @override
+  late final GeneratedColumn<int> halaqahId = GeneratedColumn<int>(
+    'halaqah_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES halaqahs (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _monthStartDateMeta = const VerificationMeta(
+    'monthStartDate',
+  );
+  @override
+  late final GeneratedColumn<String> monthStartDate = GeneratedColumn<String>(
+    'month_start_date',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 10,
+      maxTextLength: 10,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _monthEndDateMeta = const VerificationMeta(
+    'monthEndDate',
+  );
+  @override
+  late final GeneratedColumn<String> monthEndDate = GeneratedColumn<String>(
+    'month_end_date',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 10,
+      maxTextLength: 10,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _teacherNameSnapshotMeta =
+      const VerificationMeta('teacherNameSnapshot');
+  @override
+  late final GeneratedColumn<String> teacherNameSnapshot =
+      GeneratedColumn<String>(
+        'teacher_name_snapshot',
+        aliasedName,
+        false,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 1,
+          maxTextLength: 200,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _halaqahNameSnapshotMeta =
+      const VerificationMeta('halaqahNameSnapshot');
+  @override
+  late final GeneratedColumn<String> halaqahNameSnapshot =
+      GeneratedColumn<String>(
+        'halaqah_name_snapshot',
+        aliasedName,
+        false,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 1,
+          maxTextLength: 200,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _organizationNameSnapshotMeta =
+      const VerificationMeta('organizationNameSnapshot');
+  @override
+  late final GeneratedColumn<String> organizationNameSnapshot =
+      GeneratedColumn<String>(
+        'organization_name_snapshot',
+        aliasedName,
+        false,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 1,
+          maxTextLength: 200,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _policyVersionMeta = const VerificationMeta(
+    'policyVersion',
+  );
+  @override
+  late final GeneratedColumn<int> policyVersion = GeneratedColumn<int>(
+    'policy_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _templateVersionMeta = const VerificationMeta(
+    'templateVersion',
+  );
+  @override
+  late final GeneratedColumn<int> templateVersion = GeneratedColumn<int>(
+    'template_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceFingerprintMeta = const VerificationMeta(
+    'sourceFingerprint',
+  );
+  @override
+  late final GeneratedColumn<String> sourceFingerprint =
+      GeneratedColumn<String>(
+        'source_fingerprint',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _approvedAtUtcMeta = const VerificationMeta(
+    'approvedAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> approvedAtUtc =
+      GeneratedColumn<DateTime>(
+        'approved_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    halaqahId,
+    monthStartDate,
+    monthEndDate,
+    status,
+    teacherNameSnapshot,
+    halaqahNameSnapshot,
+    organizationNameSnapshot,
+    policyVersion,
+    templateVersion,
+    sourceFingerprint,
+    approvedAtUtc,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'support_monthly_reports';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SupportMonthlyReport> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('halaqah_id')) {
+      context.handle(
+        _halaqahIdMeta,
+        halaqahId.isAcceptableOrUnknown(data['halaqah_id']!, _halaqahIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_halaqahIdMeta);
+    }
+    if (data.containsKey('month_start_date')) {
+      context.handle(
+        _monthStartDateMeta,
+        monthStartDate.isAcceptableOrUnknown(
+          data['month_start_date']!,
+          _monthStartDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_monthStartDateMeta);
+    }
+    if (data.containsKey('month_end_date')) {
+      context.handle(
+        _monthEndDateMeta,
+        monthEndDate.isAcceptableOrUnknown(
+          data['month_end_date']!,
+          _monthEndDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_monthEndDateMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('teacher_name_snapshot')) {
+      context.handle(
+        _teacherNameSnapshotMeta,
+        teacherNameSnapshot.isAcceptableOrUnknown(
+          data['teacher_name_snapshot']!,
+          _teacherNameSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_teacherNameSnapshotMeta);
+    }
+    if (data.containsKey('halaqah_name_snapshot')) {
+      context.handle(
+        _halaqahNameSnapshotMeta,
+        halaqahNameSnapshot.isAcceptableOrUnknown(
+          data['halaqah_name_snapshot']!,
+          _halaqahNameSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_halaqahNameSnapshotMeta);
+    }
+    if (data.containsKey('organization_name_snapshot')) {
+      context.handle(
+        _organizationNameSnapshotMeta,
+        organizationNameSnapshot.isAcceptableOrUnknown(
+          data['organization_name_snapshot']!,
+          _organizationNameSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_organizationNameSnapshotMeta);
+    }
+    if (data.containsKey('policy_version')) {
+      context.handle(
+        _policyVersionMeta,
+        policyVersion.isAcceptableOrUnknown(
+          data['policy_version']!,
+          _policyVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_policyVersionMeta);
+    }
+    if (data.containsKey('template_version')) {
+      context.handle(
+        _templateVersionMeta,
+        templateVersion.isAcceptableOrUnknown(
+          data['template_version']!,
+          _templateVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_templateVersionMeta);
+    }
+    if (data.containsKey('source_fingerprint')) {
+      context.handle(
+        _sourceFingerprintMeta,
+        sourceFingerprint.isAcceptableOrUnknown(
+          data['source_fingerprint']!,
+          _sourceFingerprintMeta,
+        ),
+      );
+    }
+    if (data.containsKey('approved_at_utc')) {
+      context.handle(
+        _approvedAtUtcMeta,
+        approvedAtUtc.isAcceptableOrUnknown(
+          data['approved_at_utc']!,
+          _approvedAtUtcMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {halaqahId, monthStartDate},
+  ];
+  @override
+  SupportMonthlyReport map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupportMonthlyReport(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      halaqahId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}halaqah_id'],
+      )!,
+      monthStartDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_start_date'],
+      )!,
+      monthEndDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_end_date'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      teacherNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}teacher_name_snapshot'],
+      )!,
+      halaqahNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}halaqah_name_snapshot'],
+      )!,
+      organizationNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}organization_name_snapshot'],
+      )!,
+      policyVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}policy_version'],
+      )!,
+      templateVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}template_version'],
+      )!,
+      sourceFingerprint: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_fingerprint'],
+      ),
+      approvedAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}approved_at_utc'],
+      ),
+    );
+  }
+
+  @override
+  $SupportMonthlyReportsTable createAlias(String alias) {
+    return $SupportMonthlyReportsTable(attachedDatabase, alias);
+  }
+}
+
+class SupportMonthlyReport extends DataClass
+    implements Insertable<SupportMonthlyReport> {
+  final int id;
+  final int halaqahId;
+  final String monthStartDate;
+  final String monthEndDate;
+  final String status;
+  final String teacherNameSnapshot;
+  final String halaqahNameSnapshot;
+  final String organizationNameSnapshot;
+  final int policyVersion;
+  final int templateVersion;
+  final String? sourceFingerprint;
+  final DateTime? approvedAtUtc;
+  const SupportMonthlyReport({
+    required this.id,
+    required this.halaqahId,
+    required this.monthStartDate,
+    required this.monthEndDate,
+    required this.status,
+    required this.teacherNameSnapshot,
+    required this.halaqahNameSnapshot,
+    required this.organizationNameSnapshot,
+    required this.policyVersion,
+    required this.templateVersion,
+    this.sourceFingerprint,
+    this.approvedAtUtc,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['halaqah_id'] = Variable<int>(halaqahId);
+    map['month_start_date'] = Variable<String>(monthStartDate);
+    map['month_end_date'] = Variable<String>(monthEndDate);
+    map['status'] = Variable<String>(status);
+    map['teacher_name_snapshot'] = Variable<String>(teacherNameSnapshot);
+    map['halaqah_name_snapshot'] = Variable<String>(halaqahNameSnapshot);
+    map['organization_name_snapshot'] = Variable<String>(
+      organizationNameSnapshot,
+    );
+    map['policy_version'] = Variable<int>(policyVersion);
+    map['template_version'] = Variable<int>(templateVersion);
+    if (!nullToAbsent || sourceFingerprint != null) {
+      map['source_fingerprint'] = Variable<String>(sourceFingerprint);
+    }
+    if (!nullToAbsent || approvedAtUtc != null) {
+      map['approved_at_utc'] = Variable<DateTime>(approvedAtUtc);
+    }
+    return map;
+  }
+
+  SupportMonthlyReportsCompanion toCompanion(bool nullToAbsent) {
+    return SupportMonthlyReportsCompanion(
+      id: Value(id),
+      halaqahId: Value(halaqahId),
+      monthStartDate: Value(monthStartDate),
+      monthEndDate: Value(monthEndDate),
+      status: Value(status),
+      teacherNameSnapshot: Value(teacherNameSnapshot),
+      halaqahNameSnapshot: Value(halaqahNameSnapshot),
+      organizationNameSnapshot: Value(organizationNameSnapshot),
+      policyVersion: Value(policyVersion),
+      templateVersion: Value(templateVersion),
+      sourceFingerprint: sourceFingerprint == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceFingerprint),
+      approvedAtUtc: approvedAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(approvedAtUtc),
+    );
+  }
+
+  factory SupportMonthlyReport.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SupportMonthlyReport(
+      id: serializer.fromJson<int>(json['id']),
+      halaqahId: serializer.fromJson<int>(json['halaqahId']),
+      monthStartDate: serializer.fromJson<String>(json['monthStartDate']),
+      monthEndDate: serializer.fromJson<String>(json['monthEndDate']),
+      status: serializer.fromJson<String>(json['status']),
+      teacherNameSnapshot: serializer.fromJson<String>(
+        json['teacherNameSnapshot'],
+      ),
+      halaqahNameSnapshot: serializer.fromJson<String>(
+        json['halaqahNameSnapshot'],
+      ),
+      organizationNameSnapshot: serializer.fromJson<String>(
+        json['organizationNameSnapshot'],
+      ),
+      policyVersion: serializer.fromJson<int>(json['policyVersion']),
+      templateVersion: serializer.fromJson<int>(json['templateVersion']),
+      sourceFingerprint: serializer.fromJson<String?>(
+        json['sourceFingerprint'],
+      ),
+      approvedAtUtc: serializer.fromJson<DateTime?>(json['approvedAtUtc']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'halaqahId': serializer.toJson<int>(halaqahId),
+      'monthStartDate': serializer.toJson<String>(monthStartDate),
+      'monthEndDate': serializer.toJson<String>(monthEndDate),
+      'status': serializer.toJson<String>(status),
+      'teacherNameSnapshot': serializer.toJson<String>(teacherNameSnapshot),
+      'halaqahNameSnapshot': serializer.toJson<String>(halaqahNameSnapshot),
+      'organizationNameSnapshot': serializer.toJson<String>(
+        organizationNameSnapshot,
+      ),
+      'policyVersion': serializer.toJson<int>(policyVersion),
+      'templateVersion': serializer.toJson<int>(templateVersion),
+      'sourceFingerprint': serializer.toJson<String?>(sourceFingerprint),
+      'approvedAtUtc': serializer.toJson<DateTime?>(approvedAtUtc),
+    };
+  }
+
+  SupportMonthlyReport copyWith({
+    int? id,
+    int? halaqahId,
+    String? monthStartDate,
+    String? monthEndDate,
+    String? status,
+    String? teacherNameSnapshot,
+    String? halaqahNameSnapshot,
+    String? organizationNameSnapshot,
+    int? policyVersion,
+    int? templateVersion,
+    Value<String?> sourceFingerprint = const Value.absent(),
+    Value<DateTime?> approvedAtUtc = const Value.absent(),
+  }) => SupportMonthlyReport(
+    id: id ?? this.id,
+    halaqahId: halaqahId ?? this.halaqahId,
+    monthStartDate: monthStartDate ?? this.monthStartDate,
+    monthEndDate: monthEndDate ?? this.monthEndDate,
+    status: status ?? this.status,
+    teacherNameSnapshot: teacherNameSnapshot ?? this.teacherNameSnapshot,
+    halaqahNameSnapshot: halaqahNameSnapshot ?? this.halaqahNameSnapshot,
+    organizationNameSnapshot:
+        organizationNameSnapshot ?? this.organizationNameSnapshot,
+    policyVersion: policyVersion ?? this.policyVersion,
+    templateVersion: templateVersion ?? this.templateVersion,
+    sourceFingerprint: sourceFingerprint.present
+        ? sourceFingerprint.value
+        : this.sourceFingerprint,
+    approvedAtUtc: approvedAtUtc.present
+        ? approvedAtUtc.value
+        : this.approvedAtUtc,
+  );
+  SupportMonthlyReport copyWithCompanion(SupportMonthlyReportsCompanion data) {
+    return SupportMonthlyReport(
+      id: data.id.present ? data.id.value : this.id,
+      halaqahId: data.halaqahId.present ? data.halaqahId.value : this.halaqahId,
+      monthStartDate: data.monthStartDate.present
+          ? data.monthStartDate.value
+          : this.monthStartDate,
+      monthEndDate: data.monthEndDate.present
+          ? data.monthEndDate.value
+          : this.monthEndDate,
+      status: data.status.present ? data.status.value : this.status,
+      teacherNameSnapshot: data.teacherNameSnapshot.present
+          ? data.teacherNameSnapshot.value
+          : this.teacherNameSnapshot,
+      halaqahNameSnapshot: data.halaqahNameSnapshot.present
+          ? data.halaqahNameSnapshot.value
+          : this.halaqahNameSnapshot,
+      organizationNameSnapshot: data.organizationNameSnapshot.present
+          ? data.organizationNameSnapshot.value
+          : this.organizationNameSnapshot,
+      policyVersion: data.policyVersion.present
+          ? data.policyVersion.value
+          : this.policyVersion,
+      templateVersion: data.templateVersion.present
+          ? data.templateVersion.value
+          : this.templateVersion,
+      sourceFingerprint: data.sourceFingerprint.present
+          ? data.sourceFingerprint.value
+          : this.sourceFingerprint,
+      approvedAtUtc: data.approvedAtUtc.present
+          ? data.approvedAtUtc.value
+          : this.approvedAtUtc,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportMonthlyReport(')
+          ..write('id: $id, ')
+          ..write('halaqahId: $halaqahId, ')
+          ..write('monthStartDate: $monthStartDate, ')
+          ..write('monthEndDate: $monthEndDate, ')
+          ..write('status: $status, ')
+          ..write('teacherNameSnapshot: $teacherNameSnapshot, ')
+          ..write('halaqahNameSnapshot: $halaqahNameSnapshot, ')
+          ..write('organizationNameSnapshot: $organizationNameSnapshot, ')
+          ..write('policyVersion: $policyVersion, ')
+          ..write('templateVersion: $templateVersion, ')
+          ..write('sourceFingerprint: $sourceFingerprint, ')
+          ..write('approvedAtUtc: $approvedAtUtc')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    halaqahId,
+    monthStartDate,
+    monthEndDate,
+    status,
+    teacherNameSnapshot,
+    halaqahNameSnapshot,
+    organizationNameSnapshot,
+    policyVersion,
+    templateVersion,
+    sourceFingerprint,
+    approvedAtUtc,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SupportMonthlyReport &&
+          other.id == this.id &&
+          other.halaqahId == this.halaqahId &&
+          other.monthStartDate == this.monthStartDate &&
+          other.monthEndDate == this.monthEndDate &&
+          other.status == this.status &&
+          other.teacherNameSnapshot == this.teacherNameSnapshot &&
+          other.halaqahNameSnapshot == this.halaqahNameSnapshot &&
+          other.organizationNameSnapshot == this.organizationNameSnapshot &&
+          other.policyVersion == this.policyVersion &&
+          other.templateVersion == this.templateVersion &&
+          other.sourceFingerprint == this.sourceFingerprint &&
+          other.approvedAtUtc == this.approvedAtUtc);
+}
+
+class SupportMonthlyReportsCompanion
+    extends UpdateCompanion<SupportMonthlyReport> {
+  final Value<int> id;
+  final Value<int> halaqahId;
+  final Value<String> monthStartDate;
+  final Value<String> monthEndDate;
+  final Value<String> status;
+  final Value<String> teacherNameSnapshot;
+  final Value<String> halaqahNameSnapshot;
+  final Value<String> organizationNameSnapshot;
+  final Value<int> policyVersion;
+  final Value<int> templateVersion;
+  final Value<String?> sourceFingerprint;
+  final Value<DateTime?> approvedAtUtc;
+  const SupportMonthlyReportsCompanion({
+    this.id = const Value.absent(),
+    this.halaqahId = const Value.absent(),
+    this.monthStartDate = const Value.absent(),
+    this.monthEndDate = const Value.absent(),
+    this.status = const Value.absent(),
+    this.teacherNameSnapshot = const Value.absent(),
+    this.halaqahNameSnapshot = const Value.absent(),
+    this.organizationNameSnapshot = const Value.absent(),
+    this.policyVersion = const Value.absent(),
+    this.templateVersion = const Value.absent(),
+    this.sourceFingerprint = const Value.absent(),
+    this.approvedAtUtc = const Value.absent(),
+  });
+  SupportMonthlyReportsCompanion.insert({
+    this.id = const Value.absent(),
+    required int halaqahId,
+    required String monthStartDate,
+    required String monthEndDate,
+    required String status,
+    required String teacherNameSnapshot,
+    required String halaqahNameSnapshot,
+    required String organizationNameSnapshot,
+    required int policyVersion,
+    required int templateVersion,
+    this.sourceFingerprint = const Value.absent(),
+    this.approvedAtUtc = const Value.absent(),
+  }) : halaqahId = Value(halaqahId),
+       monthStartDate = Value(monthStartDate),
+       monthEndDate = Value(monthEndDate),
+       status = Value(status),
+       teacherNameSnapshot = Value(teacherNameSnapshot),
+       halaqahNameSnapshot = Value(halaqahNameSnapshot),
+       organizationNameSnapshot = Value(organizationNameSnapshot),
+       policyVersion = Value(policyVersion),
+       templateVersion = Value(templateVersion);
+  static Insertable<SupportMonthlyReport> custom({
+    Expression<int>? id,
+    Expression<int>? halaqahId,
+    Expression<String>? monthStartDate,
+    Expression<String>? monthEndDate,
+    Expression<String>? status,
+    Expression<String>? teacherNameSnapshot,
+    Expression<String>? halaqahNameSnapshot,
+    Expression<String>? organizationNameSnapshot,
+    Expression<int>? policyVersion,
+    Expression<int>? templateVersion,
+    Expression<String>? sourceFingerprint,
+    Expression<DateTime>? approvedAtUtc,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (halaqahId != null) 'halaqah_id': halaqahId,
+      if (monthStartDate != null) 'month_start_date': monthStartDate,
+      if (monthEndDate != null) 'month_end_date': monthEndDate,
+      if (status != null) 'status': status,
+      if (teacherNameSnapshot != null)
+        'teacher_name_snapshot': teacherNameSnapshot,
+      if (halaqahNameSnapshot != null)
+        'halaqah_name_snapshot': halaqahNameSnapshot,
+      if (organizationNameSnapshot != null)
+        'organization_name_snapshot': organizationNameSnapshot,
+      if (policyVersion != null) 'policy_version': policyVersion,
+      if (templateVersion != null) 'template_version': templateVersion,
+      if (sourceFingerprint != null) 'source_fingerprint': sourceFingerprint,
+      if (approvedAtUtc != null) 'approved_at_utc': approvedAtUtc,
+    });
+  }
+
+  SupportMonthlyReportsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? halaqahId,
+    Value<String>? monthStartDate,
+    Value<String>? monthEndDate,
+    Value<String>? status,
+    Value<String>? teacherNameSnapshot,
+    Value<String>? halaqahNameSnapshot,
+    Value<String>? organizationNameSnapshot,
+    Value<int>? policyVersion,
+    Value<int>? templateVersion,
+    Value<String?>? sourceFingerprint,
+    Value<DateTime?>? approvedAtUtc,
+  }) {
+    return SupportMonthlyReportsCompanion(
+      id: id ?? this.id,
+      halaqahId: halaqahId ?? this.halaqahId,
+      monthStartDate: monthStartDate ?? this.monthStartDate,
+      monthEndDate: monthEndDate ?? this.monthEndDate,
+      status: status ?? this.status,
+      teacherNameSnapshot: teacherNameSnapshot ?? this.teacherNameSnapshot,
+      halaqahNameSnapshot: halaqahNameSnapshot ?? this.halaqahNameSnapshot,
+      organizationNameSnapshot:
+          organizationNameSnapshot ?? this.organizationNameSnapshot,
+      policyVersion: policyVersion ?? this.policyVersion,
+      templateVersion: templateVersion ?? this.templateVersion,
+      sourceFingerprint: sourceFingerprint ?? this.sourceFingerprint,
+      approvedAtUtc: approvedAtUtc ?? this.approvedAtUtc,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (halaqahId.present) {
+      map['halaqah_id'] = Variable<int>(halaqahId.value);
+    }
+    if (monthStartDate.present) {
+      map['month_start_date'] = Variable<String>(monthStartDate.value);
+    }
+    if (monthEndDate.present) {
+      map['month_end_date'] = Variable<String>(monthEndDate.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (teacherNameSnapshot.present) {
+      map['teacher_name_snapshot'] = Variable<String>(
+        teacherNameSnapshot.value,
+      );
+    }
+    if (halaqahNameSnapshot.present) {
+      map['halaqah_name_snapshot'] = Variable<String>(
+        halaqahNameSnapshot.value,
+      );
+    }
+    if (organizationNameSnapshot.present) {
+      map['organization_name_snapshot'] = Variable<String>(
+        organizationNameSnapshot.value,
+      );
+    }
+    if (policyVersion.present) {
+      map['policy_version'] = Variable<int>(policyVersion.value);
+    }
+    if (templateVersion.present) {
+      map['template_version'] = Variable<int>(templateVersion.value);
+    }
+    if (sourceFingerprint.present) {
+      map['source_fingerprint'] = Variable<String>(sourceFingerprint.value);
+    }
+    if (approvedAtUtc.present) {
+      map['approved_at_utc'] = Variable<DateTime>(approvedAtUtc.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportMonthlyReportsCompanion(')
+          ..write('id: $id, ')
+          ..write('halaqahId: $halaqahId, ')
+          ..write('monthStartDate: $monthStartDate, ')
+          ..write('monthEndDate: $monthEndDate, ')
+          ..write('status: $status, ')
+          ..write('teacherNameSnapshot: $teacherNameSnapshot, ')
+          ..write('halaqahNameSnapshot: $halaqahNameSnapshot, ')
+          ..write('organizationNameSnapshot: $organizationNameSnapshot, ')
+          ..write('policyVersion: $policyVersion, ')
+          ..write('templateVersion: $templateVersion, ')
+          ..write('sourceFingerprint: $sourceFingerprint, ')
+          ..write('approvedAtUtc: $approvedAtUtc')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SupportMonthlyReportStudentsTable extends SupportMonthlyReportStudents
+    with
+        TableInfo<
+          $SupportMonthlyReportStudentsTable,
+          SupportMonthlyReportStudent
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SupportMonthlyReportStudentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _reportIdMeta = const VerificationMeta(
+    'reportId',
+  );
+  @override
+  late final GeneratedColumn<int> reportId = GeneratedColumn<int>(
+    'report_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES support_monthly_reports (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _sourceStudentIdMeta = const VerificationMeta(
+    'sourceStudentId',
+  );
+  @override
+  late final GeneratedColumn<int> sourceStudentId = GeneratedColumn<int>(
+    'source_student_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES students (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _supportStudentNumberSnapshotMeta =
+      const VerificationMeta('supportStudentNumberSnapshot');
+  @override
+  late final GeneratedColumn<String> supportStudentNumberSnapshot =
+      GeneratedColumn<String>(
+        'support_student_number_snapshot',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _studentNameSnapshotMeta =
+      const VerificationMeta('studentNameSnapshot');
+  @override
+  late final GeneratedColumn<String> studentNameSnapshot =
+      GeneratedColumn<String>(
+        'student_name_snapshot',
+        aliasedName,
+        false,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 1,
+          maxTextLength: 200,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _currentJuzSnapshotMeta =
+      const VerificationMeta('currentJuzSnapshot');
+  @override
+  late final GeneratedColumn<int> currentJuzSnapshot = GeneratedColumn<int>(
+    'current_juz_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dailyPlanTextSnapshotMeta =
+      const VerificationMeta('dailyPlanTextSnapshot');
+  @override
+  late final GeneratedColumn<String> dailyPlanTextSnapshot =
+      GeneratedColumn<String>(
+        'daily_plan_text_snapshot',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _monthlyGoalQuarterFacesSnapshotMeta =
+      const VerificationMeta('monthlyGoalQuarterFacesSnapshot');
+  @override
+  late final GeneratedColumn<int> monthlyGoalQuarterFacesSnapshot =
+      GeneratedColumn<int>(
+        'monthly_goal_quarter_faces_snapshot',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _achievedQuarterFacesMeta =
+      const VerificationMeta('achievedQuarterFaces');
+  @override
+  late final GeneratedColumn<int> achievedQuarterFaces = GeneratedColumn<int>(
+    'achieved_quarter_faces',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _absenceDaysMeta = const VerificationMeta(
+    'absenceDays',
+  );
+  @override
+  late final GeneratedColumn<int> absenceDays = GeneratedColumn<int>(
+    'absence_days',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _goalCompletedMeta = const VerificationMeta(
+    'goalCompleted',
+  );
+  @override
+  late final GeneratedColumn<bool> goalCompleted = GeneratedColumn<bool>(
+    'goal_completed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("goal_completed" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _noteSnapshotMeta = const VerificationMeta(
+    'noteSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> noteSnapshot = GeneratedColumn<String>(
+    'note_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _displayOrderSnapshotMeta =
+      const VerificationMeta('displayOrderSnapshot');
+  @override
+  late final GeneratedColumn<int> displayOrderSnapshot = GeneratedColumn<int>(
+    'display_order_snapshot',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    reportId,
+    sourceStudentId,
+    supportStudentNumberSnapshot,
+    studentNameSnapshot,
+    currentJuzSnapshot,
+    dailyPlanTextSnapshot,
+    monthlyGoalQuarterFacesSnapshot,
+    achievedQuarterFaces,
+    absenceDays,
+    goalCompleted,
+    noteSnapshot,
+    displayOrderSnapshot,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'support_monthly_report_students';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SupportMonthlyReportStudent> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('report_id')) {
+      context.handle(
+        _reportIdMeta,
+        reportId.isAcceptableOrUnknown(data['report_id']!, _reportIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reportIdMeta);
+    }
+    if (data.containsKey('source_student_id')) {
+      context.handle(
+        _sourceStudentIdMeta,
+        sourceStudentId.isAcceptableOrUnknown(
+          data['source_student_id']!,
+          _sourceStudentIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceStudentIdMeta);
+    }
+    if (data.containsKey('support_student_number_snapshot')) {
+      context.handle(
+        _supportStudentNumberSnapshotMeta,
+        supportStudentNumberSnapshot.isAcceptableOrUnknown(
+          data['support_student_number_snapshot']!,
+          _supportStudentNumberSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('student_name_snapshot')) {
+      context.handle(
+        _studentNameSnapshotMeta,
+        studentNameSnapshot.isAcceptableOrUnknown(
+          data['student_name_snapshot']!,
+          _studentNameSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_studentNameSnapshotMeta);
+    }
+    if (data.containsKey('current_juz_snapshot')) {
+      context.handle(
+        _currentJuzSnapshotMeta,
+        currentJuzSnapshot.isAcceptableOrUnknown(
+          data['current_juz_snapshot']!,
+          _currentJuzSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('daily_plan_text_snapshot')) {
+      context.handle(
+        _dailyPlanTextSnapshotMeta,
+        dailyPlanTextSnapshot.isAcceptableOrUnknown(
+          data['daily_plan_text_snapshot']!,
+          _dailyPlanTextSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('monthly_goal_quarter_faces_snapshot')) {
+      context.handle(
+        _monthlyGoalQuarterFacesSnapshotMeta,
+        monthlyGoalQuarterFacesSnapshot.isAcceptableOrUnknown(
+          data['monthly_goal_quarter_faces_snapshot']!,
+          _monthlyGoalQuarterFacesSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_monthlyGoalQuarterFacesSnapshotMeta);
+    }
+    if (data.containsKey('achieved_quarter_faces')) {
+      context.handle(
+        _achievedQuarterFacesMeta,
+        achievedQuarterFaces.isAcceptableOrUnknown(
+          data['achieved_quarter_faces']!,
+          _achievedQuarterFacesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_achievedQuarterFacesMeta);
+    }
+    if (data.containsKey('absence_days')) {
+      context.handle(
+        _absenceDaysMeta,
+        absenceDays.isAcceptableOrUnknown(
+          data['absence_days']!,
+          _absenceDaysMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_absenceDaysMeta);
+    }
+    if (data.containsKey('goal_completed')) {
+      context.handle(
+        _goalCompletedMeta,
+        goalCompleted.isAcceptableOrUnknown(
+          data['goal_completed']!,
+          _goalCompletedMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_goalCompletedMeta);
+    }
+    if (data.containsKey('note_snapshot')) {
+      context.handle(
+        _noteSnapshotMeta,
+        noteSnapshot.isAcceptableOrUnknown(
+          data['note_snapshot']!,
+          _noteSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('display_order_snapshot')) {
+      context.handle(
+        _displayOrderSnapshotMeta,
+        displayOrderSnapshot.isAcceptableOrUnknown(
+          data['display_order_snapshot']!,
+          _displayOrderSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayOrderSnapshotMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {reportId, sourceStudentId},
+  ];
+  @override
+  SupportMonthlyReportStudent map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupportMonthlyReportStudent(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      reportId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}report_id'],
+      )!,
+      sourceStudentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}source_student_id'],
+      )!,
+      supportStudentNumberSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}support_student_number_snapshot'],
+      ),
+      studentNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}student_name_snapshot'],
+      )!,
+      currentJuzSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}current_juz_snapshot'],
+      ),
+      dailyPlanTextSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}daily_plan_text_snapshot'],
+      ),
+      monthlyGoalQuarterFacesSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}monthly_goal_quarter_faces_snapshot'],
+      )!,
+      achievedQuarterFaces: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}achieved_quarter_faces'],
+      )!,
+      absenceDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}absence_days'],
+      )!,
+      goalCompleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}goal_completed'],
+      )!,
+      noteSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note_snapshot'],
+      ),
+      displayOrderSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}display_order_snapshot'],
+      )!,
+    );
+  }
+
+  @override
+  $SupportMonthlyReportStudentsTable createAlias(String alias) {
+    return $SupportMonthlyReportStudentsTable(attachedDatabase, alias);
+  }
+}
+
+class SupportMonthlyReportStudent extends DataClass
+    implements Insertable<SupportMonthlyReportStudent> {
+  final int id;
+  final int reportId;
+  final int sourceStudentId;
+  final String? supportStudentNumberSnapshot;
+  final String studentNameSnapshot;
+  final int? currentJuzSnapshot;
+  final String? dailyPlanTextSnapshot;
+  final int monthlyGoalQuarterFacesSnapshot;
+  final int achievedQuarterFaces;
+  final int absenceDays;
+  final bool goalCompleted;
+  final String? noteSnapshot;
+  final int displayOrderSnapshot;
+  const SupportMonthlyReportStudent({
+    required this.id,
+    required this.reportId,
+    required this.sourceStudentId,
+    this.supportStudentNumberSnapshot,
+    required this.studentNameSnapshot,
+    this.currentJuzSnapshot,
+    this.dailyPlanTextSnapshot,
+    required this.monthlyGoalQuarterFacesSnapshot,
+    required this.achievedQuarterFaces,
+    required this.absenceDays,
+    required this.goalCompleted,
+    this.noteSnapshot,
+    required this.displayOrderSnapshot,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['report_id'] = Variable<int>(reportId);
+    map['source_student_id'] = Variable<int>(sourceStudentId);
+    if (!nullToAbsent || supportStudentNumberSnapshot != null) {
+      map['support_student_number_snapshot'] = Variable<String>(
+        supportStudentNumberSnapshot,
+      );
+    }
+    map['student_name_snapshot'] = Variable<String>(studentNameSnapshot);
+    if (!nullToAbsent || currentJuzSnapshot != null) {
+      map['current_juz_snapshot'] = Variable<int>(currentJuzSnapshot);
+    }
+    if (!nullToAbsent || dailyPlanTextSnapshot != null) {
+      map['daily_plan_text_snapshot'] = Variable<String>(dailyPlanTextSnapshot);
+    }
+    map['monthly_goal_quarter_faces_snapshot'] = Variable<int>(
+      monthlyGoalQuarterFacesSnapshot,
+    );
+    map['achieved_quarter_faces'] = Variable<int>(achievedQuarterFaces);
+    map['absence_days'] = Variable<int>(absenceDays);
+    map['goal_completed'] = Variable<bool>(goalCompleted);
+    if (!nullToAbsent || noteSnapshot != null) {
+      map['note_snapshot'] = Variable<String>(noteSnapshot);
+    }
+    map['display_order_snapshot'] = Variable<int>(displayOrderSnapshot);
+    return map;
+  }
+
+  SupportMonthlyReportStudentsCompanion toCompanion(bool nullToAbsent) {
+    return SupportMonthlyReportStudentsCompanion(
+      id: Value(id),
+      reportId: Value(reportId),
+      sourceStudentId: Value(sourceStudentId),
+      supportStudentNumberSnapshot:
+          supportStudentNumberSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supportStudentNumberSnapshot),
+      studentNameSnapshot: Value(studentNameSnapshot),
+      currentJuzSnapshot: currentJuzSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentJuzSnapshot),
+      dailyPlanTextSnapshot: dailyPlanTextSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyPlanTextSnapshot),
+      monthlyGoalQuarterFacesSnapshot: Value(monthlyGoalQuarterFacesSnapshot),
+      achievedQuarterFaces: Value(achievedQuarterFaces),
+      absenceDays: Value(absenceDays),
+      goalCompleted: Value(goalCompleted),
+      noteSnapshot: noteSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(noteSnapshot),
+      displayOrderSnapshot: Value(displayOrderSnapshot),
+    );
+  }
+
+  factory SupportMonthlyReportStudent.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SupportMonthlyReportStudent(
+      id: serializer.fromJson<int>(json['id']),
+      reportId: serializer.fromJson<int>(json['reportId']),
+      sourceStudentId: serializer.fromJson<int>(json['sourceStudentId']),
+      supportStudentNumberSnapshot: serializer.fromJson<String?>(
+        json['supportStudentNumberSnapshot'],
+      ),
+      studentNameSnapshot: serializer.fromJson<String>(
+        json['studentNameSnapshot'],
+      ),
+      currentJuzSnapshot: serializer.fromJson<int?>(json['currentJuzSnapshot']),
+      dailyPlanTextSnapshot: serializer.fromJson<String?>(
+        json['dailyPlanTextSnapshot'],
+      ),
+      monthlyGoalQuarterFacesSnapshot: serializer.fromJson<int>(
+        json['monthlyGoalQuarterFacesSnapshot'],
+      ),
+      achievedQuarterFaces: serializer.fromJson<int>(
+        json['achievedQuarterFaces'],
+      ),
+      absenceDays: serializer.fromJson<int>(json['absenceDays']),
+      goalCompleted: serializer.fromJson<bool>(json['goalCompleted']),
+      noteSnapshot: serializer.fromJson<String?>(json['noteSnapshot']),
+      displayOrderSnapshot: serializer.fromJson<int>(
+        json['displayOrderSnapshot'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'reportId': serializer.toJson<int>(reportId),
+      'sourceStudentId': serializer.toJson<int>(sourceStudentId),
+      'supportStudentNumberSnapshot': serializer.toJson<String?>(
+        supportStudentNumberSnapshot,
+      ),
+      'studentNameSnapshot': serializer.toJson<String>(studentNameSnapshot),
+      'currentJuzSnapshot': serializer.toJson<int?>(currentJuzSnapshot),
+      'dailyPlanTextSnapshot': serializer.toJson<String?>(
+        dailyPlanTextSnapshot,
+      ),
+      'monthlyGoalQuarterFacesSnapshot': serializer.toJson<int>(
+        monthlyGoalQuarterFacesSnapshot,
+      ),
+      'achievedQuarterFaces': serializer.toJson<int>(achievedQuarterFaces),
+      'absenceDays': serializer.toJson<int>(absenceDays),
+      'goalCompleted': serializer.toJson<bool>(goalCompleted),
+      'noteSnapshot': serializer.toJson<String?>(noteSnapshot),
+      'displayOrderSnapshot': serializer.toJson<int>(displayOrderSnapshot),
+    };
+  }
+
+  SupportMonthlyReportStudent copyWith({
+    int? id,
+    int? reportId,
+    int? sourceStudentId,
+    Value<String?> supportStudentNumberSnapshot = const Value.absent(),
+    String? studentNameSnapshot,
+    Value<int?> currentJuzSnapshot = const Value.absent(),
+    Value<String?> dailyPlanTextSnapshot = const Value.absent(),
+    int? monthlyGoalQuarterFacesSnapshot,
+    int? achievedQuarterFaces,
+    int? absenceDays,
+    bool? goalCompleted,
+    Value<String?> noteSnapshot = const Value.absent(),
+    int? displayOrderSnapshot,
+  }) => SupportMonthlyReportStudent(
+    id: id ?? this.id,
+    reportId: reportId ?? this.reportId,
+    sourceStudentId: sourceStudentId ?? this.sourceStudentId,
+    supportStudentNumberSnapshot: supportStudentNumberSnapshot.present
+        ? supportStudentNumberSnapshot.value
+        : this.supportStudentNumberSnapshot,
+    studentNameSnapshot: studentNameSnapshot ?? this.studentNameSnapshot,
+    currentJuzSnapshot: currentJuzSnapshot.present
+        ? currentJuzSnapshot.value
+        : this.currentJuzSnapshot,
+    dailyPlanTextSnapshot: dailyPlanTextSnapshot.present
+        ? dailyPlanTextSnapshot.value
+        : this.dailyPlanTextSnapshot,
+    monthlyGoalQuarterFacesSnapshot:
+        monthlyGoalQuarterFacesSnapshot ?? this.monthlyGoalQuarterFacesSnapshot,
+    achievedQuarterFaces: achievedQuarterFaces ?? this.achievedQuarterFaces,
+    absenceDays: absenceDays ?? this.absenceDays,
+    goalCompleted: goalCompleted ?? this.goalCompleted,
+    noteSnapshot: noteSnapshot.present ? noteSnapshot.value : this.noteSnapshot,
+    displayOrderSnapshot: displayOrderSnapshot ?? this.displayOrderSnapshot,
+  );
+  SupportMonthlyReportStudent copyWithCompanion(
+    SupportMonthlyReportStudentsCompanion data,
+  ) {
+    return SupportMonthlyReportStudent(
+      id: data.id.present ? data.id.value : this.id,
+      reportId: data.reportId.present ? data.reportId.value : this.reportId,
+      sourceStudentId: data.sourceStudentId.present
+          ? data.sourceStudentId.value
+          : this.sourceStudentId,
+      supportStudentNumberSnapshot: data.supportStudentNumberSnapshot.present
+          ? data.supportStudentNumberSnapshot.value
+          : this.supportStudentNumberSnapshot,
+      studentNameSnapshot: data.studentNameSnapshot.present
+          ? data.studentNameSnapshot.value
+          : this.studentNameSnapshot,
+      currentJuzSnapshot: data.currentJuzSnapshot.present
+          ? data.currentJuzSnapshot.value
+          : this.currentJuzSnapshot,
+      dailyPlanTextSnapshot: data.dailyPlanTextSnapshot.present
+          ? data.dailyPlanTextSnapshot.value
+          : this.dailyPlanTextSnapshot,
+      monthlyGoalQuarterFacesSnapshot:
+          data.monthlyGoalQuarterFacesSnapshot.present
+          ? data.monthlyGoalQuarterFacesSnapshot.value
+          : this.monthlyGoalQuarterFacesSnapshot,
+      achievedQuarterFaces: data.achievedQuarterFaces.present
+          ? data.achievedQuarterFaces.value
+          : this.achievedQuarterFaces,
+      absenceDays: data.absenceDays.present
+          ? data.absenceDays.value
+          : this.absenceDays,
+      goalCompleted: data.goalCompleted.present
+          ? data.goalCompleted.value
+          : this.goalCompleted,
+      noteSnapshot: data.noteSnapshot.present
+          ? data.noteSnapshot.value
+          : this.noteSnapshot,
+      displayOrderSnapshot: data.displayOrderSnapshot.present
+          ? data.displayOrderSnapshot.value
+          : this.displayOrderSnapshot,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportMonthlyReportStudent(')
+          ..write('id: $id, ')
+          ..write('reportId: $reportId, ')
+          ..write('sourceStudentId: $sourceStudentId, ')
+          ..write(
+            'supportStudentNumberSnapshot: $supportStudentNumberSnapshot, ',
+          )
+          ..write('studentNameSnapshot: $studentNameSnapshot, ')
+          ..write('currentJuzSnapshot: $currentJuzSnapshot, ')
+          ..write('dailyPlanTextSnapshot: $dailyPlanTextSnapshot, ')
+          ..write(
+            'monthlyGoalQuarterFacesSnapshot: $monthlyGoalQuarterFacesSnapshot, ',
+          )
+          ..write('achievedQuarterFaces: $achievedQuarterFaces, ')
+          ..write('absenceDays: $absenceDays, ')
+          ..write('goalCompleted: $goalCompleted, ')
+          ..write('noteSnapshot: $noteSnapshot, ')
+          ..write('displayOrderSnapshot: $displayOrderSnapshot')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    reportId,
+    sourceStudentId,
+    supportStudentNumberSnapshot,
+    studentNameSnapshot,
+    currentJuzSnapshot,
+    dailyPlanTextSnapshot,
+    monthlyGoalQuarterFacesSnapshot,
+    achievedQuarterFaces,
+    absenceDays,
+    goalCompleted,
+    noteSnapshot,
+    displayOrderSnapshot,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SupportMonthlyReportStudent &&
+          other.id == this.id &&
+          other.reportId == this.reportId &&
+          other.sourceStudentId == this.sourceStudentId &&
+          other.supportStudentNumberSnapshot ==
+              this.supportStudentNumberSnapshot &&
+          other.studentNameSnapshot == this.studentNameSnapshot &&
+          other.currentJuzSnapshot == this.currentJuzSnapshot &&
+          other.dailyPlanTextSnapshot == this.dailyPlanTextSnapshot &&
+          other.monthlyGoalQuarterFacesSnapshot ==
+              this.monthlyGoalQuarterFacesSnapshot &&
+          other.achievedQuarterFaces == this.achievedQuarterFaces &&
+          other.absenceDays == this.absenceDays &&
+          other.goalCompleted == this.goalCompleted &&
+          other.noteSnapshot == this.noteSnapshot &&
+          other.displayOrderSnapshot == this.displayOrderSnapshot);
+}
+
+class SupportMonthlyReportStudentsCompanion
+    extends UpdateCompanion<SupportMonthlyReportStudent> {
+  final Value<int> id;
+  final Value<int> reportId;
+  final Value<int> sourceStudentId;
+  final Value<String?> supportStudentNumberSnapshot;
+  final Value<String> studentNameSnapshot;
+  final Value<int?> currentJuzSnapshot;
+  final Value<String?> dailyPlanTextSnapshot;
+  final Value<int> monthlyGoalQuarterFacesSnapshot;
+  final Value<int> achievedQuarterFaces;
+  final Value<int> absenceDays;
+  final Value<bool> goalCompleted;
+  final Value<String?> noteSnapshot;
+  final Value<int> displayOrderSnapshot;
+  const SupportMonthlyReportStudentsCompanion({
+    this.id = const Value.absent(),
+    this.reportId = const Value.absent(),
+    this.sourceStudentId = const Value.absent(),
+    this.supportStudentNumberSnapshot = const Value.absent(),
+    this.studentNameSnapshot = const Value.absent(),
+    this.currentJuzSnapshot = const Value.absent(),
+    this.dailyPlanTextSnapshot = const Value.absent(),
+    this.monthlyGoalQuarterFacesSnapshot = const Value.absent(),
+    this.achievedQuarterFaces = const Value.absent(),
+    this.absenceDays = const Value.absent(),
+    this.goalCompleted = const Value.absent(),
+    this.noteSnapshot = const Value.absent(),
+    this.displayOrderSnapshot = const Value.absent(),
+  });
+  SupportMonthlyReportStudentsCompanion.insert({
+    this.id = const Value.absent(),
+    required int reportId,
+    required int sourceStudentId,
+    this.supportStudentNumberSnapshot = const Value.absent(),
+    required String studentNameSnapshot,
+    this.currentJuzSnapshot = const Value.absent(),
+    this.dailyPlanTextSnapshot = const Value.absent(),
+    required int monthlyGoalQuarterFacesSnapshot,
+    required int achievedQuarterFaces,
+    required int absenceDays,
+    required bool goalCompleted,
+    this.noteSnapshot = const Value.absent(),
+    required int displayOrderSnapshot,
+  }) : reportId = Value(reportId),
+       sourceStudentId = Value(sourceStudentId),
+       studentNameSnapshot = Value(studentNameSnapshot),
+       monthlyGoalQuarterFacesSnapshot = Value(monthlyGoalQuarterFacesSnapshot),
+       achievedQuarterFaces = Value(achievedQuarterFaces),
+       absenceDays = Value(absenceDays),
+       goalCompleted = Value(goalCompleted),
+       displayOrderSnapshot = Value(displayOrderSnapshot);
+  static Insertable<SupportMonthlyReportStudent> custom({
+    Expression<int>? id,
+    Expression<int>? reportId,
+    Expression<int>? sourceStudentId,
+    Expression<String>? supportStudentNumberSnapshot,
+    Expression<String>? studentNameSnapshot,
+    Expression<int>? currentJuzSnapshot,
+    Expression<String>? dailyPlanTextSnapshot,
+    Expression<int>? monthlyGoalQuarterFacesSnapshot,
+    Expression<int>? achievedQuarterFaces,
+    Expression<int>? absenceDays,
+    Expression<bool>? goalCompleted,
+    Expression<String>? noteSnapshot,
+    Expression<int>? displayOrderSnapshot,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (reportId != null) 'report_id': reportId,
+      if (sourceStudentId != null) 'source_student_id': sourceStudentId,
+      if (supportStudentNumberSnapshot != null)
+        'support_student_number_snapshot': supportStudentNumberSnapshot,
+      if (studentNameSnapshot != null)
+        'student_name_snapshot': studentNameSnapshot,
+      if (currentJuzSnapshot != null)
+        'current_juz_snapshot': currentJuzSnapshot,
+      if (dailyPlanTextSnapshot != null)
+        'daily_plan_text_snapshot': dailyPlanTextSnapshot,
+      if (monthlyGoalQuarterFacesSnapshot != null)
+        'monthly_goal_quarter_faces_snapshot': monthlyGoalQuarterFacesSnapshot,
+      if (achievedQuarterFaces != null)
+        'achieved_quarter_faces': achievedQuarterFaces,
+      if (absenceDays != null) 'absence_days': absenceDays,
+      if (goalCompleted != null) 'goal_completed': goalCompleted,
+      if (noteSnapshot != null) 'note_snapshot': noteSnapshot,
+      if (displayOrderSnapshot != null)
+        'display_order_snapshot': displayOrderSnapshot,
+    });
+  }
+
+  SupportMonthlyReportStudentsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? reportId,
+    Value<int>? sourceStudentId,
+    Value<String?>? supportStudentNumberSnapshot,
+    Value<String>? studentNameSnapshot,
+    Value<int?>? currentJuzSnapshot,
+    Value<String?>? dailyPlanTextSnapshot,
+    Value<int>? monthlyGoalQuarterFacesSnapshot,
+    Value<int>? achievedQuarterFaces,
+    Value<int>? absenceDays,
+    Value<bool>? goalCompleted,
+    Value<String?>? noteSnapshot,
+    Value<int>? displayOrderSnapshot,
+  }) {
+    return SupportMonthlyReportStudentsCompanion(
+      id: id ?? this.id,
+      reportId: reportId ?? this.reportId,
+      sourceStudentId: sourceStudentId ?? this.sourceStudentId,
+      supportStudentNumberSnapshot:
+          supportStudentNumberSnapshot ?? this.supportStudentNumberSnapshot,
+      studentNameSnapshot: studentNameSnapshot ?? this.studentNameSnapshot,
+      currentJuzSnapshot: currentJuzSnapshot ?? this.currentJuzSnapshot,
+      dailyPlanTextSnapshot:
+          dailyPlanTextSnapshot ?? this.dailyPlanTextSnapshot,
+      monthlyGoalQuarterFacesSnapshot:
+          monthlyGoalQuarterFacesSnapshot ??
+          this.monthlyGoalQuarterFacesSnapshot,
+      achievedQuarterFaces: achievedQuarterFaces ?? this.achievedQuarterFaces,
+      absenceDays: absenceDays ?? this.absenceDays,
+      goalCompleted: goalCompleted ?? this.goalCompleted,
+      noteSnapshot: noteSnapshot ?? this.noteSnapshot,
+      displayOrderSnapshot: displayOrderSnapshot ?? this.displayOrderSnapshot,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (reportId.present) {
+      map['report_id'] = Variable<int>(reportId.value);
+    }
+    if (sourceStudentId.present) {
+      map['source_student_id'] = Variable<int>(sourceStudentId.value);
+    }
+    if (supportStudentNumberSnapshot.present) {
+      map['support_student_number_snapshot'] = Variable<String>(
+        supportStudentNumberSnapshot.value,
+      );
+    }
+    if (studentNameSnapshot.present) {
+      map['student_name_snapshot'] = Variable<String>(
+        studentNameSnapshot.value,
+      );
+    }
+    if (currentJuzSnapshot.present) {
+      map['current_juz_snapshot'] = Variable<int>(currentJuzSnapshot.value);
+    }
+    if (dailyPlanTextSnapshot.present) {
+      map['daily_plan_text_snapshot'] = Variable<String>(
+        dailyPlanTextSnapshot.value,
+      );
+    }
+    if (monthlyGoalQuarterFacesSnapshot.present) {
+      map['monthly_goal_quarter_faces_snapshot'] = Variable<int>(
+        monthlyGoalQuarterFacesSnapshot.value,
+      );
+    }
+    if (achievedQuarterFaces.present) {
+      map['achieved_quarter_faces'] = Variable<int>(achievedQuarterFaces.value);
+    }
+    if (absenceDays.present) {
+      map['absence_days'] = Variable<int>(absenceDays.value);
+    }
+    if (goalCompleted.present) {
+      map['goal_completed'] = Variable<bool>(goalCompleted.value);
+    }
+    if (noteSnapshot.present) {
+      map['note_snapshot'] = Variable<String>(noteSnapshot.value);
+    }
+    if (displayOrderSnapshot.present) {
+      map['display_order_snapshot'] = Variable<int>(displayOrderSnapshot.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupportMonthlyReportStudentsCompanion(')
+          ..write('id: $id, ')
+          ..write('reportId: $reportId, ')
+          ..write('sourceStudentId: $sourceStudentId, ')
+          ..write(
+            'supportStudentNumberSnapshot: $supportStudentNumberSnapshot, ',
+          )
+          ..write('studentNameSnapshot: $studentNameSnapshot, ')
+          ..write('currentJuzSnapshot: $currentJuzSnapshot, ')
+          ..write('dailyPlanTextSnapshot: $dailyPlanTextSnapshot, ')
+          ..write(
+            'monthlyGoalQuarterFacesSnapshot: $monthlyGoalQuarterFacesSnapshot, ',
+          )
+          ..write('achievedQuarterFaces: $achievedQuarterFaces, ')
+          ..write('absenceDays: $absenceDays, ')
+          ..write('goalCompleted: $goalCompleted, ')
+          ..write('noteSnapshot: $noteSnapshot, ')
+          ..write('displayOrderSnapshot: $displayOrderSnapshot')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -4896,6 +9160,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ParentFollowUpsTable parentFollowUps = $ParentFollowUpsTable(
     this,
   );
+  late final $SupportWeeklyReportsTable supportWeeklyReports =
+      $SupportWeeklyReportsTable(this);
+  late final $SupportWeeklyReportStudentsTable supportWeeklyReportStudents =
+      $SupportWeeklyReportStudentsTable(this);
+  late final $SupportWeeklyReportDaysTable supportWeeklyReportDays =
+      $SupportWeeklyReportDaysTable(this);
+  late final $SupportWeeklyReportDayEntriesTable supportWeeklyReportDayEntries =
+      $SupportWeeklyReportDayEntriesTable(this);
+  late final $SupportMonthlyReportsTable supportMonthlyReports =
+      $SupportMonthlyReportsTable(this);
+  late final $SupportMonthlyReportStudentsTable supportMonthlyReportStudents =
+      $SupportMonthlyReportStudentsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4911,7 +9187,67 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     attendanceRecords,
     recitations,
     parentFollowUps,
+    supportWeeklyReports,
+    supportWeeklyReportStudents,
+    supportWeeklyReportDays,
+    supportWeeklyReportDayEntries,
+    supportMonthlyReports,
+    supportMonthlyReportStudents,
   ];
+  @override
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'support_weekly_reports',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('support_weekly_report_students', kind: UpdateKind.delete),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'support_weekly_reports',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('support_weekly_report_days', kind: UpdateKind.delete),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'support_weekly_report_days',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate(
+          'support_weekly_report_day_entries',
+          kind: UpdateKind.delete,
+        ),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'support_weekly_report_students',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate(
+          'support_weekly_report_day_entries',
+          kind: UpdateKind.delete,
+        ),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'support_monthly_reports',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('support_monthly_report_students', kind: UpdateKind.delete),
+      ],
+    ),
+  ]);
   @override
   DriftDatabaseOptions get options =>
       const DriftDatabaseOptions(storeDateTimeAsText: true);
@@ -5022,6 +9358,56 @@ final class $$HalaqahsTableReferences
     ).filter((f) => f.halaqahId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_halaqahDaysRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $SupportWeeklyReportsTable,
+    List<SupportWeeklyReport>
+  >
+  _supportWeeklyReportsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.supportWeeklyReports,
+        aliasName: 'halaqahs__id__support_weekly_reports__halaqah_id',
+      );
+
+  $$SupportWeeklyReportsTableProcessedTableManager
+  get supportWeeklyReportsRefs {
+    final manager = $$SupportWeeklyReportsTableTableManager(
+      $_db,
+      $_db.supportWeeklyReports,
+    ).filter((f) => f.halaqahId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportWeeklyReportsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $SupportMonthlyReportsTable,
+    List<SupportMonthlyReport>
+  >
+  _supportMonthlyReportsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.supportMonthlyReports,
+        aliasName: 'halaqahs__id__support_monthly_reports__halaqah_id',
+      );
+
+  $$SupportMonthlyReportsTableProcessedTableManager
+  get supportMonthlyReportsRefs {
+    final manager = $$SupportMonthlyReportsTableTableManager(
+      $_db,
+      $_db.supportMonthlyReports,
+    ).filter((f) => f.halaqahId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportMonthlyReportsRefsTable($_db),
+    );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -5166,6 +9552,57 @@ class $$HalaqahsTableFilterComposer
                 $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> supportWeeklyReportsRefs(
+    Expression<bool> Function($$SupportWeeklyReportsTableFilterComposer f) f,
+  ) {
+    final $$SupportWeeklyReportsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.supportWeeklyReports,
+      getReferencedColumn: (t) => t.halaqahId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupportWeeklyReportsTableFilterComposer(
+            $db: $db,
+            $table: $db.supportWeeklyReports,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> supportMonthlyReportsRefs(
+    Expression<bool> Function($$SupportMonthlyReportsTableFilterComposer f) f,
+  ) {
+    final $$SupportMonthlyReportsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportMonthlyReports,
+          getReferencedColumn: (t) => t.halaqahId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportsTableFilterComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -5348,6 +9785,58 @@ class $$HalaqahsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> supportWeeklyReportsRefs<T extends Object>(
+    Expression<T> Function($$SupportWeeklyReportsTableAnnotationComposer a) f,
+  ) {
+    final $$SupportWeeklyReportsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReports,
+          getReferencedColumn: (t) => t.halaqahId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> supportMonthlyReportsRefs<T extends Object>(
+    Expression<T> Function($$SupportMonthlyReportsTableAnnotationComposer a) f,
+  ) {
+    final $$SupportMonthlyReportsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportMonthlyReports,
+          getReferencedColumn: (t) => t.halaqahId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$HalaqahsTableTableManager
@@ -5368,6 +9857,8 @@ class $$HalaqahsTableTableManager
             bool supportProgramPeriodsRefs,
             bool studentsRefs,
             bool halaqahDaysRefs,
+            bool supportWeeklyReportsRefs,
+            bool supportMonthlyReportsRefs,
           })
         > {
   $$HalaqahsTableTableManager(_$AppDatabase db, $HalaqahsTable table)
@@ -5427,6 +9918,8 @@ class $$HalaqahsTableTableManager
                 supportProgramPeriodsRefs = false,
                 studentsRefs = false,
                 halaqahDaysRefs = false,
+                supportWeeklyReportsRefs = false,
+                supportMonthlyReportsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -5435,6 +9928,8 @@ class $$HalaqahsTableTableManager
                     if (supportProgramPeriodsRefs) db.supportProgramPeriods,
                     if (studentsRefs) db.students,
                     if (halaqahDaysRefs) db.halaqahDays,
+                    if (supportWeeklyReportsRefs) db.supportWeeklyReports,
+                    if (supportMonthlyReportsRefs) db.supportMonthlyReports,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -5523,6 +10018,48 @@ class $$HalaqahsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (supportWeeklyReportsRefs)
+                        await $_getPrefetchedData<
+                          Halaqah,
+                          $HalaqahsTable,
+                          SupportWeeklyReport
+                        >(
+                          currentTable: table,
+                          referencedTable: $$HalaqahsTableReferences
+                              ._supportWeeklyReportsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$HalaqahsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportWeeklyReportsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.halaqahId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (supportMonthlyReportsRefs)
+                        await $_getPrefetchedData<
+                          Halaqah,
+                          $HalaqahsTable,
+                          SupportMonthlyReport
+                        >(
+                          currentTable: table,
+                          referencedTable: $$HalaqahsTableReferences
+                              ._supportMonthlyReportsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$HalaqahsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportMonthlyReportsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.halaqahId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -5548,6 +10085,8 @@ typedef $$HalaqahsTableProcessedTableManager =
         bool supportProgramPeriodsRefs,
         bool studentsRefs,
         bool halaqahDaysRefs,
+        bool supportWeeklyReportsRefs,
+        bool supportMonthlyReportsRefs,
       })
     >;
 typedef $$SupportProgramSettingsTableCreateCompanionBuilder =
@@ -6409,6 +10948,58 @@ final class $$StudentsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<
+    $SupportWeeklyReportStudentsTable,
+    List<SupportWeeklyReportStudent>
+  >
+  _supportWeeklyReportStudentsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.supportWeeklyReportStudents,
+        aliasName:
+            'students__id__support_weekly_report_students__source_student_id',
+      );
+
+  $$SupportWeeklyReportStudentsTableProcessedTableManager
+  get supportWeeklyReportStudentsRefs {
+    final manager = $$SupportWeeklyReportStudentsTableTableManager(
+      $_db,
+      $_db.supportWeeklyReportStudents,
+    ).filter((f) => f.sourceStudentId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportWeeklyReportStudentsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $SupportMonthlyReportStudentsTable,
+    List<SupportMonthlyReportStudent>
+  >
+  _supportMonthlyReportStudentsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.supportMonthlyReportStudents,
+        aliasName:
+            'students__id__support_monthly_report_students__source_student_id',
+      );
+
+  $$SupportMonthlyReportStudentsTableProcessedTableManager
+  get supportMonthlyReportStudentsRefs {
+    final manager = $$SupportMonthlyReportStudentsTableTableManager(
+      $_db,
+      $_db.supportMonthlyReportStudents,
+    ).filter((f) => f.sourceStudentId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportMonthlyReportStudentsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$StudentsTableFilterComposer
@@ -6626,6 +11217,64 @@ class $$StudentsTableFilterComposer
                 $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> supportWeeklyReportStudentsRefs(
+    Expression<bool> Function(
+      $$SupportWeeklyReportStudentsTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$SupportWeeklyReportStudentsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportStudents,
+          getReferencedColumn: (t) => t.sourceStudentId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportStudentsTableFilterComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<bool> supportMonthlyReportStudentsRefs(
+    Expression<bool> Function(
+      $$SupportMonthlyReportStudentsTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$SupportMonthlyReportStudentsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportMonthlyReportStudents,
+          getReferencedColumn: (t) => t.sourceStudentId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportStudentsTableFilterComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -6934,6 +11583,64 @@ class $$StudentsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> supportWeeklyReportStudentsRefs<T extends Object>(
+    Expression<T> Function(
+      $$SupportWeeklyReportStudentsTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$SupportWeeklyReportStudentsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportStudents,
+          getReferencedColumn: (t) => t.sourceStudentId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportStudentsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> supportMonthlyReportStudentsRefs<T extends Object>(
+    Expression<T> Function(
+      $$SupportMonthlyReportStudentsTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$SupportMonthlyReportStudentsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportMonthlyReportStudents,
+          getReferencedColumn: (t) => t.sourceStudentId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportStudentsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$StudentsTableTableManager
@@ -6956,6 +11663,8 @@ class $$StudentsTableTableManager
             bool attendanceRecordsRefs,
             bool recitationsRefs,
             bool parentFollowUpsRefs,
+            bool supportWeeklyReportStudentsRefs,
+            bool supportMonthlyReportStudentsRefs,
           })
         > {
   $$StudentsTableTableManager(_$AppDatabase db, $StudentsTable table)
@@ -7045,6 +11754,8 @@ class $$StudentsTableTableManager
                 attendanceRecordsRefs = false,
                 recitationsRefs = false,
                 parentFollowUpsRefs = false,
+                supportWeeklyReportStudentsRefs = false,
+                supportMonthlyReportStudentsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -7054,6 +11765,10 @@ class $$StudentsTableTableManager
                     if (attendanceRecordsRefs) db.attendanceRecords,
                     if (recitationsRefs) db.recitations,
                     if (parentFollowUpsRefs) db.parentFollowUps,
+                    if (supportWeeklyReportStudentsRefs)
+                      db.supportWeeklyReportStudents,
+                    if (supportMonthlyReportStudentsRefs)
+                      db.supportMonthlyReportStudents,
                   ],
                   addJoins:
                       <
@@ -7194,6 +11909,48 @@ class $$StudentsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (supportWeeklyReportStudentsRefs)
+                        await $_getPrefetchedData<
+                          Student,
+                          $StudentsTable,
+                          SupportWeeklyReportStudent
+                        >(
+                          currentTable: table,
+                          referencedTable: $$StudentsTableReferences
+                              ._supportWeeklyReportStudentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$StudentsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportWeeklyReportStudentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.sourceStudentId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (supportMonthlyReportStudentsRefs)
+                        await $_getPrefetchedData<
+                          Student,
+                          $StudentsTable,
+                          SupportMonthlyReportStudent
+                        >(
+                          currentTable: table,
+                          referencedTable: $$StudentsTableReferences
+                              ._supportMonthlyReportStudentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$StudentsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportMonthlyReportStudentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.sourceStudentId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -7221,6 +11978,8 @@ typedef $$StudentsTableProcessedTableManager =
         bool attendanceRecordsRefs,
         bool recitationsRefs,
         bool parentFollowUpsRefs,
+        bool supportWeeklyReportStudentsRefs,
+        bool supportMonthlyReportStudentsRefs,
       })
     >;
 typedef $$StudentProgressPlansTableCreateCompanionBuilder =
@@ -10053,6 +14812,3609 @@ typedef $$ParentFollowUpsTableProcessedTableManager =
         bool correctsFollowUpId,
       })
     >;
+typedef $$SupportWeeklyReportsTableCreateCompanionBuilder =
+    SupportWeeklyReportsCompanion Function({
+      Value<int> id,
+      required int halaqahId,
+      required String weekStartDate,
+      required String weekEndDate,
+      required String status,
+      required String teacherNameSnapshot,
+      required String halaqahNameSnapshot,
+      required String organizationNameSnapshot,
+      required int policyVersion,
+      required int templateVersion,
+      Value<String?> sourceFingerprint,
+      Value<DateTime?> approvedAtUtc,
+    });
+typedef $$SupportWeeklyReportsTableUpdateCompanionBuilder =
+    SupportWeeklyReportsCompanion Function({
+      Value<int> id,
+      Value<int> halaqahId,
+      Value<String> weekStartDate,
+      Value<String> weekEndDate,
+      Value<String> status,
+      Value<String> teacherNameSnapshot,
+      Value<String> halaqahNameSnapshot,
+      Value<String> organizationNameSnapshot,
+      Value<int> policyVersion,
+      Value<int> templateVersion,
+      Value<String?> sourceFingerprint,
+      Value<DateTime?> approvedAtUtc,
+    });
+
+final class $$SupportWeeklyReportsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $SupportWeeklyReportsTable,
+          SupportWeeklyReport
+        > {
+  $$SupportWeeklyReportsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $HalaqahsTable _halaqahIdTable(_$AppDatabase db) => db.halaqahs
+      .createAlias('support_weekly_reports__halaqah_id__halaqahs__id');
+
+  $$HalaqahsTableProcessedTableManager get halaqahId {
+    final $_column = $_itemColumn<int>('halaqah_id')!;
+
+    final manager = $$HalaqahsTableTableManager(
+      $_db,
+      $_db.halaqahs,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_halaqahIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $SupportWeeklyReportStudentsTable,
+    List<SupportWeeklyReportStudent>
+  >
+  _supportWeeklyReportStudentsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.supportWeeklyReportStudents,
+    aliasName:
+        'support_weekly_reports__id__support_weekly_report_students__report_id',
+  );
+
+  $$SupportWeeklyReportStudentsTableProcessedTableManager
+  get supportWeeklyReportStudentsRefs {
+    final manager = $$SupportWeeklyReportStudentsTableTableManager(
+      $_db,
+      $_db.supportWeeklyReportStudents,
+    ).filter((f) => f.reportId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportWeeklyReportStudentsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $SupportWeeklyReportDaysTable,
+    List<SupportWeeklyReportDay>
+  >
+  _supportWeeklyReportDaysRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.supportWeeklyReportDays,
+        aliasName:
+            'support_weekly_reports__id__support_weekly_report_days__report_id',
+      );
+
+  $$SupportWeeklyReportDaysTableProcessedTableManager
+  get supportWeeklyReportDaysRefs {
+    final manager = $$SupportWeeklyReportDaysTableTableManager(
+      $_db,
+      $_db.supportWeeklyReportDays,
+    ).filter((f) => f.reportId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportWeeklyReportDaysRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$SupportWeeklyReportsTableFilterComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportsTable> {
+  $$SupportWeeklyReportsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get weekStartDate => $composableBuilder(
+    column: $table.weekStartDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get weekEndDate => $composableBuilder(
+    column: $table.weekEndDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get teacherNameSnapshot => $composableBuilder(
+    column: $table.teacherNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get halaqahNameSnapshot => $composableBuilder(
+    column: $table.halaqahNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get organizationNameSnapshot => $composableBuilder(
+    column: $table.organizationNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get policyVersion => $composableBuilder(
+    column: $table.policyVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get templateVersion => $composableBuilder(
+    column: $table.templateVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceFingerprint => $composableBuilder(
+    column: $table.sourceFingerprint,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get approvedAtUtc => $composableBuilder(
+    column: $table.approvedAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$HalaqahsTableFilterComposer get halaqahId {
+    final $$HalaqahsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableFilterComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> supportWeeklyReportStudentsRefs(
+    Expression<bool> Function(
+      $$SupportWeeklyReportStudentsTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$SupportWeeklyReportStudentsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportStudents,
+          getReferencedColumn: (t) => t.reportId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportStudentsTableFilterComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<bool> supportWeeklyReportDaysRefs(
+    Expression<bool> Function($$SupportWeeklyReportDaysTableFilterComposer f) f,
+  ) {
+    final $$SupportWeeklyReportDaysTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportDays,
+          getReferencedColumn: (t) => t.reportId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDaysTableFilterComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SupportWeeklyReportsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportsTable> {
+  $$SupportWeeklyReportsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get weekStartDate => $composableBuilder(
+    column: $table.weekStartDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get weekEndDate => $composableBuilder(
+    column: $table.weekEndDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get teacherNameSnapshot => $composableBuilder(
+    column: $table.teacherNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get halaqahNameSnapshot => $composableBuilder(
+    column: $table.halaqahNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get organizationNameSnapshot => $composableBuilder(
+    column: $table.organizationNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get policyVersion => $composableBuilder(
+    column: $table.policyVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get templateVersion => $composableBuilder(
+    column: $table.templateVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceFingerprint => $composableBuilder(
+    column: $table.sourceFingerprint,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get approvedAtUtc => $composableBuilder(
+    column: $table.approvedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$HalaqahsTableOrderingComposer get halaqahId {
+    final $$HalaqahsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableOrderingComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupportWeeklyReportsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportsTable> {
+  $$SupportWeeklyReportsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get weekStartDate => $composableBuilder(
+    column: $table.weekStartDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get weekEndDate => $composableBuilder(
+    column: $table.weekEndDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get teacherNameSnapshot => $composableBuilder(
+    column: $table.teacherNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get halaqahNameSnapshot => $composableBuilder(
+    column: $table.halaqahNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get organizationNameSnapshot => $composableBuilder(
+    column: $table.organizationNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get policyVersion => $composableBuilder(
+    column: $table.policyVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get templateVersion => $composableBuilder(
+    column: $table.templateVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceFingerprint => $composableBuilder(
+    column: $table.sourceFingerprint,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get approvedAtUtc => $composableBuilder(
+    column: $table.approvedAtUtc,
+    builder: (column) => column,
+  );
+
+  $$HalaqahsTableAnnotationComposer get halaqahId {
+    final $$HalaqahsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> supportWeeklyReportStudentsRefs<T extends Object>(
+    Expression<T> Function(
+      $$SupportWeeklyReportStudentsTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$SupportWeeklyReportStudentsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportStudents,
+          getReferencedColumn: (t) => t.reportId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportStudentsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> supportWeeklyReportDaysRefs<T extends Object>(
+    Expression<T> Function($$SupportWeeklyReportDaysTableAnnotationComposer a)
+    f,
+  ) {
+    final $$SupportWeeklyReportDaysTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportDays,
+          getReferencedColumn: (t) => t.reportId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDaysTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SupportWeeklyReportsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SupportWeeklyReportsTable,
+          SupportWeeklyReport,
+          $$SupportWeeklyReportsTableFilterComposer,
+          $$SupportWeeklyReportsTableOrderingComposer,
+          $$SupportWeeklyReportsTableAnnotationComposer,
+          $$SupportWeeklyReportsTableCreateCompanionBuilder,
+          $$SupportWeeklyReportsTableUpdateCompanionBuilder,
+          (SupportWeeklyReport, $$SupportWeeklyReportsTableReferences),
+          SupportWeeklyReport,
+          PrefetchHooks Function({
+            bool halaqahId,
+            bool supportWeeklyReportStudentsRefs,
+            bool supportWeeklyReportDaysRefs,
+          })
+        > {
+  $$SupportWeeklyReportsTableTableManager(
+    _$AppDatabase db,
+    $SupportWeeklyReportsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SupportWeeklyReportsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SupportWeeklyReportsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SupportWeeklyReportsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> halaqahId = const Value.absent(),
+                Value<String> weekStartDate = const Value.absent(),
+                Value<String> weekEndDate = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> teacherNameSnapshot = const Value.absent(),
+                Value<String> halaqahNameSnapshot = const Value.absent(),
+                Value<String> organizationNameSnapshot = const Value.absent(),
+                Value<int> policyVersion = const Value.absent(),
+                Value<int> templateVersion = const Value.absent(),
+                Value<String?> sourceFingerprint = const Value.absent(),
+                Value<DateTime?> approvedAtUtc = const Value.absent(),
+              }) => SupportWeeklyReportsCompanion(
+                id: id,
+                halaqahId: halaqahId,
+                weekStartDate: weekStartDate,
+                weekEndDate: weekEndDate,
+                status: status,
+                teacherNameSnapshot: teacherNameSnapshot,
+                halaqahNameSnapshot: halaqahNameSnapshot,
+                organizationNameSnapshot: organizationNameSnapshot,
+                policyVersion: policyVersion,
+                templateVersion: templateVersion,
+                sourceFingerprint: sourceFingerprint,
+                approvedAtUtc: approvedAtUtc,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int halaqahId,
+                required String weekStartDate,
+                required String weekEndDate,
+                required String status,
+                required String teacherNameSnapshot,
+                required String halaqahNameSnapshot,
+                required String organizationNameSnapshot,
+                required int policyVersion,
+                required int templateVersion,
+                Value<String?> sourceFingerprint = const Value.absent(),
+                Value<DateTime?> approvedAtUtc = const Value.absent(),
+              }) => SupportWeeklyReportsCompanion.insert(
+                id: id,
+                halaqahId: halaqahId,
+                weekStartDate: weekStartDate,
+                weekEndDate: weekEndDate,
+                status: status,
+                teacherNameSnapshot: teacherNameSnapshot,
+                halaqahNameSnapshot: halaqahNameSnapshot,
+                organizationNameSnapshot: organizationNameSnapshot,
+                policyVersion: policyVersion,
+                templateVersion: templateVersion,
+                sourceFingerprint: sourceFingerprint,
+                approvedAtUtc: approvedAtUtc,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$SupportWeeklyReportsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                halaqahId = false,
+                supportWeeklyReportStudentsRefs = false,
+                supportWeeklyReportDaysRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (supportWeeklyReportStudentsRefs)
+                      db.supportWeeklyReportStudents,
+                    if (supportWeeklyReportDaysRefs) db.supportWeeklyReportDays,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (halaqahId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.halaqahId,
+                                    referencedTable:
+                                        $$SupportWeeklyReportsTableReferences
+                                            ._halaqahIdTable(db),
+                                    referencedColumn:
+                                        $$SupportWeeklyReportsTableReferences
+                                            ._halaqahIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (supportWeeklyReportStudentsRefs)
+                        await $_getPrefetchedData<
+                          SupportWeeklyReport,
+                          $SupportWeeklyReportsTable,
+                          SupportWeeklyReportStudent
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SupportWeeklyReportsTableReferences
+                              ._supportWeeklyReportStudentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SupportWeeklyReportsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportWeeklyReportStudentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.reportId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (supportWeeklyReportDaysRefs)
+                        await $_getPrefetchedData<
+                          SupportWeeklyReport,
+                          $SupportWeeklyReportsTable,
+                          SupportWeeklyReportDay
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SupportWeeklyReportsTableReferences
+                              ._supportWeeklyReportDaysRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SupportWeeklyReportsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportWeeklyReportDaysRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.reportId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$SupportWeeklyReportsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SupportWeeklyReportsTable,
+      SupportWeeklyReport,
+      $$SupportWeeklyReportsTableFilterComposer,
+      $$SupportWeeklyReportsTableOrderingComposer,
+      $$SupportWeeklyReportsTableAnnotationComposer,
+      $$SupportWeeklyReportsTableCreateCompanionBuilder,
+      $$SupportWeeklyReportsTableUpdateCompanionBuilder,
+      (SupportWeeklyReport, $$SupportWeeklyReportsTableReferences),
+      SupportWeeklyReport,
+      PrefetchHooks Function({
+        bool halaqahId,
+        bool supportWeeklyReportStudentsRefs,
+        bool supportWeeklyReportDaysRefs,
+      })
+    >;
+typedef $$SupportWeeklyReportStudentsTableCreateCompanionBuilder =
+    SupportWeeklyReportStudentsCompanion Function({
+      Value<int> id,
+      required int reportId,
+      required int sourceStudentId,
+      Value<String?> supportStudentNumberSnapshot,
+      required String studentNameSnapshot,
+      Value<int?> currentJuzSnapshot,
+      Value<String?> dailyPlanTextSnapshot,
+      required int monthlyGoalQuarterFacesSnapshot,
+      Value<String?> studentNoteSnapshot,
+      required int displayOrderSnapshot,
+    });
+typedef $$SupportWeeklyReportStudentsTableUpdateCompanionBuilder =
+    SupportWeeklyReportStudentsCompanion Function({
+      Value<int> id,
+      Value<int> reportId,
+      Value<int> sourceStudentId,
+      Value<String?> supportStudentNumberSnapshot,
+      Value<String> studentNameSnapshot,
+      Value<int?> currentJuzSnapshot,
+      Value<String?> dailyPlanTextSnapshot,
+      Value<int> monthlyGoalQuarterFacesSnapshot,
+      Value<String?> studentNoteSnapshot,
+      Value<int> displayOrderSnapshot,
+    });
+
+final class $$SupportWeeklyReportStudentsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $SupportWeeklyReportStudentsTable,
+          SupportWeeklyReportStudent
+        > {
+  $$SupportWeeklyReportStudentsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $SupportWeeklyReportsTable _reportIdTable(_$AppDatabase db) =>
+      db.supportWeeklyReports.createAlias(
+        'support_weekly_report_students__report_id__support_weekly_reports__id',
+      );
+
+  $$SupportWeeklyReportsTableProcessedTableManager get reportId {
+    final $_column = $_itemColumn<int>('report_id')!;
+
+    final manager = $$SupportWeeklyReportsTableTableManager(
+      $_db,
+      $_db.supportWeeklyReports,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_reportIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $StudentsTable _sourceStudentIdTable(_$AppDatabase db) =>
+      db.students.createAlias(
+        'support_weekly_report_students__source_student_id__students__id',
+      );
+
+  $$StudentsTableProcessedTableManager get sourceStudentId {
+    final $_column = $_itemColumn<int>('source_student_id')!;
+
+    final manager = $$StudentsTableTableManager(
+      $_db,
+      $_db.students,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_sourceStudentIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $SupportWeeklyReportDayEntriesTable,
+    List<SupportWeeklyReportDayEntry>
+  >
+  _supportWeeklyReportDayEntriesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.supportWeeklyReportDayEntries,
+    aliasName:
+        'support_weekly_report_students__id__support_weekly_report_day_entries__report_student_id',
+  );
+
+  $$SupportWeeklyReportDayEntriesTableProcessedTableManager
+  get supportWeeklyReportDayEntriesRefs {
+    final manager = $$SupportWeeklyReportDayEntriesTableTableManager(
+      $_db,
+      $_db.supportWeeklyReportDayEntries,
+    ).filter((f) => f.reportStudentId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportWeeklyReportDayEntriesRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$SupportWeeklyReportStudentsTableFilterComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportStudentsTable> {
+  $$SupportWeeklyReportStudentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supportStudentNumberSnapshot => $composableBuilder(
+    column: $table.supportStudentNumberSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get studentNameSnapshot => $composableBuilder(
+    column: $table.studentNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get currentJuzSnapshot => $composableBuilder(
+    column: $table.currentJuzSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dailyPlanTextSnapshot => $composableBuilder(
+    column: $table.dailyPlanTextSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get monthlyGoalQuarterFacesSnapshot => $composableBuilder(
+    column: $table.monthlyGoalQuarterFacesSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get studentNoteSnapshot => $composableBuilder(
+    column: $table.studentNoteSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get displayOrderSnapshot => $composableBuilder(
+    column: $table.displayOrderSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SupportWeeklyReportsTableFilterComposer get reportId {
+    final $$SupportWeeklyReportsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.reportId,
+      referencedTable: $db.supportWeeklyReports,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupportWeeklyReportsTableFilterComposer(
+            $db: $db,
+            $table: $db.supportWeeklyReports,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$StudentsTableFilterComposer get sourceStudentId {
+    final $$StudentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceStudentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableFilterComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> supportWeeklyReportDayEntriesRefs(
+    Expression<bool> Function(
+      $$SupportWeeklyReportDayEntriesTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$SupportWeeklyReportDayEntriesTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportDayEntries,
+          getReferencedColumn: (t) => t.reportStudentId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDayEntriesTableFilterComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDayEntries,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SupportWeeklyReportStudentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportStudentsTable> {
+  $$SupportWeeklyReportStudentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supportStudentNumberSnapshot =>
+      $composableBuilder(
+        column: $table.supportStudentNumberSnapshot,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<String> get studentNameSnapshot => $composableBuilder(
+    column: $table.studentNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get currentJuzSnapshot => $composableBuilder(
+    column: $table.currentJuzSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dailyPlanTextSnapshot => $composableBuilder(
+    column: $table.dailyPlanTextSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get monthlyGoalQuarterFacesSnapshot =>
+      $composableBuilder(
+        column: $table.monthlyGoalQuarterFacesSnapshot,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<String> get studentNoteSnapshot => $composableBuilder(
+    column: $table.studentNoteSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get displayOrderSnapshot => $composableBuilder(
+    column: $table.displayOrderSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SupportWeeklyReportsTableOrderingComposer get reportId {
+    final $$SupportWeeklyReportsTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportId,
+          referencedTable: $db.supportWeeklyReports,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportsTableOrderingComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$StudentsTableOrderingComposer get sourceStudentId {
+    final $$StudentsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceStudentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableOrderingComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupportWeeklyReportStudentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportStudentsTable> {
+  $$SupportWeeklyReportStudentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get supportStudentNumberSnapshot =>
+      $composableBuilder(
+        column: $table.supportStudentNumberSnapshot,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get studentNameSnapshot => $composableBuilder(
+    column: $table.studentNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get currentJuzSnapshot => $composableBuilder(
+    column: $table.currentJuzSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get dailyPlanTextSnapshot => $composableBuilder(
+    column: $table.dailyPlanTextSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get monthlyGoalQuarterFacesSnapshot =>
+      $composableBuilder(
+        column: $table.monthlyGoalQuarterFacesSnapshot,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get studentNoteSnapshot => $composableBuilder(
+    column: $table.studentNoteSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get displayOrderSnapshot => $composableBuilder(
+    column: $table.displayOrderSnapshot,
+    builder: (column) => column,
+  );
+
+  $$SupportWeeklyReportsTableAnnotationComposer get reportId {
+    final $$SupportWeeklyReportsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportId,
+          referencedTable: $db.supportWeeklyReports,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$StudentsTableAnnotationComposer get sourceStudentId {
+    final $$StudentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceStudentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> supportWeeklyReportDayEntriesRefs<T extends Object>(
+    Expression<T> Function(
+      $$SupportWeeklyReportDayEntriesTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$SupportWeeklyReportDayEntriesTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportDayEntries,
+          getReferencedColumn: (t) => t.reportStudentId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDayEntriesTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDayEntries,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SupportWeeklyReportStudentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SupportWeeklyReportStudentsTable,
+          SupportWeeklyReportStudent,
+          $$SupportWeeklyReportStudentsTableFilterComposer,
+          $$SupportWeeklyReportStudentsTableOrderingComposer,
+          $$SupportWeeklyReportStudentsTableAnnotationComposer,
+          $$SupportWeeklyReportStudentsTableCreateCompanionBuilder,
+          $$SupportWeeklyReportStudentsTableUpdateCompanionBuilder,
+          (
+            SupportWeeklyReportStudent,
+            $$SupportWeeklyReportStudentsTableReferences,
+          ),
+          SupportWeeklyReportStudent,
+          PrefetchHooks Function({
+            bool reportId,
+            bool sourceStudentId,
+            bool supportWeeklyReportDayEntriesRefs,
+          })
+        > {
+  $$SupportWeeklyReportStudentsTableTableManager(
+    _$AppDatabase db,
+    $SupportWeeklyReportStudentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SupportWeeklyReportStudentsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$SupportWeeklyReportStudentsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SupportWeeklyReportStudentsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> reportId = const Value.absent(),
+                Value<int> sourceStudentId = const Value.absent(),
+                Value<String?> supportStudentNumberSnapshot =
+                    const Value.absent(),
+                Value<String> studentNameSnapshot = const Value.absent(),
+                Value<int?> currentJuzSnapshot = const Value.absent(),
+                Value<String?> dailyPlanTextSnapshot = const Value.absent(),
+                Value<int> monthlyGoalQuarterFacesSnapshot =
+                    const Value.absent(),
+                Value<String?> studentNoteSnapshot = const Value.absent(),
+                Value<int> displayOrderSnapshot = const Value.absent(),
+              }) => SupportWeeklyReportStudentsCompanion(
+                id: id,
+                reportId: reportId,
+                sourceStudentId: sourceStudentId,
+                supportStudentNumberSnapshot: supportStudentNumberSnapshot,
+                studentNameSnapshot: studentNameSnapshot,
+                currentJuzSnapshot: currentJuzSnapshot,
+                dailyPlanTextSnapshot: dailyPlanTextSnapshot,
+                monthlyGoalQuarterFacesSnapshot:
+                    monthlyGoalQuarterFacesSnapshot,
+                studentNoteSnapshot: studentNoteSnapshot,
+                displayOrderSnapshot: displayOrderSnapshot,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int reportId,
+                required int sourceStudentId,
+                Value<String?> supportStudentNumberSnapshot =
+                    const Value.absent(),
+                required String studentNameSnapshot,
+                Value<int?> currentJuzSnapshot = const Value.absent(),
+                Value<String?> dailyPlanTextSnapshot = const Value.absent(),
+                required int monthlyGoalQuarterFacesSnapshot,
+                Value<String?> studentNoteSnapshot = const Value.absent(),
+                required int displayOrderSnapshot,
+              }) => SupportWeeklyReportStudentsCompanion.insert(
+                id: id,
+                reportId: reportId,
+                sourceStudentId: sourceStudentId,
+                supportStudentNumberSnapshot: supportStudentNumberSnapshot,
+                studentNameSnapshot: studentNameSnapshot,
+                currentJuzSnapshot: currentJuzSnapshot,
+                dailyPlanTextSnapshot: dailyPlanTextSnapshot,
+                monthlyGoalQuarterFacesSnapshot:
+                    monthlyGoalQuarterFacesSnapshot,
+                studentNoteSnapshot: studentNoteSnapshot,
+                displayOrderSnapshot: displayOrderSnapshot,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$SupportWeeklyReportStudentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                reportId = false,
+                sourceStudentId = false,
+                supportWeeklyReportDayEntriesRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (supportWeeklyReportDayEntriesRefs)
+                      db.supportWeeklyReportDayEntries,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (reportId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.reportId,
+                                    referencedTable:
+                                        $$SupportWeeklyReportStudentsTableReferences
+                                            ._reportIdTable(db),
+                                    referencedColumn:
+                                        $$SupportWeeklyReportStudentsTableReferences
+                                            ._reportIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (sourceStudentId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.sourceStudentId,
+                                    referencedTable:
+                                        $$SupportWeeklyReportStudentsTableReferences
+                                            ._sourceStudentIdTable(db),
+                                    referencedColumn:
+                                        $$SupportWeeklyReportStudentsTableReferences
+                                            ._sourceStudentIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (supportWeeklyReportDayEntriesRefs)
+                        await $_getPrefetchedData<
+                          SupportWeeklyReportStudent,
+                          $SupportWeeklyReportStudentsTable,
+                          SupportWeeklyReportDayEntry
+                        >(
+                          currentTable: table,
+                          referencedTable:
+                              $$SupportWeeklyReportStudentsTableReferences
+                                  ._supportWeeklyReportDayEntriesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SupportWeeklyReportStudentsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportWeeklyReportDayEntriesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.reportStudentId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$SupportWeeklyReportStudentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SupportWeeklyReportStudentsTable,
+      SupportWeeklyReportStudent,
+      $$SupportWeeklyReportStudentsTableFilterComposer,
+      $$SupportWeeklyReportStudentsTableOrderingComposer,
+      $$SupportWeeklyReportStudentsTableAnnotationComposer,
+      $$SupportWeeklyReportStudentsTableCreateCompanionBuilder,
+      $$SupportWeeklyReportStudentsTableUpdateCompanionBuilder,
+      (
+        SupportWeeklyReportStudent,
+        $$SupportWeeklyReportStudentsTableReferences,
+      ),
+      SupportWeeklyReportStudent,
+      PrefetchHooks Function({
+        bool reportId,
+        bool sourceStudentId,
+        bool supportWeeklyReportDayEntriesRefs,
+      })
+    >;
+typedef $$SupportWeeklyReportDaysTableCreateCompanionBuilder =
+    SupportWeeklyReportDaysCompanion Function({
+      Value<int> id,
+      required int reportId,
+      required String dayDate,
+      required String dayKind,
+    });
+typedef $$SupportWeeklyReportDaysTableUpdateCompanionBuilder =
+    SupportWeeklyReportDaysCompanion Function({
+      Value<int> id,
+      Value<int> reportId,
+      Value<String> dayDate,
+      Value<String> dayKind,
+    });
+
+final class $$SupportWeeklyReportDaysTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $SupportWeeklyReportDaysTable,
+          SupportWeeklyReportDay
+        > {
+  $$SupportWeeklyReportDaysTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $SupportWeeklyReportsTable _reportIdTable(_$AppDatabase db) =>
+      db.supportWeeklyReports.createAlias(
+        'support_weekly_report_days__report_id__support_weekly_reports__id',
+      );
+
+  $$SupportWeeklyReportsTableProcessedTableManager get reportId {
+    final $_column = $_itemColumn<int>('report_id')!;
+
+    final manager = $$SupportWeeklyReportsTableTableManager(
+      $_db,
+      $_db.supportWeeklyReports,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_reportIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $SupportWeeklyReportDayEntriesTable,
+    List<SupportWeeklyReportDayEntry>
+  >
+  _supportWeeklyReportDayEntriesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.supportWeeklyReportDayEntries,
+    aliasName:
+        'support_weekly_report_days__id__support_weekly_report_day_entries__report_day_id',
+  );
+
+  $$SupportWeeklyReportDayEntriesTableProcessedTableManager
+  get supportWeeklyReportDayEntriesRefs {
+    final manager = $$SupportWeeklyReportDayEntriesTableTableManager(
+      $_db,
+      $_db.supportWeeklyReportDayEntries,
+    ).filter((f) => f.reportDayId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportWeeklyReportDayEntriesRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$SupportWeeklyReportDaysTableFilterComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportDaysTable> {
+  $$SupportWeeklyReportDaysTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dayDate => $composableBuilder(
+    column: $table.dayDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dayKind => $composableBuilder(
+    column: $table.dayKind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SupportWeeklyReportsTableFilterComposer get reportId {
+    final $$SupportWeeklyReportsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.reportId,
+      referencedTable: $db.supportWeeklyReports,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupportWeeklyReportsTableFilterComposer(
+            $db: $db,
+            $table: $db.supportWeeklyReports,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> supportWeeklyReportDayEntriesRefs(
+    Expression<bool> Function(
+      $$SupportWeeklyReportDayEntriesTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$SupportWeeklyReportDayEntriesTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportDayEntries,
+          getReferencedColumn: (t) => t.reportDayId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDayEntriesTableFilterComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDayEntries,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SupportWeeklyReportDaysTableOrderingComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportDaysTable> {
+  $$SupportWeeklyReportDaysTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dayDate => $composableBuilder(
+    column: $table.dayDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dayKind => $composableBuilder(
+    column: $table.dayKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SupportWeeklyReportsTableOrderingComposer get reportId {
+    final $$SupportWeeklyReportsTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportId,
+          referencedTable: $db.supportWeeklyReports,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportsTableOrderingComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$SupportWeeklyReportDaysTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportDaysTable> {
+  $$SupportWeeklyReportDaysTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get dayDate =>
+      $composableBuilder(column: $table.dayDate, builder: (column) => column);
+
+  GeneratedColumn<String> get dayKind =>
+      $composableBuilder(column: $table.dayKind, builder: (column) => column);
+
+  $$SupportWeeklyReportsTableAnnotationComposer get reportId {
+    final $$SupportWeeklyReportsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportId,
+          referencedTable: $db.supportWeeklyReports,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  Expression<T> supportWeeklyReportDayEntriesRefs<T extends Object>(
+    Expression<T> Function(
+      $$SupportWeeklyReportDayEntriesTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$SupportWeeklyReportDayEntriesTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportWeeklyReportDayEntries,
+          getReferencedColumn: (t) => t.reportDayId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDayEntriesTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDayEntries,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SupportWeeklyReportDaysTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SupportWeeklyReportDaysTable,
+          SupportWeeklyReportDay,
+          $$SupportWeeklyReportDaysTableFilterComposer,
+          $$SupportWeeklyReportDaysTableOrderingComposer,
+          $$SupportWeeklyReportDaysTableAnnotationComposer,
+          $$SupportWeeklyReportDaysTableCreateCompanionBuilder,
+          $$SupportWeeklyReportDaysTableUpdateCompanionBuilder,
+          (SupportWeeklyReportDay, $$SupportWeeklyReportDaysTableReferences),
+          SupportWeeklyReportDay,
+          PrefetchHooks Function({
+            bool reportId,
+            bool supportWeeklyReportDayEntriesRefs,
+          })
+        > {
+  $$SupportWeeklyReportDaysTableTableManager(
+    _$AppDatabase db,
+    $SupportWeeklyReportDaysTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SupportWeeklyReportDaysTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$SupportWeeklyReportDaysTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SupportWeeklyReportDaysTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> reportId = const Value.absent(),
+                Value<String> dayDate = const Value.absent(),
+                Value<String> dayKind = const Value.absent(),
+              }) => SupportWeeklyReportDaysCompanion(
+                id: id,
+                reportId: reportId,
+                dayDate: dayDate,
+                dayKind: dayKind,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int reportId,
+                required String dayDate,
+                required String dayKind,
+              }) => SupportWeeklyReportDaysCompanion.insert(
+                id: id,
+                reportId: reportId,
+                dayDate: dayDate,
+                dayKind: dayKind,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$SupportWeeklyReportDaysTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({reportId = false, supportWeeklyReportDayEntriesRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (supportWeeklyReportDayEntriesRefs)
+                      db.supportWeeklyReportDayEntries,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (reportId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.reportId,
+                                    referencedTable:
+                                        $$SupportWeeklyReportDaysTableReferences
+                                            ._reportIdTable(db),
+                                    referencedColumn:
+                                        $$SupportWeeklyReportDaysTableReferences
+                                            ._reportIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (supportWeeklyReportDayEntriesRefs)
+                        await $_getPrefetchedData<
+                          SupportWeeklyReportDay,
+                          $SupportWeeklyReportDaysTable,
+                          SupportWeeklyReportDayEntry
+                        >(
+                          currentTable: table,
+                          referencedTable:
+                              $$SupportWeeklyReportDaysTableReferences
+                                  ._supportWeeklyReportDayEntriesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SupportWeeklyReportDaysTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportWeeklyReportDayEntriesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.reportDayId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$SupportWeeklyReportDaysTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SupportWeeklyReportDaysTable,
+      SupportWeeklyReportDay,
+      $$SupportWeeklyReportDaysTableFilterComposer,
+      $$SupportWeeklyReportDaysTableOrderingComposer,
+      $$SupportWeeklyReportDaysTableAnnotationComposer,
+      $$SupportWeeklyReportDaysTableCreateCompanionBuilder,
+      $$SupportWeeklyReportDaysTableUpdateCompanionBuilder,
+      (SupportWeeklyReportDay, $$SupportWeeklyReportDaysTableReferences),
+      SupportWeeklyReportDay,
+      PrefetchHooks Function({
+        bool reportId,
+        bool supportWeeklyReportDayEntriesRefs,
+      })
+    >;
+typedef $$SupportWeeklyReportDayEntriesTableCreateCompanionBuilder =
+    SupportWeeklyReportDayEntriesCompanion Function({
+      Value<int> id,
+      required int reportDayId,
+      required int reportStudentId,
+      Value<String?> attendanceStatusSnapshot,
+      Value<int> achievedQuarterFaces,
+      Value<int?> startSurahSnapshot,
+      Value<int?> startAyahSnapshot,
+      Value<int?> endSurahSnapshot,
+      Value<int?> endAyahSnapshot,
+      Value<String?> noteSnapshot,
+      required int entryOrder,
+    });
+typedef $$SupportWeeklyReportDayEntriesTableUpdateCompanionBuilder =
+    SupportWeeklyReportDayEntriesCompanion Function({
+      Value<int> id,
+      Value<int> reportDayId,
+      Value<int> reportStudentId,
+      Value<String?> attendanceStatusSnapshot,
+      Value<int> achievedQuarterFaces,
+      Value<int?> startSurahSnapshot,
+      Value<int?> startAyahSnapshot,
+      Value<int?> endSurahSnapshot,
+      Value<int?> endAyahSnapshot,
+      Value<String?> noteSnapshot,
+      Value<int> entryOrder,
+    });
+
+final class $$SupportWeeklyReportDayEntriesTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $SupportWeeklyReportDayEntriesTable,
+          SupportWeeklyReportDayEntry
+        > {
+  $$SupportWeeklyReportDayEntriesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $SupportWeeklyReportDaysTable _reportDayIdTable(
+    _$AppDatabase db,
+  ) => db.supportWeeklyReportDays.createAlias(
+    'support_weekly_report_day_entries__report_day_id__support_weekly_report_days__id',
+  );
+
+  $$SupportWeeklyReportDaysTableProcessedTableManager get reportDayId {
+    final $_column = $_itemColumn<int>('report_day_id')!;
+
+    final manager = $$SupportWeeklyReportDaysTableTableManager(
+      $_db,
+      $_db.supportWeeklyReportDays,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_reportDayIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $SupportWeeklyReportStudentsTable _reportStudentIdTable(
+    _$AppDatabase db,
+  ) => db.supportWeeklyReportStudents.createAlias(
+    'support_weekly_report_day_entries__report_student_id__support_weekly_report_students__id',
+  );
+
+  $$SupportWeeklyReportStudentsTableProcessedTableManager get reportStudentId {
+    final $_column = $_itemColumn<int>('report_student_id')!;
+
+    final manager = $$SupportWeeklyReportStudentsTableTableManager(
+      $_db,
+      $_db.supportWeeklyReportStudents,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_reportStudentIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$SupportWeeklyReportDayEntriesTableFilterComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportDayEntriesTable> {
+  $$SupportWeeklyReportDayEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get attendanceStatusSnapshot => $composableBuilder(
+    column: $table.attendanceStatusSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get achievedQuarterFaces => $composableBuilder(
+    column: $table.achievedQuarterFaces,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get startSurahSnapshot => $composableBuilder(
+    column: $table.startSurahSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get startAyahSnapshot => $composableBuilder(
+    column: $table.startAyahSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get endSurahSnapshot => $composableBuilder(
+    column: $table.endSurahSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get endAyahSnapshot => $composableBuilder(
+    column: $table.endAyahSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get noteSnapshot => $composableBuilder(
+    column: $table.noteSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get entryOrder => $composableBuilder(
+    column: $table.entryOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SupportWeeklyReportDaysTableFilterComposer get reportDayId {
+    final $$SupportWeeklyReportDaysTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportDayId,
+          referencedTable: $db.supportWeeklyReportDays,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDaysTableFilterComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$SupportWeeklyReportStudentsTableFilterComposer get reportStudentId {
+    final $$SupportWeeklyReportStudentsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportStudentId,
+          referencedTable: $db.supportWeeklyReportStudents,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportStudentsTableFilterComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$SupportWeeklyReportDayEntriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportDayEntriesTable> {
+  $$SupportWeeklyReportDayEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get attendanceStatusSnapshot => $composableBuilder(
+    column: $table.attendanceStatusSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get achievedQuarterFaces => $composableBuilder(
+    column: $table.achievedQuarterFaces,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get startSurahSnapshot => $composableBuilder(
+    column: $table.startSurahSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get startAyahSnapshot => $composableBuilder(
+    column: $table.startAyahSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get endSurahSnapshot => $composableBuilder(
+    column: $table.endSurahSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get endAyahSnapshot => $composableBuilder(
+    column: $table.endAyahSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get noteSnapshot => $composableBuilder(
+    column: $table.noteSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get entryOrder => $composableBuilder(
+    column: $table.entryOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SupportWeeklyReportDaysTableOrderingComposer get reportDayId {
+    final $$SupportWeeklyReportDaysTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportDayId,
+          referencedTable: $db.supportWeeklyReportDays,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDaysTableOrderingComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$SupportWeeklyReportStudentsTableOrderingComposer get reportStudentId {
+    final $$SupportWeeklyReportStudentsTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportStudentId,
+          referencedTable: $db.supportWeeklyReportStudents,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportStudentsTableOrderingComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$SupportWeeklyReportDayEntriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SupportWeeklyReportDayEntriesTable> {
+  $$SupportWeeklyReportDayEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get attendanceStatusSnapshot => $composableBuilder(
+    column: $table.attendanceStatusSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get achievedQuarterFaces => $composableBuilder(
+    column: $table.achievedQuarterFaces,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get startSurahSnapshot => $composableBuilder(
+    column: $table.startSurahSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get startAyahSnapshot => $composableBuilder(
+    column: $table.startAyahSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get endSurahSnapshot => $composableBuilder(
+    column: $table.endSurahSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get endAyahSnapshot => $composableBuilder(
+    column: $table.endAyahSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get noteSnapshot => $composableBuilder(
+    column: $table.noteSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get entryOrder => $composableBuilder(
+    column: $table.entryOrder,
+    builder: (column) => column,
+  );
+
+  $$SupportWeeklyReportDaysTableAnnotationComposer get reportDayId {
+    final $$SupportWeeklyReportDaysTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportDayId,
+          referencedTable: $db.supportWeeklyReportDays,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportDaysTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$SupportWeeklyReportStudentsTableAnnotationComposer get reportStudentId {
+    final $$SupportWeeklyReportStudentsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportStudentId,
+          referencedTable: $db.supportWeeklyReportStudents,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportWeeklyReportStudentsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportWeeklyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$SupportWeeklyReportDayEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SupportWeeklyReportDayEntriesTable,
+          SupportWeeklyReportDayEntry,
+          $$SupportWeeklyReportDayEntriesTableFilterComposer,
+          $$SupportWeeklyReportDayEntriesTableOrderingComposer,
+          $$SupportWeeklyReportDayEntriesTableAnnotationComposer,
+          $$SupportWeeklyReportDayEntriesTableCreateCompanionBuilder,
+          $$SupportWeeklyReportDayEntriesTableUpdateCompanionBuilder,
+          (
+            SupportWeeklyReportDayEntry,
+            $$SupportWeeklyReportDayEntriesTableReferences,
+          ),
+          SupportWeeklyReportDayEntry,
+          PrefetchHooks Function({bool reportDayId, bool reportStudentId})
+        > {
+  $$SupportWeeklyReportDayEntriesTableTableManager(
+    _$AppDatabase db,
+    $SupportWeeklyReportDayEntriesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SupportWeeklyReportDayEntriesTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$SupportWeeklyReportDayEntriesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SupportWeeklyReportDayEntriesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> reportDayId = const Value.absent(),
+                Value<int> reportStudentId = const Value.absent(),
+                Value<String?> attendanceStatusSnapshot = const Value.absent(),
+                Value<int> achievedQuarterFaces = const Value.absent(),
+                Value<int?> startSurahSnapshot = const Value.absent(),
+                Value<int?> startAyahSnapshot = const Value.absent(),
+                Value<int?> endSurahSnapshot = const Value.absent(),
+                Value<int?> endAyahSnapshot = const Value.absent(),
+                Value<String?> noteSnapshot = const Value.absent(),
+                Value<int> entryOrder = const Value.absent(),
+              }) => SupportWeeklyReportDayEntriesCompanion(
+                id: id,
+                reportDayId: reportDayId,
+                reportStudentId: reportStudentId,
+                attendanceStatusSnapshot: attendanceStatusSnapshot,
+                achievedQuarterFaces: achievedQuarterFaces,
+                startSurahSnapshot: startSurahSnapshot,
+                startAyahSnapshot: startAyahSnapshot,
+                endSurahSnapshot: endSurahSnapshot,
+                endAyahSnapshot: endAyahSnapshot,
+                noteSnapshot: noteSnapshot,
+                entryOrder: entryOrder,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int reportDayId,
+                required int reportStudentId,
+                Value<String?> attendanceStatusSnapshot = const Value.absent(),
+                Value<int> achievedQuarterFaces = const Value.absent(),
+                Value<int?> startSurahSnapshot = const Value.absent(),
+                Value<int?> startAyahSnapshot = const Value.absent(),
+                Value<int?> endSurahSnapshot = const Value.absent(),
+                Value<int?> endAyahSnapshot = const Value.absent(),
+                Value<String?> noteSnapshot = const Value.absent(),
+                required int entryOrder,
+              }) => SupportWeeklyReportDayEntriesCompanion.insert(
+                id: id,
+                reportDayId: reportDayId,
+                reportStudentId: reportStudentId,
+                attendanceStatusSnapshot: attendanceStatusSnapshot,
+                achievedQuarterFaces: achievedQuarterFaces,
+                startSurahSnapshot: startSurahSnapshot,
+                startAyahSnapshot: startAyahSnapshot,
+                endSurahSnapshot: endSurahSnapshot,
+                endAyahSnapshot: endAyahSnapshot,
+                noteSnapshot: noteSnapshot,
+                entryOrder: entryOrder,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$SupportWeeklyReportDayEntriesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({reportDayId = false, reportStudentId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (reportDayId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.reportDayId,
+                                referencedTable:
+                                    $$SupportWeeklyReportDayEntriesTableReferences
+                                        ._reportDayIdTable(db),
+                                referencedColumn:
+                                    $$SupportWeeklyReportDayEntriesTableReferences
+                                        ._reportDayIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (reportStudentId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.reportStudentId,
+                                referencedTable:
+                                    $$SupportWeeklyReportDayEntriesTableReferences
+                                        ._reportStudentIdTable(db),
+                                referencedColumn:
+                                    $$SupportWeeklyReportDayEntriesTableReferences
+                                        ._reportStudentIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$SupportWeeklyReportDayEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SupportWeeklyReportDayEntriesTable,
+      SupportWeeklyReportDayEntry,
+      $$SupportWeeklyReportDayEntriesTableFilterComposer,
+      $$SupportWeeklyReportDayEntriesTableOrderingComposer,
+      $$SupportWeeklyReportDayEntriesTableAnnotationComposer,
+      $$SupportWeeklyReportDayEntriesTableCreateCompanionBuilder,
+      $$SupportWeeklyReportDayEntriesTableUpdateCompanionBuilder,
+      (
+        SupportWeeklyReportDayEntry,
+        $$SupportWeeklyReportDayEntriesTableReferences,
+      ),
+      SupportWeeklyReportDayEntry,
+      PrefetchHooks Function({bool reportDayId, bool reportStudentId})
+    >;
+typedef $$SupportMonthlyReportsTableCreateCompanionBuilder =
+    SupportMonthlyReportsCompanion Function({
+      Value<int> id,
+      required int halaqahId,
+      required String monthStartDate,
+      required String monthEndDate,
+      required String status,
+      required String teacherNameSnapshot,
+      required String halaqahNameSnapshot,
+      required String organizationNameSnapshot,
+      required int policyVersion,
+      required int templateVersion,
+      Value<String?> sourceFingerprint,
+      Value<DateTime?> approvedAtUtc,
+    });
+typedef $$SupportMonthlyReportsTableUpdateCompanionBuilder =
+    SupportMonthlyReportsCompanion Function({
+      Value<int> id,
+      Value<int> halaqahId,
+      Value<String> monthStartDate,
+      Value<String> monthEndDate,
+      Value<String> status,
+      Value<String> teacherNameSnapshot,
+      Value<String> halaqahNameSnapshot,
+      Value<String> organizationNameSnapshot,
+      Value<int> policyVersion,
+      Value<int> templateVersion,
+      Value<String?> sourceFingerprint,
+      Value<DateTime?> approvedAtUtc,
+    });
+
+final class $$SupportMonthlyReportsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $SupportMonthlyReportsTable,
+          SupportMonthlyReport
+        > {
+  $$SupportMonthlyReportsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $HalaqahsTable _halaqahIdTable(_$AppDatabase db) => db.halaqahs
+      .createAlias('support_monthly_reports__halaqah_id__halaqahs__id');
+
+  $$HalaqahsTableProcessedTableManager get halaqahId {
+    final $_column = $_itemColumn<int>('halaqah_id')!;
+
+    final manager = $$HalaqahsTableTableManager(
+      $_db,
+      $_db.halaqahs,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_halaqahIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $SupportMonthlyReportStudentsTable,
+    List<SupportMonthlyReportStudent>
+  >
+  _supportMonthlyReportStudentsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.supportMonthlyReportStudents,
+    aliasName:
+        'support_monthly_reports__id__support_monthly_report_students__report_id',
+  );
+
+  $$SupportMonthlyReportStudentsTableProcessedTableManager
+  get supportMonthlyReportStudentsRefs {
+    final manager = $$SupportMonthlyReportStudentsTableTableManager(
+      $_db,
+      $_db.supportMonthlyReportStudents,
+    ).filter((f) => f.reportId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supportMonthlyReportStudentsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$SupportMonthlyReportsTableFilterComposer
+    extends Composer<_$AppDatabase, $SupportMonthlyReportsTable> {
+  $$SupportMonthlyReportsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get monthStartDate => $composableBuilder(
+    column: $table.monthStartDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get monthEndDate => $composableBuilder(
+    column: $table.monthEndDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get teacherNameSnapshot => $composableBuilder(
+    column: $table.teacherNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get halaqahNameSnapshot => $composableBuilder(
+    column: $table.halaqahNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get organizationNameSnapshot => $composableBuilder(
+    column: $table.organizationNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get policyVersion => $composableBuilder(
+    column: $table.policyVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get templateVersion => $composableBuilder(
+    column: $table.templateVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceFingerprint => $composableBuilder(
+    column: $table.sourceFingerprint,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get approvedAtUtc => $composableBuilder(
+    column: $table.approvedAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$HalaqahsTableFilterComposer get halaqahId {
+    final $$HalaqahsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableFilterComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> supportMonthlyReportStudentsRefs(
+    Expression<bool> Function(
+      $$SupportMonthlyReportStudentsTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$SupportMonthlyReportStudentsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportMonthlyReportStudents,
+          getReferencedColumn: (t) => t.reportId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportStudentsTableFilterComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SupportMonthlyReportsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SupportMonthlyReportsTable> {
+  $$SupportMonthlyReportsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get monthStartDate => $composableBuilder(
+    column: $table.monthStartDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get monthEndDate => $composableBuilder(
+    column: $table.monthEndDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get teacherNameSnapshot => $composableBuilder(
+    column: $table.teacherNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get halaqahNameSnapshot => $composableBuilder(
+    column: $table.halaqahNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get organizationNameSnapshot => $composableBuilder(
+    column: $table.organizationNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get policyVersion => $composableBuilder(
+    column: $table.policyVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get templateVersion => $composableBuilder(
+    column: $table.templateVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceFingerprint => $composableBuilder(
+    column: $table.sourceFingerprint,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get approvedAtUtc => $composableBuilder(
+    column: $table.approvedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$HalaqahsTableOrderingComposer get halaqahId {
+    final $$HalaqahsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableOrderingComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupportMonthlyReportsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SupportMonthlyReportsTable> {
+  $$SupportMonthlyReportsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get monthStartDate => $composableBuilder(
+    column: $table.monthStartDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get monthEndDate => $composableBuilder(
+    column: $table.monthEndDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get teacherNameSnapshot => $composableBuilder(
+    column: $table.teacherNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get halaqahNameSnapshot => $composableBuilder(
+    column: $table.halaqahNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get organizationNameSnapshot => $composableBuilder(
+    column: $table.organizationNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get policyVersion => $composableBuilder(
+    column: $table.policyVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get templateVersion => $composableBuilder(
+    column: $table.templateVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceFingerprint => $composableBuilder(
+    column: $table.sourceFingerprint,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get approvedAtUtc => $composableBuilder(
+    column: $table.approvedAtUtc,
+    builder: (column) => column,
+  );
+
+  $$HalaqahsTableAnnotationComposer get halaqahId {
+    final $$HalaqahsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.halaqahId,
+      referencedTable: $db.halaqahs,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HalaqahsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.halaqahs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> supportMonthlyReportStudentsRefs<T extends Object>(
+    Expression<T> Function(
+      $$SupportMonthlyReportStudentsTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$SupportMonthlyReportStudentsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.supportMonthlyReportStudents,
+          getReferencedColumn: (t) => t.reportId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportStudentsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReportStudents,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SupportMonthlyReportsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SupportMonthlyReportsTable,
+          SupportMonthlyReport,
+          $$SupportMonthlyReportsTableFilterComposer,
+          $$SupportMonthlyReportsTableOrderingComposer,
+          $$SupportMonthlyReportsTableAnnotationComposer,
+          $$SupportMonthlyReportsTableCreateCompanionBuilder,
+          $$SupportMonthlyReportsTableUpdateCompanionBuilder,
+          (SupportMonthlyReport, $$SupportMonthlyReportsTableReferences),
+          SupportMonthlyReport,
+          PrefetchHooks Function({
+            bool halaqahId,
+            bool supportMonthlyReportStudentsRefs,
+          })
+        > {
+  $$SupportMonthlyReportsTableTableManager(
+    _$AppDatabase db,
+    $SupportMonthlyReportsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SupportMonthlyReportsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$SupportMonthlyReportsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SupportMonthlyReportsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> halaqahId = const Value.absent(),
+                Value<String> monthStartDate = const Value.absent(),
+                Value<String> monthEndDate = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> teacherNameSnapshot = const Value.absent(),
+                Value<String> halaqahNameSnapshot = const Value.absent(),
+                Value<String> organizationNameSnapshot = const Value.absent(),
+                Value<int> policyVersion = const Value.absent(),
+                Value<int> templateVersion = const Value.absent(),
+                Value<String?> sourceFingerprint = const Value.absent(),
+                Value<DateTime?> approvedAtUtc = const Value.absent(),
+              }) => SupportMonthlyReportsCompanion(
+                id: id,
+                halaqahId: halaqahId,
+                monthStartDate: monthStartDate,
+                monthEndDate: monthEndDate,
+                status: status,
+                teacherNameSnapshot: teacherNameSnapshot,
+                halaqahNameSnapshot: halaqahNameSnapshot,
+                organizationNameSnapshot: organizationNameSnapshot,
+                policyVersion: policyVersion,
+                templateVersion: templateVersion,
+                sourceFingerprint: sourceFingerprint,
+                approvedAtUtc: approvedAtUtc,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int halaqahId,
+                required String monthStartDate,
+                required String monthEndDate,
+                required String status,
+                required String teacherNameSnapshot,
+                required String halaqahNameSnapshot,
+                required String organizationNameSnapshot,
+                required int policyVersion,
+                required int templateVersion,
+                Value<String?> sourceFingerprint = const Value.absent(),
+                Value<DateTime?> approvedAtUtc = const Value.absent(),
+              }) => SupportMonthlyReportsCompanion.insert(
+                id: id,
+                halaqahId: halaqahId,
+                monthStartDate: monthStartDate,
+                monthEndDate: monthEndDate,
+                status: status,
+                teacherNameSnapshot: teacherNameSnapshot,
+                halaqahNameSnapshot: halaqahNameSnapshot,
+                organizationNameSnapshot: organizationNameSnapshot,
+                policyVersion: policyVersion,
+                templateVersion: templateVersion,
+                sourceFingerprint: sourceFingerprint,
+                approvedAtUtc: approvedAtUtc,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$SupportMonthlyReportsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({halaqahId = false, supportMonthlyReportStudentsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (supportMonthlyReportStudentsRefs)
+                      db.supportMonthlyReportStudents,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (halaqahId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.halaqahId,
+                                    referencedTable:
+                                        $$SupportMonthlyReportsTableReferences
+                                            ._halaqahIdTable(db),
+                                    referencedColumn:
+                                        $$SupportMonthlyReportsTableReferences
+                                            ._halaqahIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (supportMonthlyReportStudentsRefs)
+                        await $_getPrefetchedData<
+                          SupportMonthlyReport,
+                          $SupportMonthlyReportsTable,
+                          SupportMonthlyReportStudent
+                        >(
+                          currentTable: table,
+                          referencedTable:
+                              $$SupportMonthlyReportsTableReferences
+                                  ._supportMonthlyReportStudentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SupportMonthlyReportsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supportMonthlyReportStudentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.reportId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$SupportMonthlyReportsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SupportMonthlyReportsTable,
+      SupportMonthlyReport,
+      $$SupportMonthlyReportsTableFilterComposer,
+      $$SupportMonthlyReportsTableOrderingComposer,
+      $$SupportMonthlyReportsTableAnnotationComposer,
+      $$SupportMonthlyReportsTableCreateCompanionBuilder,
+      $$SupportMonthlyReportsTableUpdateCompanionBuilder,
+      (SupportMonthlyReport, $$SupportMonthlyReportsTableReferences),
+      SupportMonthlyReport,
+      PrefetchHooks Function({
+        bool halaqahId,
+        bool supportMonthlyReportStudentsRefs,
+      })
+    >;
+typedef $$SupportMonthlyReportStudentsTableCreateCompanionBuilder =
+    SupportMonthlyReportStudentsCompanion Function({
+      Value<int> id,
+      required int reportId,
+      required int sourceStudentId,
+      Value<String?> supportStudentNumberSnapshot,
+      required String studentNameSnapshot,
+      Value<int?> currentJuzSnapshot,
+      Value<String?> dailyPlanTextSnapshot,
+      required int monthlyGoalQuarterFacesSnapshot,
+      required int achievedQuarterFaces,
+      required int absenceDays,
+      required bool goalCompleted,
+      Value<String?> noteSnapshot,
+      required int displayOrderSnapshot,
+    });
+typedef $$SupportMonthlyReportStudentsTableUpdateCompanionBuilder =
+    SupportMonthlyReportStudentsCompanion Function({
+      Value<int> id,
+      Value<int> reportId,
+      Value<int> sourceStudentId,
+      Value<String?> supportStudentNumberSnapshot,
+      Value<String> studentNameSnapshot,
+      Value<int?> currentJuzSnapshot,
+      Value<String?> dailyPlanTextSnapshot,
+      Value<int> monthlyGoalQuarterFacesSnapshot,
+      Value<int> achievedQuarterFaces,
+      Value<int> absenceDays,
+      Value<bool> goalCompleted,
+      Value<String?> noteSnapshot,
+      Value<int> displayOrderSnapshot,
+    });
+
+final class $$SupportMonthlyReportStudentsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $SupportMonthlyReportStudentsTable,
+          SupportMonthlyReportStudent
+        > {
+  $$SupportMonthlyReportStudentsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $SupportMonthlyReportsTable _reportIdTable(
+    _$AppDatabase db,
+  ) => db.supportMonthlyReports.createAlias(
+    'support_monthly_report_students__report_id__support_monthly_reports__id',
+  );
+
+  $$SupportMonthlyReportsTableProcessedTableManager get reportId {
+    final $_column = $_itemColumn<int>('report_id')!;
+
+    final manager = $$SupportMonthlyReportsTableTableManager(
+      $_db,
+      $_db.supportMonthlyReports,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_reportIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $StudentsTable _sourceStudentIdTable(_$AppDatabase db) =>
+      db.students.createAlias(
+        'support_monthly_report_students__source_student_id__students__id',
+      );
+
+  $$StudentsTableProcessedTableManager get sourceStudentId {
+    final $_column = $_itemColumn<int>('source_student_id')!;
+
+    final manager = $$StudentsTableTableManager(
+      $_db,
+      $_db.students,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_sourceStudentIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$SupportMonthlyReportStudentsTableFilterComposer
+    extends Composer<_$AppDatabase, $SupportMonthlyReportStudentsTable> {
+  $$SupportMonthlyReportStudentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supportStudentNumberSnapshot => $composableBuilder(
+    column: $table.supportStudentNumberSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get studentNameSnapshot => $composableBuilder(
+    column: $table.studentNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get currentJuzSnapshot => $composableBuilder(
+    column: $table.currentJuzSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dailyPlanTextSnapshot => $composableBuilder(
+    column: $table.dailyPlanTextSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get monthlyGoalQuarterFacesSnapshot => $composableBuilder(
+    column: $table.monthlyGoalQuarterFacesSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get achievedQuarterFaces => $composableBuilder(
+    column: $table.achievedQuarterFaces,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get absenceDays => $composableBuilder(
+    column: $table.absenceDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get goalCompleted => $composableBuilder(
+    column: $table.goalCompleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get noteSnapshot => $composableBuilder(
+    column: $table.noteSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get displayOrderSnapshot => $composableBuilder(
+    column: $table.displayOrderSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SupportMonthlyReportsTableFilterComposer get reportId {
+    final $$SupportMonthlyReportsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportId,
+          referencedTable: $db.supportMonthlyReports,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportsTableFilterComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$StudentsTableFilterComposer get sourceStudentId {
+    final $$StudentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceStudentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableFilterComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupportMonthlyReportStudentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SupportMonthlyReportStudentsTable> {
+  $$SupportMonthlyReportStudentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supportStudentNumberSnapshot =>
+      $composableBuilder(
+        column: $table.supportStudentNumberSnapshot,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<String> get studentNameSnapshot => $composableBuilder(
+    column: $table.studentNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get currentJuzSnapshot => $composableBuilder(
+    column: $table.currentJuzSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dailyPlanTextSnapshot => $composableBuilder(
+    column: $table.dailyPlanTextSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get monthlyGoalQuarterFacesSnapshot =>
+      $composableBuilder(
+        column: $table.monthlyGoalQuarterFacesSnapshot,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<int> get achievedQuarterFaces => $composableBuilder(
+    column: $table.achievedQuarterFaces,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get absenceDays => $composableBuilder(
+    column: $table.absenceDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get goalCompleted => $composableBuilder(
+    column: $table.goalCompleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get noteSnapshot => $composableBuilder(
+    column: $table.noteSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get displayOrderSnapshot => $composableBuilder(
+    column: $table.displayOrderSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SupportMonthlyReportsTableOrderingComposer get reportId {
+    final $$SupportMonthlyReportsTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportId,
+          referencedTable: $db.supportMonthlyReports,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportsTableOrderingComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$StudentsTableOrderingComposer get sourceStudentId {
+    final $$StudentsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceStudentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableOrderingComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupportMonthlyReportStudentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SupportMonthlyReportStudentsTable> {
+  $$SupportMonthlyReportStudentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get supportStudentNumberSnapshot =>
+      $composableBuilder(
+        column: $table.supportStudentNumberSnapshot,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get studentNameSnapshot => $composableBuilder(
+    column: $table.studentNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get currentJuzSnapshot => $composableBuilder(
+    column: $table.currentJuzSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get dailyPlanTextSnapshot => $composableBuilder(
+    column: $table.dailyPlanTextSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get monthlyGoalQuarterFacesSnapshot =>
+      $composableBuilder(
+        column: $table.monthlyGoalQuarterFacesSnapshot,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<int> get achievedQuarterFaces => $composableBuilder(
+    column: $table.achievedQuarterFaces,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get absenceDays => $composableBuilder(
+    column: $table.absenceDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get goalCompleted => $composableBuilder(
+    column: $table.goalCompleted,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get noteSnapshot => $composableBuilder(
+    column: $table.noteSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get displayOrderSnapshot => $composableBuilder(
+    column: $table.displayOrderSnapshot,
+    builder: (column) => column,
+  );
+
+  $$SupportMonthlyReportsTableAnnotationComposer get reportId {
+    final $$SupportMonthlyReportsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.reportId,
+          referencedTable: $db.supportMonthlyReports,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SupportMonthlyReportsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.supportMonthlyReports,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+
+  $$StudentsTableAnnotationComposer get sourceStudentId {
+    final $$StudentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourceStudentId,
+      referencedTable: $db.students,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StudentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.students,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupportMonthlyReportStudentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SupportMonthlyReportStudentsTable,
+          SupportMonthlyReportStudent,
+          $$SupportMonthlyReportStudentsTableFilterComposer,
+          $$SupportMonthlyReportStudentsTableOrderingComposer,
+          $$SupportMonthlyReportStudentsTableAnnotationComposer,
+          $$SupportMonthlyReportStudentsTableCreateCompanionBuilder,
+          $$SupportMonthlyReportStudentsTableUpdateCompanionBuilder,
+          (
+            SupportMonthlyReportStudent,
+            $$SupportMonthlyReportStudentsTableReferences,
+          ),
+          SupportMonthlyReportStudent,
+          PrefetchHooks Function({bool reportId, bool sourceStudentId})
+        > {
+  $$SupportMonthlyReportStudentsTableTableManager(
+    _$AppDatabase db,
+    $SupportMonthlyReportStudentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SupportMonthlyReportStudentsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$SupportMonthlyReportStudentsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SupportMonthlyReportStudentsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> reportId = const Value.absent(),
+                Value<int> sourceStudentId = const Value.absent(),
+                Value<String?> supportStudentNumberSnapshot =
+                    const Value.absent(),
+                Value<String> studentNameSnapshot = const Value.absent(),
+                Value<int?> currentJuzSnapshot = const Value.absent(),
+                Value<String?> dailyPlanTextSnapshot = const Value.absent(),
+                Value<int> monthlyGoalQuarterFacesSnapshot =
+                    const Value.absent(),
+                Value<int> achievedQuarterFaces = const Value.absent(),
+                Value<int> absenceDays = const Value.absent(),
+                Value<bool> goalCompleted = const Value.absent(),
+                Value<String?> noteSnapshot = const Value.absent(),
+                Value<int> displayOrderSnapshot = const Value.absent(),
+              }) => SupportMonthlyReportStudentsCompanion(
+                id: id,
+                reportId: reportId,
+                sourceStudentId: sourceStudentId,
+                supportStudentNumberSnapshot: supportStudentNumberSnapshot,
+                studentNameSnapshot: studentNameSnapshot,
+                currentJuzSnapshot: currentJuzSnapshot,
+                dailyPlanTextSnapshot: dailyPlanTextSnapshot,
+                monthlyGoalQuarterFacesSnapshot:
+                    monthlyGoalQuarterFacesSnapshot,
+                achievedQuarterFaces: achievedQuarterFaces,
+                absenceDays: absenceDays,
+                goalCompleted: goalCompleted,
+                noteSnapshot: noteSnapshot,
+                displayOrderSnapshot: displayOrderSnapshot,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int reportId,
+                required int sourceStudentId,
+                Value<String?> supportStudentNumberSnapshot =
+                    const Value.absent(),
+                required String studentNameSnapshot,
+                Value<int?> currentJuzSnapshot = const Value.absent(),
+                Value<String?> dailyPlanTextSnapshot = const Value.absent(),
+                required int monthlyGoalQuarterFacesSnapshot,
+                required int achievedQuarterFaces,
+                required int absenceDays,
+                required bool goalCompleted,
+                Value<String?> noteSnapshot = const Value.absent(),
+                required int displayOrderSnapshot,
+              }) => SupportMonthlyReportStudentsCompanion.insert(
+                id: id,
+                reportId: reportId,
+                sourceStudentId: sourceStudentId,
+                supportStudentNumberSnapshot: supportStudentNumberSnapshot,
+                studentNameSnapshot: studentNameSnapshot,
+                currentJuzSnapshot: currentJuzSnapshot,
+                dailyPlanTextSnapshot: dailyPlanTextSnapshot,
+                monthlyGoalQuarterFacesSnapshot:
+                    monthlyGoalQuarterFacesSnapshot,
+                achievedQuarterFaces: achievedQuarterFaces,
+                absenceDays: absenceDays,
+                goalCompleted: goalCompleted,
+                noteSnapshot: noteSnapshot,
+                displayOrderSnapshot: displayOrderSnapshot,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$SupportMonthlyReportStudentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({reportId = false, sourceStudentId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (reportId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.reportId,
+                                referencedTable:
+                                    $$SupportMonthlyReportStudentsTableReferences
+                                        ._reportIdTable(db),
+                                referencedColumn:
+                                    $$SupportMonthlyReportStudentsTableReferences
+                                        ._reportIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (sourceStudentId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.sourceStudentId,
+                                referencedTable:
+                                    $$SupportMonthlyReportStudentsTableReferences
+                                        ._sourceStudentIdTable(db),
+                                referencedColumn:
+                                    $$SupportMonthlyReportStudentsTableReferences
+                                        ._sourceStudentIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$SupportMonthlyReportStudentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SupportMonthlyReportStudentsTable,
+      SupportMonthlyReportStudent,
+      $$SupportMonthlyReportStudentsTableFilterComposer,
+      $$SupportMonthlyReportStudentsTableOrderingComposer,
+      $$SupportMonthlyReportStudentsTableAnnotationComposer,
+      $$SupportMonthlyReportStudentsTableCreateCompanionBuilder,
+      $$SupportMonthlyReportStudentsTableUpdateCompanionBuilder,
+      (
+        SupportMonthlyReportStudent,
+        $$SupportMonthlyReportStudentsTableReferences,
+      ),
+      SupportMonthlyReportStudent,
+      PrefetchHooks Function({bool reportId, bool sourceStudentId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -10083,4 +18445,31 @@ class $AppDatabaseManager {
       $$RecitationsTableTableManager(_db, _db.recitations);
   $$ParentFollowUpsTableTableManager get parentFollowUps =>
       $$ParentFollowUpsTableTableManager(_db, _db.parentFollowUps);
+  $$SupportWeeklyReportsTableTableManager get supportWeeklyReports =>
+      $$SupportWeeklyReportsTableTableManager(_db, _db.supportWeeklyReports);
+  $$SupportWeeklyReportStudentsTableTableManager
+  get supportWeeklyReportStudents =>
+      $$SupportWeeklyReportStudentsTableTableManager(
+        _db,
+        _db.supportWeeklyReportStudents,
+      );
+  $$SupportWeeklyReportDaysTableTableManager get supportWeeklyReportDays =>
+      $$SupportWeeklyReportDaysTableTableManager(
+        _db,
+        _db.supportWeeklyReportDays,
+      );
+  $$SupportWeeklyReportDayEntriesTableTableManager
+  get supportWeeklyReportDayEntries =>
+      $$SupportWeeklyReportDayEntriesTableTableManager(
+        _db,
+        _db.supportWeeklyReportDayEntries,
+      );
+  $$SupportMonthlyReportsTableTableManager get supportMonthlyReports =>
+      $$SupportMonthlyReportsTableTableManager(_db, _db.supportMonthlyReports);
+  $$SupportMonthlyReportStudentsTableTableManager
+  get supportMonthlyReportStudents =>
+      $$SupportMonthlyReportStudentsTableTableManager(
+        _db,
+        _db.supportMonthlyReportStudents,
+      );
 }

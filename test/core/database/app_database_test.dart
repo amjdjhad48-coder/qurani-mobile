@@ -6,12 +6,12 @@ import 'package:qurani/core/database/database_migrations.dart';
 void main() {
   group('AppDatabase migration infrastructure', () {
     test(
-      'schemaVersion 6 creates Package 2 through Package 6 tables',
+      'schemaVersion 7 creates Package 2 through Package 7 tables',
       () async {
         final database = AppDatabase(NativeDatabase.memory());
 
         try {
-          expect(database.schemaVersion, 6);
+          expect(database.schemaVersion, 7);
 
           await database.customSelect('SELECT 1;').get();
 
@@ -26,8 +26,14 @@ void main() {
             'student_activity_periods',
             'student_progress_plans',
             'students',
+            'support_monthly_report_students',
+            'support_monthly_reports',
             'support_program_periods',
             'support_program_settings',
+            'support_weekly_report_day_entries',
+            'support_weekly_report_days',
+            'support_weekly_report_students',
+            'support_weekly_reports',
           ]);
 
           await expectLater(
@@ -40,19 +46,21 @@ void main() {
       },
     );
 
-    for (final version in <int>[1, 2, 3, 4, 5]) {
-      test('migrates schema v$version explicitly to schema v6', () async {
+    for (final version in <int>[1, 2, 3, 4, 5, 6]) {
+      test('migrates schema v$version explicitly to schema v7', () async {
         final executor = _legacyExecutor(version);
         final database = AppDatabase(executor);
 
         try {
           await database.customSelect('SELECT 1;').get();
 
-          expect(await _userVersion(database), 6);
+          expect(await _userVersion(database), 7);
 
           final tables = await _userTables(database);
 
           expect(tables, contains('parent_follow_ups'));
+          expect(tables, contains('support_weekly_reports'));
+          expect(tables, contains('support_monthly_reports'));
 
           if (version <= 4) {
             expect(tables, contains('recitations'));
@@ -68,7 +76,7 @@ void main() {
       });
     }
 
-    test('schema v6 keeps foreign keys enabled', () async {
+    test('schema v7 keeps foreign keys enabled', () async {
       final database = AppDatabase(NativeDatabase.memory());
 
       try {
@@ -92,7 +100,7 @@ void main() {
         final strategy = database.migration;
 
         await expectLater(
-          strategy.onUpgrade(database.createMigrator(), 6, 7),
+          strategy.onUpgrade(database.createMigrator(), 7, 8),
           throwsA(isA<StateError>()),
         );
       } finally {
@@ -166,6 +174,28 @@ NativeDatabase _legacyExecutor(int version) {
         );
       }
 
+      if (version >= 6) {
+        rawDatabase.execute(
+          'CREATE TABLE parent_follow_ups ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+          'day_id INTEGER NOT NULL, '
+          'student_id INTEGER NOT NULL, '
+          'type TEXT NOT NULL, '
+          "status TEXT NOT NULL DEFAULT 'pending', "
+          'corrects_follow_up_id INTEGER NULL, '
+          'attendance_status_snapshot TEXT NULL, '
+          'snapshot_message TEXT NULL, '
+          'channel_snapshot TEXT NULL, '
+          'recipient_snapshot TEXT NULL, '
+          'FOREIGN KEY (day_id) REFERENCES halaqah_days(id) '
+          'ON DELETE RESTRICT, '
+          'FOREIGN KEY (student_id) REFERENCES students(id) '
+          'ON DELETE RESTRICT, '
+          'FOREIGN KEY (corrects_follow_up_id) '
+          'REFERENCES parent_follow_ups(id) ON DELETE RESTRICT'
+          ');',
+        );
+      }
       rawDatabase.execute('PRAGMA user_version = $version;');
     },
   );

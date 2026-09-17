@@ -58,8 +58,14 @@ void main() {
             'student_activity_periods',
             'student_progress_plans',
             'students',
+            'support_monthly_report_students',
+            'support_monthly_reports',
             'support_program_periods',
             'support_program_settings',
+            'support_weekly_report_day_entries',
+            'support_weekly_report_days',
+            'support_weekly_report_students',
+            'support_weekly_reports',
           ],
         );
 
