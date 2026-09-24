@@ -165,6 +165,75 @@ void main() {
       },
     );
 
+    test('builds general monthly without sponsor-only policy fields', () {
+      final snapshot = _snapshot(
+        reportId: 8,
+        weekDate: DateTime(2026, 9, 12),
+        organizationName: 'مركز النور',
+        supportStudentNumber: null,
+        reportContext: SupportReportContext.general,
+        entriesByDate: <String, List<_EntrySpec>>{
+          '2026-09-14': <_EntrySpec>[
+            const _EntrySpec(
+              status: SupportReportAttendanceStatus.present,
+              achievedQuarterFaces: 8,
+            ),
+          ],
+        },
+      );
+
+      final projection = builder.build(
+        period: MonthlySupportReportPeriod.forDate(DateTime(2026, 9, 15)),
+        approvedWeeklySnapshots: <ApprovedWeeklySupportReportSnapshot>[
+          snapshot,
+        ],
+      );
+
+      final student = projection.students.single;
+
+      expect(projection.header.reportContext, SupportReportContext.general);
+      expect(projection.header.organizationName, 'مركز النور');
+      expect(student.supportStudentNumber, isNull);
+      expect(student.monthlyGoalQuarterFaces, isNull);
+      expect(student.goalCompleted, isNull);
+      expect(student.achievedQuarterFaces, 8);
+
+      expect(
+        projection.missingItems.where(
+          (item) => item.field == ReportMissingField.supportStudentNumber,
+        ),
+        isEmpty,
+      );
+    });
+
+    test('rejects mixed general and support weekly contexts', () {
+      final support = _snapshot(
+        reportId: 9,
+        weekDate: DateTime(2026, 9, 5),
+        organizationName: 'هوية تقرير واحدة',
+        reportContext: SupportReportContext.support,
+      );
+
+      final general = _snapshot(
+        reportId: 10,
+        weekDate: DateTime(2026, 9, 12),
+        organizationName: 'هوية تقرير واحدة',
+        reportContext: SupportReportContext.general,
+        supportStudentNumber: null,
+      );
+
+      expect(
+        () => builder.build(
+          period: MonthlySupportReportPeriod.forDate(DateTime(2026, 9, 15)),
+          approvedWeeklySnapshots: <ApprovedWeeklySupportReportSnapshot>[
+            support,
+            general,
+          ],
+        ),
+        throwsStateError,
+      );
+    });
+
     test(
       'rejects multiple support organizations in one monthly projection',
       () {
@@ -232,6 +301,7 @@ ApprovedWeeklySupportReportSnapshot _snapshot({
   required DateTime weekDate,
   String teacherName = 'المعلم',
   String organizationName = 'الجهة',
+  SupportReportContext reportContext = SupportReportContext.support,
   String? supportStudentNumber = 'SUP-001',
   int? currentJuz = 2,
   String? dailyPlanText = 'نصف وجه',
@@ -316,6 +386,7 @@ ApprovedWeeklySupportReportSnapshot _snapshot({
       teacherName: teacherName,
       halaqahName: 'الحلقة',
       organizationName: organizationName,
+      reportContext: reportContext,
       policyVersion: policyVersion,
       templateVersion: templateVersion,
     ),

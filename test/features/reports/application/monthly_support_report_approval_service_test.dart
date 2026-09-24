@@ -62,6 +62,26 @@ void main() {
 
         expect(snapshot.students.single.goalCompleted, isTrue);
 
+        expect(snapshot.days, hasLength(1));
+        final snapshotDay = snapshot.days.single;
+        expect(snapshotDay.sourceWeeklyReportId, 101);
+        expect(snapshotDay.localDate, DateTime(2026, 9, 5));
+        expect(snapshotDay.dayKind, SupportReportDayKind.normal);
+        expect(snapshotDay.entries, hasLength(1));
+
+        final snapshotEntry = snapshotDay.entries.single;
+        expect(snapshotEntry.sourceStudentId, 1);
+        expect(
+          snapshotEntry.attendanceStatus,
+          SupportReportAttendanceStatus.present,
+        );
+        expect(snapshotEntry.achievedQuarterFaces, 80);
+        expect(snapshotEntry.range?.startSurah, 2);
+        expect(snapshotEntry.range?.startAyah, 1);
+        expect(snapshotEntry.range?.endSurah, 2);
+        expect(snapshotEntry.range?.endAyah, 5);
+        expect(snapshotEntry.note, 'حفظ');
+
         final monthlyRows = await database
             .select(database.supportMonthlyReports)
             .get();
@@ -69,9 +89,17 @@ void main() {
         final studentRows = await database
             .select(database.supportMonthlyReportStudents)
             .get();
+        final dayRows = await database
+            .select(database.supportMonthlyReportDays)
+            .get();
+        final entryRows = await database
+            .select(database.supportMonthlyReportDayEntries)
+            .get();
 
         expect(monthlyRows, hasLength(1));
         expect(studentRows, hasLength(1));
+        expect(dayRows, hasLength(1));
+        expect(entryRows, hasLength(1));
         expect(monthlyRows.single.status, 'approved');
       },
     );

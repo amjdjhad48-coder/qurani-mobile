@@ -21,6 +21,9 @@ class SupportWeeklyReports extends Table {
   TextColumn get organizationNameSnapshot =>
       text().withLength(min: 1, max: 200)();
 
+  TextColumn get reportContextSnapshot =>
+      text().withDefault(const Constant('support'))();
+
   IntColumn get policyVersion => integer()();
 
   IntColumn get templateVersion => integer()();
@@ -76,7 +79,7 @@ class SupportWeeklyReportStudents extends Table {
 
   TextColumn get dailyPlanTextSnapshot => text().nullable()();
 
-  IntColumn get monthlyGoalQuarterFacesSnapshot => integer()();
+  IntColumn get monthlyGoalQuarterFacesSnapshot => integer().nullable()();
 
   TextColumn get studentNoteSnapshot => text().nullable()();
 
@@ -96,7 +99,8 @@ class SupportWeeklyReportStudents extends Table {
         'OR length(trim(support_student_number_snapshot)) > 0)',
     'CHECK (daily_plan_text_snapshot IS NULL '
         'OR length(trim(daily_plan_text_snapshot)) > 0)',
-    'CHECK (monthly_goal_quarter_faces_snapshot > 0)',
+    'CHECK (monthly_goal_quarter_faces_snapshot IS NULL '
+        'OR monthly_goal_quarter_faces_snapshot > 0)',
     'CHECK (display_order_snapshot > 0)',
   ];
 }
@@ -218,6 +222,9 @@ class SupportMonthlyReports extends Table {
   TextColumn get organizationNameSnapshot =>
       text().withLength(min: 1, max: 200)();
 
+  TextColumn get reportContextSnapshot =>
+      text().withDefault(const Constant('support'))();
+
   IntColumn get policyVersion => integer()();
 
   IntColumn get templateVersion => integer()();
@@ -273,13 +280,13 @@ class SupportMonthlyReportStudents extends Table {
 
   TextColumn get dailyPlanTextSnapshot => text().nullable()();
 
-  IntColumn get monthlyGoalQuarterFacesSnapshot => integer()();
+  IntColumn get monthlyGoalQuarterFacesSnapshot => integer().nullable()();
 
   IntColumn get achievedQuarterFaces => integer()();
 
   IntColumn get absenceDays => integer()();
 
-  BoolColumn get goalCompleted => boolean()();
+  BoolColumn get goalCompleted => boolean().nullable()();
 
   TextColumn get noteSnapshot => text().nullable()();
 
@@ -299,9 +306,159 @@ class SupportMonthlyReportStudents extends Table {
         'OR length(trim(support_student_number_snapshot)) > 0)',
     'CHECK (daily_plan_text_snapshot IS NULL '
         'OR length(trim(daily_plan_text_snapshot)) > 0)',
-    'CHECK (monthly_goal_quarter_faces_snapshot > 0)',
+    'CHECK (monthly_goal_quarter_faces_snapshot IS NULL '
+        'OR monthly_goal_quarter_faces_snapshot > 0)',
+    'CHECK ((monthly_goal_quarter_faces_snapshot IS NULL '
+        'AND goal_completed IS NULL) '
+        'OR (monthly_goal_quarter_faces_snapshot IS NOT NULL '
+        'AND goal_completed IS NOT NULL))',
     'CHECK (achieved_quarter_faces >= 0)',
     'CHECK (absence_days >= 0)',
     'CHECK (display_order_snapshot > 0)',
+  ];
+}
+
+class SupportMonthlyReportDays extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  IntColumn get reportId => integer().references(
+    SupportMonthlyReports,
+    #id,
+    onDelete: KeyAction.cascade,
+  )();
+
+  IntColumn get sourceWeeklyReportIdSnapshot => integer()();
+
+  TextColumn get dayDate => text().withLength(min: 10, max: 10)();
+
+  TextColumn get dayKind => text()();
+
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => <Set<Column<Object>>>[
+    <Column<Object>>{reportId, dayDate},
+  ];
+
+  @override
+  List<String> get customConstraints => const <String>[
+    'CHECK (source_weekly_report_id_snapshot > 0)',
+    "CHECK (day_kind IN "
+        "('normal', 'holiday', 'missing', 'not_applicable'))",
+  ];
+}
+
+class SupportMonthlyReportDayEntries extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  IntColumn get reportDayId => integer().references(
+    SupportMonthlyReportDays,
+    #id,
+    onDelete: KeyAction.cascade,
+  )();
+
+  IntColumn get reportStudentId => integer().references(
+    SupportMonthlyReportStudents,
+    #id,
+    onDelete: KeyAction.cascade,
+  )();
+
+  TextColumn get attendanceStatusSnapshot => text().nullable()();
+
+  IntColumn get achievedQuarterFaces =>
+      integer().withDefault(const Constant(0))();
+
+  IntColumn get startSurahSnapshot => integer().nullable()();
+
+  IntColumn get startAyahSnapshot => integer().nullable()();
+
+  IntColumn get endSurahSnapshot => integer().nullable()();
+
+  IntColumn get endAyahSnapshot => integer().nullable()();
+
+  TextColumn get noteSnapshot => text().nullable()();
+
+  IntColumn get entryOrder => integer()();
+
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => <Set<Column<Object>>>[
+    <Column<Object>>{reportDayId, reportStudentId, entryOrder},
+  ];
+
+  @override
+  List<String> get customConstraints => const <String>[
+    'CHECK (attendance_status_snapshot IS NULL '
+        "OR attendance_status_snapshot IN "
+        "('present', 'absent', 'excused_absent'))",
+    'CHECK (achieved_quarter_faces >= 0)',
+    'CHECK (entry_order > 0)',
+    'CHECK ('
+        '(start_surah_snapshot IS NULL '
+        'AND start_ayah_snapshot IS NULL '
+        'AND end_surah_snapshot IS NULL '
+        'AND end_ayah_snapshot IS NULL) '
+        'OR '
+        '(start_surah_snapshot IS NOT NULL '
+        'AND start_ayah_snapshot IS NOT NULL '
+        'AND end_surah_snapshot IS NOT NULL '
+        'AND end_ayah_snapshot IS NOT NULL)'
+        ')',
+    'CHECK (start_surah_snapshot IS NULL '
+        'OR start_surah_snapshot BETWEEN 1 AND 114)',
+    'CHECK (end_surah_snapshot IS NULL '
+        'OR end_surah_snapshot BETWEEN 1 AND 114)',
+    'CHECK (start_ayah_snapshot IS NULL '
+        'OR start_ayah_snapshot >= 1)',
+    'CHECK (end_ayah_snapshot IS NULL '
+        'OR end_ayah_snapshot >= 1)',
+    'CHECK ('
+        '(start_surah_snapshot IS NULL '
+        'AND achieved_quarter_faces = 0) '
+        'OR '
+        '(start_surah_snapshot IS NOT NULL '
+        'AND achieved_quarter_faces > 0)'
+        ')',
+  ];
+}
+
+class ReportExportArtifacts extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  IntColumn get weeklyReportId => integer()
+      .references(SupportWeeklyReports, #id, onDelete: KeyAction.cascade)
+      .nullable()();
+
+  IntColumn get monthlyReportId => integer()
+      .references(SupportMonthlyReports, #id, onDelete: KeyAction.cascade)
+      .nullable()();
+
+  TextColumn get format => text()();
+
+  TextColumn get internalPath => text()();
+
+  TextColumn get sha256 => text().withLength(min: 64, max: 64)();
+
+  IntColumn get templateVersion => integer()();
+
+  IntColumn get sizeBytes => integer()();
+
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => <Set<Column<Object>>>[
+    <Column<Object>>{weeklyReportId, format},
+    <Column<Object>>{monthlyReportId, format},
+  ];
+
+  @override
+  List<String> get customConstraints => const <String>[
+    'CHECK (('
+        'weekly_report_id IS NOT NULL '
+        'AND monthly_report_id IS NULL) '
+        'OR '
+        '(weekly_report_id IS NULL '
+        'AND monthly_report_id IS NOT NULL))',
+    "CHECK (format IN ('excel', 'pdf'))",
+    'CHECK (length(trim(internal_path)) > 0)',
+    "CHECK (length(sha256) = 64 "
+        "AND sha256 NOT GLOB '*[^0-9A-Fa-f]*')",
+    'CHECK (template_version > 0)',
+    'CHECK (size_bytes > 0)',
   ];
 }

@@ -1,3 +1,4 @@
+import 'package:qurani/features/reports/domain/support_report_export_artifact.dart';
 import 'package:qurani/features/reports/domain/support_report_types.dart';
 import 'package:qurani/features/reports/domain/weekly_support_report_projection.dart';
 
@@ -45,7 +46,7 @@ final class ApprovedWeeklySupportReportStudentSnapshot {
   final String studentName;
   final int? currentJuz;
   final String? dailyPlanText;
-  final int monthlyGoalQuarterFaces;
+  final int? monthlyGoalQuarterFaces;
   final String? note;
   final int displayOrder;
 }
@@ -97,5 +98,16 @@ abstract interface class WeeklySupportReportSnapshotRepository {
     required WeeklySupportReportProjection projection,
     required String sourceFingerprint,
     required DateTime approvedAtUtc,
+  });
+}
+
+abstract interface class WeeklySupportReportAtomicApprovalRepository
+    implements WeeklySupportReportSnapshotRepository {
+  Future<void> replaceApprovedWithPrimaryArtifact({
+    required int halaqahId,
+    required WeeklySupportReportProjection projection,
+    required String sourceFingerprint,
+    required DateTime approvedAtUtc,
+    required SupportReportExportArtifactMetadata primaryArtifact,
   });
 }

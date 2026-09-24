@@ -39,6 +39,23 @@ void main() {
       },
     );
 
+    test(
+      'monthly source fingerprint changes when report context changes',
+      () async {
+        const fingerprint = MonthlySupportReportSourceFingerprint();
+
+        final support = await fingerprint.forMonthlyProjection(
+          _projection(reportContext: SupportReportContext.support),
+        );
+
+        final general = await fingerprint.forMonthlyProjection(
+          _projection(reportContext: SupportReportContext.general),
+        );
+
+        expect(general, isNot(support));
+      },
+    );
+
     test('monthly candidate requires explicit warning confirmation', () async {
       const service = MonthlySupportReportApprovalCandidateService();
 
@@ -131,6 +148,7 @@ MonthlySupportReportProjection _projection({
   int achievedQuarterFaces = 8,
   bool withWarning = false,
   int daySourceWeeklyReportId = 101,
+  SupportReportContext reportContext = SupportReportContext.support,
 }) {
   final monthlyPeriod = MonthlySupportReportPeriod.forDate(
     DateTime(2026, 9, 15),
@@ -141,10 +159,11 @@ MonthlySupportReportProjection _projection({
   return MonthlySupportReportProjection(
     halaqahId: 1,
     period: monthlyPeriod,
-    header: const SupportReportHeaderSnapshot(
+    header: SupportReportHeaderSnapshot(
       teacherName: 'المعلم',
       halaqahName: 'الحلقة',
       organizationName: 'الجهة',
+      reportContext: reportContext,
       policyVersion: SupportReportPolicy.policyVersion,
       templateVersion: SupportReportPolicy.templateVersion,
     ),

@@ -127,6 +127,37 @@ MigrationStrategy buildAppDatabaseMigrationStrategy(AppDatabase database) {
         await _createPackage7Schema(database, migrator);
         return;
       }
+      if (to == 8 && from >= 1 && from <= 7) {
+        if (from <= 1) {
+          await _createPackage2Schema(database, migrator);
+        }
+        if (from <= 2) {
+          await _createPackage3Schema(database, migrator);
+        }
+        if (from <= 3) {
+          await _createPackage4Schema(database, migrator);
+        }
+        if (from <= 4) {
+          await _createPackage5Schema(database, migrator);
+        }
+        if (from <= 5) {
+          await _createPackage6Schema(database, migrator);
+        }
+        if (from <= 6) {
+          await _createPackage7Schema(database, migrator);
+        }
+
+        await _createPackage8Schema(
+          database,
+          migrator,
+          // When upgrading from v1-v6, _createPackage7Schema above creates
+          // these report tables from their current definitions, so the
+          // Package 8 context columns already exist. Only an existing v7
+          // database needs ALTER TABLE for the new columns.
+          addReportContextColumns: from == 7,
+        );
+        return;
+      }
       throw StateError(
         'Unsupported Qurani database migration path: $from -> $to. '
         'Every schema change must add an explicit tested migration.',
@@ -193,6 +224,38 @@ Future<void> _createPackage7Schema(
   await migrator.createTable(database.supportWeeklyReportDayEntries);
   await migrator.createTable(database.supportMonthlyReports);
   await migrator.createTable(database.supportMonthlyReportStudents);
+}
+
+Future<void> _createPackage8Schema(
+  AppDatabase database,
+  Migrator migrator, {
+  required bool addReportContextColumns,
+}) async {
+  if (addReportContextColumns) {
+    await migrator.addColumn(
+      database.supportWeeklyReports,
+      database.supportWeeklyReports.reportContextSnapshot,
+    );
+    await migrator.addColumn(
+      database.supportMonthlyReports,
+      database.supportMonthlyReports.reportContextSnapshot,
+    );
+
+    // Existing schema-v7 databases created weekly and monthly report students
+    // with sponsor-policy goal columns as NOT NULL. Package 8 makes those
+    // fields optional for general reports, so rebuild both tables from their
+    // current Drift definitions while preserving existing support rows.
+    await migrator.alterTable(
+      TableMigration(database.supportWeeklyReportStudents),
+    );
+    await migrator.alterTable(
+      TableMigration(database.supportMonthlyReportStudents),
+    );
+  }
+
+  await migrator.createTable(database.supportMonthlyReportDays);
+  await migrator.createTable(database.supportMonthlyReportDayEntries);
+  await migrator.createTable(database.reportExportArtifacts);
 }
 
 Future<void> _createPackage6Indexes(AppDatabase database) async {

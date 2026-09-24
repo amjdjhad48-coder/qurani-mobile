@@ -67,6 +67,7 @@ void main() {
         sourceFingerprint: 'monthly-fingerprint',
         approvedAtUtc: DateTime.utc(2026, 9, 30, 10),
         students: const <ApprovedMonthlySupportReportStudentSnapshot>[],
+        days: const [],
       );
 
       final service = SupportReportHistoryDetailService(

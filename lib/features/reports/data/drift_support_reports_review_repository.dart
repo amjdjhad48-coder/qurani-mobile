@@ -47,6 +47,9 @@ final class DriftSupportReportsReviewRepository
             teacherName: row.teacherNameSnapshot,
             halaqahName: row.halaqahNameSnapshot,
             organizationName: row.organizationNameSnapshot,
+            reportContext: SupportReportContext.fromStorage(
+              row.reportContextSnapshot,
+            ),
             policyVersion: row.policyVersion,
             templateVersion: row.templateVersion,
           ),
@@ -71,6 +74,9 @@ final class DriftSupportReportsReviewRepository
             teacherName: row.teacherNameSnapshot,
             halaqahName: row.halaqahNameSnapshot,
             organizationName: row.organizationNameSnapshot,
+            reportContext: SupportReportContext.fromStorage(
+              row.reportContextSnapshot,
+            ),
             policyVersion: row.policyVersion,
             templateVersion: row.templateVersion,
           ),

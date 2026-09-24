@@ -130,6 +130,7 @@ final class SupportReportSourceFingerprint {
         'teacherName': projection.header.teacherName,
         'halaqahName': projection.header.halaqahName,
         'organizationName': projection.header.organizationName,
+        'reportContext': projection.header.reportContext.storageValue,
         'policyVersion': projection.header.policyVersion,
         'templateVersion': projection.header.templateVersion,
       },

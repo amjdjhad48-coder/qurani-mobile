@@ -29,11 +29,31 @@ class QuraniMainShell extends ConsumerStatefulWidget {
 class _QuraniMainShellState extends ConsumerState<QuraniMainShell> {
   _MainSection _section = _MainSection.home;
   SupportReportsRuntimeContext? _reportsRuntimeContext;
+  var _startupRecoveryComplete = false;
 
   @override
   void initState() {
     super.initState();
-    Future<void>.microtask(_refreshReportsAccess);
+    Future<void>.microtask(_runStartupRecovery);
+  }
+
+  Future<void> _runStartupRecovery() async {
+    try {
+      await ref.read(supportReportStartupCleanupProvider.future);
+    } catch (_) {
+      // Orphan cleanup is recovery housekeeping. A failure must not block
+      // access to an otherwise healthy unlocked runtime session.
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _startupRecoveryComplete = true;
+    });
+
+    await _refreshReportsAccess();
   }
 
   Future<void> _refreshReportsAccess() async {
@@ -77,6 +97,19 @@ class _QuraniMainShellState extends ConsumerState<QuraniMainShell> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_startupRecoveryComplete) {
+      return const Scaffold(
+        key: Key('qurani_startup_recovery_loading'),
+        body: SafeArea(
+          child: Center(
+            child: CircularProgressIndicator(
+              key: Key('qurani_startup_recovery_progress'),
+            ),
+          ),
+        ),
+      );
+    }
+
     final sections = <_MainSection>[
       _MainSection.home,
       _MainSection.students,

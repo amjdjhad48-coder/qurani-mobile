@@ -109,85 +109,75 @@ class _ReportsGatewayBody extends StatelessWidget {
           ),
           const SizedBox(height: 12),
         ],
-        if (runtimeContext.supportEnabled)
-          Card(
-            key: const Key('reports_current_support_card'),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    'تقارير الفترة الحالية',
-                    style: Theme.of(context).textTheme.titleLarge,
+        Card(
+          key: Key(
+            runtimeContext.supportEnabled
+                ? 'reports_current_support_card'
+                : 'reports_current_general_card',
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  'تقارير الفترة الحالية',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 10),
+                ListTile(
+                  key: const Key('reports_current_weekly_gateway'),
+                  onTap: actionsEnabled
+                      ? () {
+                          Navigator.of(context).push<void>(
+                            MaterialPageRoute<void>(
+                              builder: (context) =>
+                                  WeeklySupportReportReviewScreen(
+                                    actionsEnabled: actionsEnabled,
+                                  ),
+                            ),
+                          );
+                        }
+                      : null,
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.view_week_outlined),
+                  title: const Text('التقرير الأسبوعي الحالي'),
+                  subtitle: const Text(
+                    'السبت إلى الأربعاء، من بيانات المصدر المسجلة.',
                   ),
-                  const SizedBox(height: 10),
-                  ListTile(
-                    key: const Key('reports_current_weekly_gateway'),
-                    onTap: actionsEnabled
-                        ? () {
-                            Navigator.of(context).push<void>(
-                              MaterialPageRoute<void>(
-                                builder: (context) =>
-                                    WeeklySupportReportReviewScreen(
-                                      actionsEnabled: actionsEnabled,
-                                    ),
-                              ),
-                            );
-                          }
-                        : null,
-                    contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.view_week_outlined),
-                    title: const Text('التقرير الأسبوعي الحالي'),
-                    subtitle: const Text(
-                      'السبت إلى الأربعاء، من بيانات المصدر المسجلة.',
-                    ),
-                    trailing: const Icon(Icons.chevron_left),
+                  trailing: const Icon(Icons.chevron_left),
+                ),
+                ListTile(
+                  key: const Key('reports_current_monthly_gateway'),
+                  onTap: actionsEnabled
+                      ? () {
+                          Navigator.of(context).push<void>(
+                            MaterialPageRoute<void>(
+                              builder: (context) =>
+                                  MonthlySupportReportReviewScreen(
+                                    actionsEnabled: actionsEnabled,
+                                  ),
+                            ),
+                          );
+                        }
+                      : null,
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.calendar_month_outlined),
+                  title: const Text('التقرير الشهري الحالي'),
+                  subtitle: const Text(
+                    'الشهر الميلادي، ويُبنى من الأسابيع المعتمدة فقط.',
                   ),
-                  ListTile(
-                    key: const Key('reports_current_monthly_gateway'),
-                    onTap: actionsEnabled
-                        ? () {
-                            Navigator.of(context).push<void>(
-                              MaterialPageRoute<void>(
-                                builder: (context) =>
-                                    MonthlySupportReportReviewScreen(
-                                      actionsEnabled: actionsEnabled,
-                                    ),
-                              ),
-                            );
-                          }
-                        : null,
-                    contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.calendar_month_outlined),
-                    title: const Text('التقرير الشهري الحالي'),
-                    subtitle: const Text(
-                      'الشهر الميلادي، ويُبنى من الأسابيع المعتمدة فقط.',
-                    ),
-                    trailing: const Icon(Icons.chevron_left),
-                  ),
-                  const Text(
-                    'التقارير الجارية مشتقة من المصدر، '
-                    'ولا يتغير أي تقرير معتمد بمجرد فتح شاشة التقارير.',
-                    key: Key('reports_live_projection_notice'),
-                  ),
-                ],
-              ),
-            ),
-          )
-        else
-          const Card(
-            key: Key('reports_history_only_card'),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'برنامج الدعم متوقف حاليًا. '
-                'تظل التقارير المعتمدة السابقة '
-                'متاحة للعرض التاريخي دون إنشاء تقرير جارٍ جديد.',
-                textAlign: TextAlign.center,
-              ),
+                  trailing: const Icon(Icons.chevron_left),
+                ),
+                const Text(
+                  'التقارير الجارية مشتقة من المصدر، '
+                  'ولا يتغير أي تقرير معتمد بمجرد فتح شاشة التقارير.',
+                  key: Key('reports_live_projection_notice'),
+                ),
+              ],
             ),
           ),
+        ),
         const SizedBox(height: 16),
         Text(
           'التقارير السابقة',
@@ -245,8 +235,9 @@ class _ReportsGatewayBody extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(16),
             child: Text(
-              'الاعتماد النهائي غير متاح حاليًا؛ '
-              'يلزم إنشاء ملف Excel الأساسي والتحقق منه أولًا.',
+              'يُنفذ الاعتماد النهائي من شاشة التقرير الأسبوعي أو الشهري. '
+              'عند الاعتماد يُنشأ ملف Excel الأساسي ويُعاد فتحه والتحقق منه '
+              'قبل تثبيت الاعتماد.',
               textAlign: TextAlign.center,
             ),
           ),

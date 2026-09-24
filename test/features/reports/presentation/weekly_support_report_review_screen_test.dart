@@ -15,7 +15,7 @@ import 'package:qurani/features/reports/presentation/weekly_support_report_revie
 
 void main() {
   testWidgets(
-    'weekly review view shows stale state warnings source correction actions and disabled approval',
+    'weekly review view shows stale state warnings source correction actions and enabled Package 8 approval',
     (tester) async {
       tester.view.devicePixelRatio = 1;
       tester.view.physicalSize = const Size(900, 1600);
@@ -28,6 +28,7 @@ void main() {
       var fixedProgressStudentId = -1;
       ReportMissingItem? fixedAttendanceItem;
       int? fixedAttendanceDayId;
+      var approvalCalls = 0;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -35,6 +36,10 @@ void main() {
             body: WeeklySupportReportReviewView(
               review: review,
               actionsEnabled: true,
+              approvalInProgress: false,
+              onApprove: () async {
+                approvalCalls += 1;
+              },
               onFixStudentProfile: (studentId) async {
                 fixedProfileStudentId = studentId;
               },
@@ -66,7 +71,10 @@ void main() {
         find.byKey(const Key('weekly_report_final_approval_button')),
       );
 
-      expect(approval.onPressed, isNull);
+      expect(approval.onPressed, isNotNull);
+      approval.onPressed!();
+      await tester.pump();
+      expect(approvalCalls, 1);
 
       await tester.tap(
         find.byKey(const Key('weekly_report_fix_support_number_7')),
@@ -92,6 +100,62 @@ void main() {
     },
   );
 
+  testWidgets(
+    'weekly final approval requires explicit confirmation when warnings exist',
+    (tester) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(900, 1600);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: <Override>[
+            weeklySupportReportReviewProvider.overrideWith(
+              (ref) async => _review(),
+            ),
+          ],
+          child: const MaterialApp(
+            home: WeeklySupportReportReviewScreen(actionsEnabled: true),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final approvalFinder = find.byKey(
+        const Key('weekly_report_final_approval_button'),
+      );
+
+      await tester.scrollUntilVisible(
+        approvalFinder,
+        250,
+        scrollable: find.descendant(
+          of: find.byKey(const Key('weekly_support_report_review_list')),
+          matching: find.byType(Scrollable),
+        ),
+      );
+
+      await tester.tap(approvalFinder);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('weekly_report_warning_confirmation_dialog')),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('weekly_report_warning_cancel_button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('weekly_report_warning_confirmation_dialog')),
+        findsNothing,
+      );
+    },
+  );
+
   testWidgets('reports weekly gateway opens the live weekly review screen', (
     tester,
   ) async {
@@ -103,7 +167,7 @@ void main() {
           supportReportsRuntimeContextProvider.overrideWith(
             (ref) async => SupportReportsRuntimeContext(
               halaqahId: 1,
-              supportEnabled: true,
+              supportEnabled: false,
               history: <SupportReportHistoryItem>[],
             ),
           ),
@@ -121,6 +185,11 @@ void main() {
 
     await tester.pumpAndSettle();
 
+    expect(
+      find.byKey(const Key('reports_current_general_card')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('reports_current_support_card')), findsNothing);
     expect(
       find.byKey(const Key('reports_current_weekly_gateway')),
       findsOneWidget,

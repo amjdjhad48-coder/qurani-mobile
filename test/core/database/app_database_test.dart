@@ -6,12 +6,12 @@ import 'package:qurani/core/database/database_migrations.dart';
 void main() {
   group('AppDatabase migration infrastructure', () {
     test(
-      'schemaVersion 7 creates Package 2 through Package 7 tables',
+      'schemaVersion 8 creates Package 2 through Package 8 tables',
       () async {
         final database = AppDatabase(NativeDatabase.memory());
 
         try {
-          expect(database.schemaVersion, 7);
+          expect(database.schemaVersion, 8);
 
           await database.customSelect('SELECT 1;').get();
 
@@ -23,9 +23,12 @@ void main() {
             'halaqahs',
             'parent_follow_ups',
             'recitations',
+            'report_export_artifacts',
             'student_activity_periods',
             'student_progress_plans',
             'students',
+            'support_monthly_report_day_entries',
+            'support_monthly_report_days',
             'support_monthly_report_students',
             'support_monthly_reports',
             'support_program_periods',
@@ -46,21 +49,54 @@ void main() {
       },
     );
 
-    for (final version in <int>[1, 2, 3, 4, 5, 6]) {
-      test('migrates schema v$version explicitly to schema v7', () async {
+    for (final version in <int>[1, 2, 3, 4, 5, 6, 7]) {
+      test('migrates schema v$version explicitly to schema v8', () async {
         final executor = _legacyExecutor(version);
         final database = AppDatabase(executor);
 
         try {
           await database.customSelect('SELECT 1;').get();
 
-          expect(await _userVersion(database), 7);
+          expect(await _userVersion(database), 8);
 
           final tables = await _userTables(database);
 
           expect(tables, contains('parent_follow_ups'));
           expect(tables, contains('support_weekly_reports'));
+
+          if (version == 7) {
+            final weeklyStudentColumns = await database
+                .customSelect(
+                  "PRAGMA table_info('support_weekly_report_students');",
+                )
+                .get();
+            final monthlyStudentColumns = await database
+                .customSelect(
+                  "PRAGMA table_info('support_monthly_report_students');",
+                )
+                .get();
+
+            final weeklyNotNullByName = <String, int>{
+              for (final row in weeklyStudentColumns)
+                row.read<String>('name'): row.read<int>('notnull'),
+            };
+            final monthlyNotNullByName = <String, int>{
+              for (final row in monthlyStudentColumns)
+                row.read<String>('name'): row.read<int>('notnull'),
+            };
+
+            expect(
+              weeklyNotNullByName['monthly_goal_quarter_faces_snapshot'],
+              0,
+            );
+            expect(
+              monthlyNotNullByName['monthly_goal_quarter_faces_snapshot'],
+              0,
+            );
+            expect(monthlyNotNullByName['goal_completed'], 0);
+          }
           expect(tables, contains('support_monthly_reports'));
+          expect(tables, contains('report_export_artifacts'));
 
           if (version <= 4) {
             expect(tables, contains('recitations'));
@@ -76,7 +112,7 @@ void main() {
       });
     }
 
-    test('schema v7 keeps foreign keys enabled', () async {
+    test('schema v8 keeps foreign keys enabled', () async {
       final database = AppDatabase(NativeDatabase.memory());
 
       try {
@@ -100,7 +136,7 @@ void main() {
         final strategy = database.migration;
 
         await expectLater(
-          strategy.onUpgrade(database.createMigrator(), 7, 8),
+          strategy.onUpgrade(database.createMigrator(), 8, 9),
           throwsA(isA<StateError>()),
         );
       } finally {
@@ -193,6 +229,65 @@ NativeDatabase _legacyExecutor(int version) {
           'ON DELETE RESTRICT, '
           'FOREIGN KEY (corrects_follow_up_id) '
           'REFERENCES parent_follow_ups(id) ON DELETE RESTRICT'
+          ');',
+        );
+      }
+
+      if (version >= 7) {
+        rawDatabase.execute(
+          'CREATE TABLE support_weekly_reports ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
+          ');',
+        );
+        rawDatabase.execute(
+          'CREATE TABLE support_weekly_report_students ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+          'report_id INTEGER NOT NULL, '
+          'source_student_id INTEGER NOT NULL, '
+          'support_student_number_snapshot TEXT NULL, '
+          'student_name_snapshot TEXT NOT NULL, '
+          'current_juz_snapshot INTEGER NULL, '
+          'daily_plan_text_snapshot TEXT NULL, '
+          'monthly_goal_quarter_faces_snapshot INTEGER NOT NULL, '
+          'student_note_snapshot TEXT NULL, '
+          'display_order_snapshot INTEGER NOT NULL'
+          ');',
+        );
+        rawDatabase.execute(
+          'CREATE TABLE support_monthly_reports ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'
+          ');',
+        );
+        rawDatabase.execute(
+          'CREATE TABLE support_monthly_report_students ('
+          'id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+          'report_id INTEGER NOT NULL, '
+          'source_student_id INTEGER NOT NULL, '
+          'support_student_number_snapshot TEXT NULL, '
+          'student_name_snapshot TEXT NOT NULL, '
+          'current_juz_snapshot INTEGER NULL, '
+          'daily_plan_text_snapshot TEXT NULL, '
+          'monthly_goal_quarter_faces_snapshot INTEGER NOT NULL, '
+          'achieved_quarter_faces INTEGER NOT NULL, '
+          'absence_days INTEGER NOT NULL, '
+          'goal_completed INTEGER NOT NULL CHECK (goal_completed IN (0, 1)), '
+          'note_snapshot TEXT NULL, '
+          'display_order_snapshot INTEGER NOT NULL, '
+          'UNIQUE (report_id, source_student_id), '
+          'CHECK (length(trim(student_name_snapshot)) > 0), '
+          'CHECK (current_juz_snapshot IS NULL OR current_juz_snapshot BETWEEN 1 AND 30), '
+          'CHECK (support_student_number_snapshot IS NULL OR '
+          'length(trim(support_student_number_snapshot)) > 0), '
+          'CHECK (daily_plan_text_snapshot IS NULL OR '
+          'length(trim(daily_plan_text_snapshot)) > 0), '
+          'CHECK (monthly_goal_quarter_faces_snapshot > 0), '
+          'CHECK (achieved_quarter_faces >= 0), '
+          'CHECK (absence_days >= 0), '
+          'CHECK (display_order_snapshot > 0), '
+          'FOREIGN KEY (report_id) REFERENCES support_monthly_reports(id) '
+          'ON DELETE CASCADE, '
+          'FOREIGN KEY (source_student_id) REFERENCES students(id) '
+          'ON DELETE RESTRICT'
           ');',
         );
       }

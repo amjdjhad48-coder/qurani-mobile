@@ -1,12 +1,13 @@
 import 'package:drift/drift.dart';
 import 'package:qurani/core/database/app_database.dart';
 import 'package:qurani/features/reports/domain/approved_weekly_support_report_snapshot.dart';
+import 'package:qurani/features/reports/domain/support_report_export_artifact.dart';
 import 'package:qurani/features/reports/domain/support_report_policy.dart';
 import 'package:qurani/features/reports/domain/support_report_types.dart';
 import 'package:qurani/features/reports/domain/weekly_support_report_projection.dart';
 
 final class DriftWeeklySupportReportSnapshotRepository
-    implements WeeklySupportReportSnapshotRepository {
+    implements WeeklySupportReportAtomicApprovalRepository {
   const DriftWeeklySupportReportSnapshotRepository(this._database);
 
   final AppDatabase _database;
@@ -36,6 +37,10 @@ final class DriftWeeklySupportReportSnapshotRepository
       throw StateError('Approved weekly report is missing approval metadata.');
     }
 
+    final reportContext = SupportReportContext.fromStorage(
+      report.reportContextSnapshot,
+    );
+
     final studentRows =
         await (_database.select(_database.supportWeeklyReportStudents)
               ..where((table) => table.reportId.equals(report.id))
@@ -64,6 +69,13 @@ final class DriftWeeklySupportReportSnapshotRepository
           ),
         )
         .toList(growable: false);
+
+    for (final student in students) {
+      _validateWeeklyGoalContract(
+        reportContext: reportContext,
+        monthlyGoalQuarterFaces: student.monthlyGoalQuarterFaces,
+      );
+    }
 
     final dayRows =
         await (_database.select(_database.supportWeeklyReportDays)
@@ -145,6 +157,7 @@ final class DriftWeeklySupportReportSnapshotRepository
         teacherName: report.teacherNameSnapshot,
         halaqahName: report.halaqahNameSnapshot,
         organizationName: report.organizationNameSnapshot,
+        reportContext: reportContext,
         policyVersion: report.policyVersion,
         templateVersion: report.templateVersion,
       ),
@@ -161,6 +174,53 @@ final class DriftWeeklySupportReportSnapshotRepository
     required WeeklySupportReportProjection projection,
     required String sourceFingerprint,
     required DateTime approvedAtUtc,
+  }) {
+    return _replaceApproved(
+      halaqahId: halaqahId,
+      projection: projection,
+      sourceFingerprint: sourceFingerprint,
+      approvedAtUtc: approvedAtUtc,
+      primaryArtifact: null,
+    );
+  }
+
+  @override
+  Future<void> replaceApprovedWithPrimaryArtifact({
+    required int halaqahId,
+    required WeeklySupportReportProjection projection,
+    required String sourceFingerprint,
+    required DateTime approvedAtUtc,
+    required SupportReportExportArtifactMetadata primaryArtifact,
+  }) {
+    if (primaryArtifact.format != SupportReportExportFormat.excel) {
+      throw ArgumentError.value(
+        primaryArtifact.format,
+        'primaryArtifact',
+        'Primary approval artifact must be Excel.',
+      );
+    }
+
+    if (primaryArtifact.templateVersion != projection.header.templateVersion) {
+      throw StateError(
+        'Primary artifact template version does not match weekly projection.',
+      );
+    }
+
+    return _replaceApproved(
+      halaqahId: halaqahId,
+      projection: projection,
+      sourceFingerprint: sourceFingerprint,
+      approvedAtUtc: approvedAtUtc,
+      primaryArtifact: primaryArtifact,
+    );
+  }
+
+  Future<void> _replaceApproved({
+    required int halaqahId,
+    required WeeklySupportReportProjection projection,
+    required String sourceFingerprint,
+    required DateTime approvedAtUtc,
+    required SupportReportExportArtifactMetadata? primaryArtifact,
   }) async {
     if (halaqahId <= 0) {
       throw ArgumentError.value(
@@ -177,6 +237,13 @@ final class DriftWeeklySupportReportSnapshotRepository
         sourceFingerprint,
         'sourceFingerprint',
         'Source fingerprint must not be empty.',
+      );
+    }
+
+    for (final student in projection.students) {
+      _validateWeeklyGoalContract(
+        reportContext: projection.header.reportContext,
+        monthlyGoalQuarterFaces: student.monthlyGoalQuarterFaces,
       );
     }
 
@@ -208,6 +275,9 @@ final class DriftWeeklySupportReportSnapshotRepository
               teacherNameSnapshot: projection.header.teacherName,
               halaqahNameSnapshot: projection.header.halaqahName,
               organizationNameSnapshot: projection.header.organizationName,
+              reportContextSnapshot: Value(
+                projection.header.reportContext.storageValue,
+              ),
               policyVersion: projection.header.policyVersion,
               templateVersion: projection.header.templateVersion,
               sourceFingerprint: Value(normalizedFingerprint),
@@ -230,8 +300,9 @@ final class DriftWeeklySupportReportSnapshotRepository
                 studentNameSnapshot: student.studentName,
                 currentJuzSnapshot: Value(student.currentJuz),
                 dailyPlanTextSnapshot: Value(student.dailyPlanText),
-                monthlyGoalQuarterFacesSnapshot:
-                    student.monthlyGoalQuarterFaces,
+                monthlyGoalQuarterFacesSnapshot: Value(
+                  student.monthlyGoalQuarterFaces,
+                ),
                 studentNoteSnapshot: Value(student.note),
                 displayOrderSnapshot: student.displayOrder,
               ),
@@ -309,7 +380,43 @@ final class DriftWeeklySupportReportSnapshotRepository
           }
         }
       }
+
+      if (primaryArtifact != null) {
+        await _database
+            .into(_database.reportExportArtifacts)
+            .insert(
+              ReportExportArtifactsCompanion.insert(
+                weeklyReportId: Value(reportId),
+                format: primaryArtifact.format.storageValue,
+                internalPath: primaryArtifact.internalPath,
+                sha256: primaryArtifact.sha256,
+                templateVersion: primaryArtifact.templateVersion,
+                sizeBytes: primaryArtifact.sizeBytes,
+              ),
+            );
+      }
     });
+  }
+}
+
+void _validateWeeklyGoalContract({
+  required SupportReportContext reportContext,
+  required int? monthlyGoalQuarterFaces,
+}) {
+  if (reportContext == SupportReportContext.support) {
+    if (monthlyGoalQuarterFaces !=
+        SupportReportPolicy.monthlyGoalQuarterFaces) {
+      throw StateError(
+        'Support weekly report student must use the support monthly goal.',
+      );
+    }
+    return;
+  }
+
+  if (monthlyGoalQuarterFaces != null) {
+    throw StateError(
+      'General weekly report student must not store a support monthly goal.',
+    );
   }
 }
 

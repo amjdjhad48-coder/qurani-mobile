@@ -60,11 +60,29 @@ final class MonthlySupportReportPeriod {
   }
 }
 
+enum SupportReportContext {
+  general('general'),
+  support('support');
+
+  const SupportReportContext(this.storageValue);
+
+  final String storageValue;
+
+  static SupportReportContext fromStorage(String value) {
+    return switch (value) {
+      'general' => SupportReportContext.general,
+      'support' => SupportReportContext.support,
+      _ => throw FormatException('Unsupported support report context: $value'),
+    };
+  }
+}
+
 final class SupportReportHeaderSnapshot {
   const SupportReportHeaderSnapshot({
     required this.teacherName,
     required this.halaqahName,
     required this.organizationName,
+    this.reportContext = SupportReportContext.support,
     required this.policyVersion,
     required this.templateVersion,
   });
@@ -72,6 +90,7 @@ final class SupportReportHeaderSnapshot {
   final String teacherName;
   final String halaqahName;
   final String organizationName;
+  final SupportReportContext reportContext;
   final int policyVersion;
   final int templateVersion;
 }

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qurani/core/database/app_database.dart';
 import 'package:qurani/features/reports/application/support_reports_runtime_providers.dart';
+import 'package:qurani/features/reports/data/support_report_artifact_file_store.dart';
 import 'package:qurani/features/setup/application/runtime_lock_service.dart';
 import 'package:qurani/features/setup/application/setup_providers.dart';
 import 'package:qurani/features/setup/data/drift_runtime_database_opener.dart';
@@ -22,17 +25,40 @@ void main() {
         await harness.close();
       }
     });
-    test('disabled support without history hides Reports', () async {
+    test(
+      'disabled support without history still exposes Reports shell',
+      () async {
+        final harness = await _Harness.create(status: 'disabled');
+        try {
+          final context = await harness.readContext();
+          expect(context.supportEnabled, isFalse);
+          expect(context.hasHistoricalReports, isFalse);
+          expect(context.canOpenReports, isTrue);
+        } finally {
+          await harness.close();
+        }
+      },
+    );
+    test('disabled support exposes Package 8 approval coordinators', () async {
       final harness = await _Harness.create(status: 'disabled');
       try {
         final context = await harness.readContext();
         expect(context.supportEnabled, isFalse);
-        expect(context.hasHistoricalReports, isFalse);
-        expect(context.canOpenReports, isFalse);
+
+        final weekly = await harness.container.read(
+          package8WeeklySupportReportApprovalCoordinatorProvider.future,
+        );
+        final monthly = await harness.container.read(
+          package8MonthlySupportReportApprovalCoordinatorProvider.future,
+        );
+
+        expect(weekly, isNotNull);
+        expect(monthly, isNotNull);
       } finally {
         await harness.close();
       }
     });
+
     test(
       'disabled support preserves Reports access when approved history exists',
       () async {
@@ -59,6 +85,59 @@ void main() {
         }
       },
     );
+    test(
+      'startup cleanup deletes report orphans once per ProviderContainer',
+      () async {
+        final harness = await _Harness.create(status: 'disabled');
+
+        try {
+          final artifactsDirectory = Directory(
+            '${harness.artifactDirectory.path}${Platform.pathSeparator}'
+            '${SupportReportArtifactFileStore.artifactsDirectoryName}',
+          );
+          await artifactsDirectory.create(recursive: true);
+
+          final orphanHash = List<String>.filled(64, 'a').join();
+          final stagingHash = List<String>.filled(64, 'b').join();
+          final lateOrphanHash = List<String>.filled(64, 'c').join();
+
+          final orphan = File(
+            '${artifactsDirectory.path}${Platform.pathSeparator}'
+            '$orphanHash.xlsx',
+          );
+          final staging = File(
+            '${artifactsDirectory.path}${Platform.pathSeparator}'
+            '$stagingHash.xlsx.staging.123',
+          );
+
+          await orphan.writeAsBytes(<int>[1, 2, 3], flush: true);
+          await staging.writeAsBytes(<int>[4, 5, 6], flush: true);
+
+          final deleted = await harness.container.read(
+            supportReportStartupCleanupProvider.future,
+          );
+
+          expect(deleted, 2);
+          expect(await orphan.exists(), isFalse);
+          expect(await staging.exists(), isFalse);
+
+          final lateOrphan = File(
+            '${artifactsDirectory.path}${Platform.pathSeparator}'
+            '$lateOrphanHash.xlsx',
+          );
+          await lateOrphan.writeAsBytes(<int>[7, 8, 9], flush: true);
+
+          final cachedDeleted = await harness.container.read(
+            supportReportStartupCleanupProvider.future,
+          );
+
+          expect(cachedDeleted, 2);
+          expect(await lateOrphan.exists(), isTrue);
+        } finally {
+          await harness.close();
+        }
+      },
+    );
   });
 }
 
@@ -67,16 +146,21 @@ final class _Harness {
     required this.database,
     required this.halaqahId,
     required this.container,
+    required this.artifactDirectory,
   });
   final AppDatabase database;
   final int halaqahId;
   final ProviderContainer container;
+  final Directory artifactDirectory;
 
   static Future<_Harness> create({
     required String status,
     bool withApprovedWeekly = false,
   }) async {
     final database = AppDatabase(NativeDatabase.memory());
+    final artifactDirectory = await Directory.systemTemp.createTemp(
+      'qurani_reports_runtime_provider_',
+    );
     final now = DateTime.utc(2026, 9, 16, 12);
     final halaqahId = await database
         .into(database.halaqahs)
@@ -137,12 +221,18 @@ final class _Harness {
     final container = ProviderContainer(
       overrides: <Override>[
         runtimeLockCoordinatorProvider.overrideWith((ref) async => coordinator),
+        supportReportArtifactFileStoreProvider.overrideWith(
+          (ref) async => SupportReportArtifactFileStore(
+            applicationSupportDirectory: artifactDirectory,
+          ),
+        ),
       ],
     );
     return _Harness(
       database: database,
       halaqahId: halaqahId,
       container: container,
+      artifactDirectory: artifactDirectory,
     );
   }
 
@@ -153,6 +243,10 @@ final class _Harness {
   Future<void> close() async {
     container.dispose();
     await database.close();
+
+    if (await artifactDirectory.exists()) {
+      await artifactDirectory.delete(recursive: true);
+    }
   }
 }
 

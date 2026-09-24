@@ -35,21 +35,24 @@ final class WeeklySupportReportProjectionBuilder {
         )
         .toList(growable: false);
 
-    if (reportSupportPeriods.isEmpty) {
-      throw StateError(
-        'Cannot build a weekly support report without a '
-        'support period intersecting the official week.',
-      );
-    }
-
     final organizationNames = reportSupportPeriods
         .map((period) => period.organizationName.trim())
         .toSet();
 
-    if (organizationNames.length != 1) {
+    // CR-P8-REPORTS-002:
+    // Zero support organizations => General.
+    // One distinct support organization => Support, including historical gaps.
+    // More than one distinct organization => General transition period.
+    final hasSupportContext = organizationNames.length == 1;
+
+    final reportingOrganizationName = hasSupportContext
+        ? organizationNames.single
+        : source.halaqah.centerName.trim();
+
+    if (reportingOrganizationName.isEmpty) {
       throw StateError(
-        'Cannot build one weekly report across multiple '
-        'support organizations.',
+        'Cannot build a general weekly report without a '
+        'halaqah center or mosque name.',
       );
     }
 
@@ -58,8 +61,9 @@ final class WeeklySupportReportProjectionBuilder {
             .where(
               (student) => officialDates.any(
                 (date) =>
-                    _supportActiveOnDate(reportSupportPeriods, date) &&
-                    _studentActiveOnDate(student, date),
+                    _studentActiveOnDate(student, date) &&
+                    (!hasSupportContext ||
+                        _supportActiveOnDate(reportSupportPeriods, date)),
               ),
             )
             .toList(growable: false)
@@ -79,11 +83,16 @@ final class WeeklySupportReportProjectionBuilder {
         .map(
           (student) => WeeklySupportReportStudentProjection(
             sourceStudentId: student.id,
-            supportStudentNumber: student.supportStudentNumber,
+            supportStudentNumber: hasSupportContext
+                ? student.supportStudentNumber
+                : null,
             studentName: student.studentName,
             currentJuz: student.currentJuz,
             dailyPlanText: student.dailyPlanText,
             note: student.note,
+            monthlyGoalQuarterFaces: hasSupportContext
+                ? SupportReportPolicy.monthlyGoalQuarterFaces
+                : null,
             displayOrder: student.displayOrder,
           ),
         )
@@ -92,7 +101,7 @@ final class WeeklySupportReportProjectionBuilder {
     final missingItems = <ReportMissingItem>[];
 
     for (final student in students) {
-      if (student.supportStudentNumber == null) {
+      if (hasSupportContext && student.supportStudentNumber == null) {
         missingItems.add(
           ReportMissingItem(
             studentId: student.id,
@@ -150,7 +159,8 @@ final class WeeklySupportReportProjectionBuilder {
     final projectionDays = <WeeklySupportReportDayProjection>[];
 
     for (final localDate in officialDates) {
-      if (!_supportActiveOnDate(reportSupportPeriods, localDate)) {
+      if (hasSupportContext &&
+          !_supportActiveOnDate(reportSupportPeriods, localDate)) {
         projectionDays.add(
           WeeklySupportReportDayProjection(
             localDate: localDate,
@@ -258,7 +268,10 @@ final class WeeklySupportReportProjectionBuilder {
       header: SupportReportHeaderSnapshot(
         teacherName: source.halaqah.teacherName,
         halaqahName: source.halaqah.halaqahName,
-        organizationName: organizationNames.single,
+        organizationName: reportingOrganizationName,
+        reportContext: hasSupportContext
+            ? SupportReportContext.support
+            : SupportReportContext.general,
         policyVersion: SupportReportPolicy.policyVersion,
         templateVersion: SupportReportPolicy.templateVersion,
       ),

@@ -208,6 +208,9 @@ abstract class _$P002SpikeDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [p002ProbeRecords];
+  @override
+  DriftDatabaseOptions get options =>
+      const DriftDatabaseOptions(storeDateTimeAsText: true);
 }
 
 typedef $$P002ProbeRecordsTableCreateCompanionBuilder =

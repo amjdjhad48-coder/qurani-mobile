@@ -3,38 +3,43 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:qurani/core/database/app_database.dart';
 
 void main() {
-  group('Package 7 support report schema', () {
-    test('creates exactly the six Package 7 report tables', () async {
-      final database = AppDatabase(NativeDatabase.memory());
+  group('Support report schema', () {
+    test(
+      'keeps Package 7 tables and adds Package 8 monthly detail tables',
+      () async {
+        final database = AppDatabase(NativeDatabase.memory());
 
-      try {
-        await database.customSelect('SELECT 1;').get();
+        try {
+          await database.customSelect('SELECT 1;').get();
 
-        final rows = await database
-            .customSelect(
-              "SELECT name FROM sqlite_master "
-              "WHERE type = 'table' "
-              "AND name LIKE 'support_%report%' "
-              "ORDER BY name;",
-            )
-            .get();
+          final rows = await database
+              .customSelect(
+                "SELECT name FROM sqlite_master "
+                "WHERE type = 'table' "
+                "AND name LIKE 'support_%report%' "
+                "ORDER BY name;",
+              )
+              .get();
 
-        final names = rows
-            .map((row) => row.read<String>('name'))
-            .toList(growable: false);
+          final names = rows
+              .map((row) => row.read<String>('name'))
+              .toList(growable: false);
 
-        expect(names, <String>[
-          'support_monthly_report_students',
-          'support_monthly_reports',
-          'support_weekly_report_day_entries',
-          'support_weekly_report_days',
-          'support_weekly_report_students',
-          'support_weekly_reports',
-        ]);
-      } finally {
-        await database.close();
-      }
-    });
+          expect(names, <String>[
+            'support_monthly_report_day_entries',
+            'support_monthly_report_days',
+            'support_monthly_report_students',
+            'support_monthly_reports',
+            'support_weekly_report_day_entries',
+            'support_weekly_report_days',
+            'support_weekly_report_students',
+            'support_weekly_reports',
+          ]);
+        } finally {
+          await database.close();
+        }
+      },
+    );
 
     test(
       'weekly approved snapshot enforces header and period uniqueness',

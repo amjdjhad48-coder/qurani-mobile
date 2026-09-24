@@ -86,7 +86,7 @@ final class WeeklySupportReportStudentProjection {
   final int? currentJuz;
   final String? dailyPlanText;
   final String? note;
-  final int monthlyGoalQuarterFaces;
+  final int? monthlyGoalQuarterFaces;
   final int displayOrder;
 }
 
@@ -123,8 +123,23 @@ final class WeeklySupportReportProjection {
     final missingList = List<ReportMissingItem>.unmodifiable(missingItems);
 
     final studentIds = <int>{};
+    final isSupportContext =
+        header.reportContext == SupportReportContext.support;
 
     for (final student in studentList) {
+      if (isSupportContext) {
+        if (student.monthlyGoalQuarterFaces !=
+            SupportReportPolicy.monthlyGoalQuarterFaces) {
+          throw ArgumentError(
+            'Support weekly report students must use the support monthly goal.',
+          );
+        }
+      } else if (student.monthlyGoalQuarterFaces != null) {
+        throw ArgumentError(
+          'General weekly report students must not use a support monthly goal.',
+        );
+      }
+
       if (!studentIds.add(student.sourceStudentId)) {
         throw ArgumentError(
           'Weekly support projection contains duplicate student id '

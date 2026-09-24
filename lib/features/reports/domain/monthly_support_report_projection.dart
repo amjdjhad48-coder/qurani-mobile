@@ -71,10 +71,10 @@ final class MonthlySupportReportStudentProjection {
   final String studentName;
   final int? currentJuz;
   final String? dailyPlanText;
-  final int monthlyGoalQuarterFaces;
+  final int? monthlyGoalQuarterFaces;
   final int achievedQuarterFaces;
   final int absenceDays;
-  final bool goalCompleted;
+  final bool? goalCompleted;
   final String? note;
   final int displayOrder;
 }

@@ -38,6 +38,7 @@ final class MonthlySupportReportReviewService {
   Future<MonthlySupportReportReview> load({
     required int halaqahId,
     required DateTime localDate,
+    String? centerName,
   }) async {
     final period = MonthlySupportReportPeriod.forDate(localDate);
 
@@ -47,6 +48,7 @@ final class MonthlySupportReportReviewService {
     final projection = projectionBuilder.build(
       period: period,
       approvedWeeklySnapshots: weeklySnapshots,
+      centerName: centerName,
     );
 
     if (projection.halaqahId != halaqahId) {

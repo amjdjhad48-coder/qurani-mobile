@@ -11,6 +11,7 @@ final class MonthlySupportReportProjectionBuilder {
     required MonthlySupportReportPeriod period,
     required Iterable<ApprovedWeeklySupportReportSnapshot>
     approvedWeeklySnapshots,
+    String? centerName,
   }) {
     final snapshots = approvedWeeklySnapshots
         .where(
@@ -29,6 +30,7 @@ final class MonthlySupportReportProjectionBuilder {
     final reportIds = <int>{};
     final halaqahIds = <int>{};
     final organizationNames = <String>{};
+    final reportContexts = <SupportReportContext>{};
     final policyVersions = <int>{};
     final templateVersions = <int>{};
 
@@ -41,6 +43,7 @@ final class MonthlySupportReportProjectionBuilder {
 
       halaqahIds.add(snapshot.halaqahId);
       organizationNames.add(snapshot.header.organizationName.trim());
+      reportContexts.add(snapshot.header.reportContext);
       policyVersions.add(snapshot.header.policyVersion);
       templateVersions.add(snapshot.header.templateVersion);
     }
@@ -49,10 +52,50 @@ final class MonthlySupportReportProjectionBuilder {
       throw StateError('Monthly report inputs must belong to one halaqah.');
     }
 
-    if (organizationNames.length != 1 || organizationNames.single.isEmpty) {
+    final normalizedCenterName = centerName?.trim();
+
+    final canonicalCenterName =
+        normalizedCenterName == null || normalizedCenterName.isEmpty
+        ? null
+        : normalizedCenterName;
+
+    if (organizationNames.any((name) => name.isEmpty)) {
       throw StateError(
-        'Monthly report cannot combine multiple support organizations.',
+        'Monthly report inputs must expose non-empty reporting identities.',
       );
+    }
+
+    final allSupportContext =
+        reportContexts.length == 1 &&
+        reportContexts.single == SupportReportContext.support;
+
+    final hasSupportContext =
+        allSupportContext && organizationNames.length == 1;
+
+    final reportContext = hasSupportContext
+        ? SupportReportContext.support
+        : SupportReportContext.general;
+
+    late final String reportingOrganizationName;
+
+    if (hasSupportContext) {
+      reportingOrganizationName = organizationNames.single;
+    } else {
+      final canReuseGeneralSnapshotName =
+          reportContexts.length == 1 &&
+          reportContexts.single == SupportReportContext.general &&
+          organizationNames.length == 1;
+
+      reportingOrganizationName =
+          canonicalCenterName ??
+          (canReuseGeneralSnapshotName ? organizationNames.single : '');
+
+      if (reportingOrganizationName.isEmpty) {
+        throw StateError(
+          'Monthly general report requires the canonical halaqah center '
+          'when weekly contexts or support organizations transition.',
+        );
+      }
     }
 
     if (policyVersions.length != 1 ||
@@ -254,35 +297,44 @@ final class MonthlySupportReportProjectionBuilder {
         );
       }
 
-      if (profile.monthlyGoalQuarterFaces !=
-          SupportReportPolicy.monthlyGoalQuarterFaces) {
+      if (hasSupportContext &&
+          profile.monthlyGoalQuarterFaces !=
+              SupportReportPolicy.monthlyGoalQuarterFaces) {
         throw StateError(
-          'Approved weekly snapshot uses an '
+          'Approved support weekly snapshot uses an '
           'unsupported monthly goal.',
         );
       }
 
-      final monthlyGoal = SupportReportPolicy.monthlyGoalQuarterFaces;
+      final monthlyGoal = hasSupportContext
+          ? SupportReportPolicy.monthlyGoalQuarterFaces
+          : null;
+
+      final goalCompleted = hasSupportContext
+          ? SupportReportPolicy.hasCompletedMonthlyGoal(
+              accumulator.achievedQuarterFaces,
+            )
+          : null;
 
       students.add(
         MonthlySupportReportStudentProjection(
           sourceStudentId: profile.sourceStudentId,
-          supportStudentNumber: profile.supportStudentNumber,
+          supportStudentNumber: hasSupportContext
+              ? profile.supportStudentNumber
+              : null,
           studentName: profile.studentName,
           currentJuz: profile.currentJuz,
           dailyPlanText: profile.dailyPlanText,
           monthlyGoalQuarterFaces: monthlyGoal,
           achievedQuarterFaces: accumulator.achievedQuarterFaces,
           absenceDays: accumulator.absenceDays,
-          goalCompleted: SupportReportPolicy.hasCompletedMonthlyGoal(
-            accumulator.achievedQuarterFaces,
-          ),
+          goalCompleted: goalCompleted,
           note: profile.note,
           displayOrder: profile.displayOrder,
         ),
       );
 
-      if (profile.supportStudentNumber == null) {
+      if (hasSupportContext && profile.supportStudentNumber == null) {
         missingItems.add(
           ReportMissingItem(
             studentId: profile.sourceStudentId,
@@ -356,7 +408,14 @@ final class MonthlySupportReportProjectionBuilder {
     return MonthlySupportReportProjection(
       halaqahId: halaqahIds.single,
       period: period,
-      header: latestSnapshot.header,
+      header: SupportReportHeaderSnapshot(
+        teacherName: latestSnapshot.header.teacherName,
+        halaqahName: latestSnapshot.header.halaqahName,
+        organizationName: reportingOrganizationName,
+        reportContext: reportContext,
+        policyVersion: latestSnapshot.header.policyVersion,
+        templateVersion: latestSnapshot.header.templateVersion,
+      ),
       students: students,
       days: dayProjections,
       weeklyInputs: weeklyInputs,

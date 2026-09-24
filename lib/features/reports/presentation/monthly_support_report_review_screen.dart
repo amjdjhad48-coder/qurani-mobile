@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qurani/features/daily_halaqah/application/daily_halaqah_runtime_providers.dart';
 import 'package:qurani/features/daily_halaqah/presentation/halaqah_day_history_screen.dart';
+import 'package:qurani/features/reports/application/monthly_support_report_approval_candidate.dart';
 import 'package:qurani/features/reports/application/monthly_support_report_approval_service.dart';
 import 'package:qurani/features/reports/application/monthly_support_report_review.dart';
+import 'package:qurani/features/reports/application/package8_support_report_approval_coordinator.dart';
 import 'package:qurani/features/reports/application/support_reports_runtime_providers.dart';
 import 'package:qurani/features/reports/domain/support_report_policy.dart';
+import 'package:qurani/features/reports/domain/support_report_types.dart';
 import 'package:qurani/features/students/application/student_runtime_providers.dart';
 import 'package:qurani/features/students/domain/student.dart';
 import 'package:qurani/features/students/presentation/student_form_screen.dart';
@@ -26,6 +29,8 @@ class MonthlySupportReportReviewScreen extends ConsumerStatefulWidget {
 
 class _MonthlySupportReportReviewScreenState
     extends ConsumerState<MonthlySupportReportReviewScreen> {
+  bool _isApproving = false;
+
   Future<StudentRecord> _loadStudent(
     StudentRuntimeContext runtimeContext,
     int studentId,
@@ -144,6 +149,117 @@ class _MonthlySupportReportReviewScreenState
     }
   }
 
+  Future<void> _approveReport(MonthlySupportReportReview review) async {
+    if (_isApproving || !widget.actionsEnabled) {
+      return;
+    }
+
+    var candidate = review.candidate;
+
+    if (candidate.hasWarnings && !candidate.warningsConfirmed) {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) {
+          return AlertDialog(
+            key: const Key('monthly_report_warning_confirmation_dialog'),
+            title: const Text('تأكيد الاعتماد مع وجود تنبيهات'),
+            content: Text(
+              'يوجد ${candidate.projection.missingItems.length} بندًا يحتاج مراجعة. '
+              'يمكنك الرجوع لتصحيح بيانات المصدر، أو المتابعة واعتماد التقرير بالقيم الحالية.',
+            ),
+            actions: <Widget>[
+              TextButton(
+                key: const Key('monthly_report_warning_cancel_button'),
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: const Text('رجوع للتصحيح'),
+              ),
+              FilledButton(
+                key: const Key('monthly_report_warning_confirm_button'),
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: const Text('متابعة الاعتماد'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmed != true || !mounted) {
+        return;
+      }
+
+      candidate = MonthlySupportReportApprovalCandidate(
+        projection: candidate.projection,
+        sourceFingerprint: candidate.sourceFingerprint,
+        warningsConfirmed: true,
+      );
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() => _isApproving = true);
+
+    try {
+      final reportsContext = await ref.read(
+        supportReportsRuntimeContextProvider.future,
+      );
+      final dailyContext = await ref.read(
+        dailyHalaqahRuntimeContextProvider.future,
+      );
+
+      if (reportsContext.halaqahId != dailyContext.halaqahId) {
+        throw StateError(
+          'Reports and daily halaqah runtime contexts do not match.',
+        );
+      }
+
+      final coordinator = await ref.read(
+        package8MonthlySupportReportApprovalCoordinatorProvider.future,
+      );
+
+      final outcome = await coordinator.approve(
+        halaqahId: reportsContext.halaqahId,
+        candidate: candidate,
+        approvedAtUtc: dailyContext.clock.nowUtc(),
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      final message = switch (outcome.status) {
+        Package8SupportReportApprovalStatus.approved =>
+          'تم اعتماد التقرير الشهري وإنشاء ملف Excel الأساسي والتحقق منه.',
+        Package8SupportReportApprovalStatus.warningsNotConfirmed =>
+          'لم يتم الاعتماد؛ يلزم تأكيد المتابعة مع التنبيهات أولًا.',
+        Package8SupportReportApprovalStatus.sourceChangedDuringPreparation =>
+          'تغيرت المدخلات الأسبوعية أثناء تجهيز Excel. لم يتم الاعتماد؛ أعد مراجعة التقرير.',
+        Package8SupportReportApprovalStatus.primaryArtifactNotSatisfied =>
+          'تعذر التحقق من ملف Excel الأساسي. لم يتم اعتماد التقرير.',
+      };
+
+      _showError(message);
+
+      if (outcome.status == Package8SupportReportApprovalStatus.approved ||
+          outcome.status ==
+              Package8SupportReportApprovalStatus
+                  .sourceChangedDuringPreparation) {
+        _refresh();
+      }
+    } catch (_) {
+      _refresh();
+      _showError(
+        'تعذر إكمال عملية اعتماد التقرير الشهري أو التحقق من نتيجتها. '
+        'تم تحديث التقرير؛ تحقق من الحالة الحالية قبل إعادة المحاولة.',
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isApproving = false);
+      }
+    }
+  }
+
   void _refresh() {
     ref.invalidate(monthlySupportReportReviewProvider);
     ref.invalidate(supportReportsRuntimeContextProvider);
@@ -162,6 +278,7 @@ class _MonthlySupportReportReviewScreenState
   @override
   Widget build(BuildContext context) {
     final review = ref.watch(monthlySupportReportReviewProvider);
+    final actionsEnabled = widget.actionsEnabled && !_isApproving;
 
     return Scaffold(
       key: const Key('monthly_support_report_review_screen'),
@@ -172,7 +289,7 @@ class _MonthlySupportReportReviewScreenState
           IconButton(
             key: const Key('monthly_report_refresh_button'),
             tooltip: 'تحديث من الأسابيع المعتمدة',
-            onPressed: widget.actionsEnabled
+            onPressed: actionsEnabled
                 ? () {
                     ref.invalidate(monthlySupportReportReviewProvider);
                   }
@@ -211,7 +328,9 @@ class _MonthlySupportReportReviewScreenState
           ),
           data: (value) => _MonthlyReviewBody(
             review: value,
-            actionsEnabled: widget.actionsEnabled,
+            actionsEnabled: actionsEnabled,
+            approvalInProgress: _isApproving,
+            onApprove: () => _approveReport(value),
             onFixStudentProfile: _fixStudentProfile,
             onFixProgressPlan: _fixProgressPlan,
             onOpenAttendanceSource: _openAttendanceSource,
@@ -226,6 +345,8 @@ class _MonthlyReviewBody extends StatelessWidget {
   const _MonthlyReviewBody({
     required this.review,
     required this.actionsEnabled,
+    required this.approvalInProgress,
+    required this.onApprove,
     required this.onFixStudentProfile,
     required this.onFixProgressPlan,
     required this.onOpenAttendanceSource,
@@ -233,6 +354,8 @@ class _MonthlyReviewBody extends StatelessWidget {
 
   final MonthlySupportReportReview review;
   final bool actionsEnabled;
+  final bool approvalInProgress;
+  final Future<void> Function() onApprove;
   final Future<void> Function(int studentId) onFixStudentProfile;
   final Future<void> Function(int studentId) onFixProgressPlan;
   final Future<void> Function() onOpenAttendanceSource;
@@ -260,7 +383,12 @@ class _MonthlyReviewBody extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text('المعلم: ${projection.header.teacherName}'),
                 Text('الحلقة: ${projection.header.halaqahName}'),
-                Text('الجهة: ${projection.header.organizationName}'),
+                Text(
+                  projection.header.reportContext ==
+                          SupportReportContext.support
+                      ? 'الجهة: ${projection.header.organizationName}'
+                      : 'المركز/المسجد: ${projection.header.organizationName}',
+                ),
                 const SizedBox(height: 8),
                 Text(
                   'الأسابيع المعتمدة المساهمة: '
@@ -306,39 +434,69 @@ class _MonthlyReviewBody extends StatelessWidget {
             child: ListTile(
               title: Text(student.studentName),
               subtitle: Text(
-                'رقم الجهة: '
-                '${student.supportStudentNumber ?? 'غير مكتمل'}\n'
-                'الجزء الحالي: '
-                '${student.currentJuz?.toString() ?? 'غير مكتمل'}\n'
-                'الهدف: ${_faces(student.monthlyGoalQuarterFaces)}'
-                ' • الإنجاز: ${_faces(student.achievedQuarterFaces)}\n'
-                'أيام الغياب: ${student.absenceDays}'
-                ' • إكمال الجزء: ${student.goalCompleted ? 'تم' : 'لم يتم'}',
+                student.monthlyGoalQuarterFaces == null
+                    ? 'الجزء الحالي: '
+                          '${student.currentJuz?.toString() ?? 'غير مكتمل'}\n'
+                          'الإنجاز: ${_faces(student.achievedQuarterFaces)}\n'
+                          'أيام الغياب: ${student.absenceDays}'
+                    : 'رقم الجهة: '
+                          '${student.supportStudentNumber ?? 'غير مكتمل'}\n'
+                          'الجزء الحالي: '
+                          '${student.currentJuz?.toString() ?? 'غير مكتمل'}\n'
+                          'الهدف: ${_faces(student.monthlyGoalQuarterFaces!)}'
+                          ' • الإنجاز: ${_faces(student.achievedQuarterFaces)}\n'
+                          'أيام الغياب: ${student.absenceDays}'
+                          ' • إكمال الجزء: '
+                          '${student.goalCompleted == true ? 'تم' : 'لم يتم'}',
               ),
               isThreeLine: true,
             ),
           ),
         ),
         const SizedBox(height: 12),
-        const Card(
-          key: Key('monthly_report_primary_artifact_gate'),
+        Card(
+          key: const Key('monthly_report_primary_artifact_gate'),
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text('بوابة الاعتماد النهائي'),
-                SizedBox(height: 6),
                 Text(
-                  'الاعتماد النهائي معطل في P7. '
-                  'P8 يجب أن ينشئ ملف Excel الأساسي ويعيد فتحه '
-                  'ويتحقق منه قبل تثبيت الاعتماد.',
+                  'بوابة الاعتماد النهائي',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                SizedBox(height: 12),
-                FilledButton(
-                  key: Key('monthly_report_final_approval_button'),
-                  onPressed: null,
-                  child: Text('الاعتماد النهائي - متاح بعد P8'),
+                const SizedBox(height: 6),
+                const Text(
+                  'سيتم إنشاء ملف Excel الأساسي من نفس بيانات التقرير، '
+                  'ثم إعادة فتحه والتحقق منه قبل تثبيت الاعتماد.',
+                ),
+                if (review.candidate.hasWarnings) ...<Widget>[
+                  const SizedBox(height: 8),
+                  const Text(
+                    'يوجد تنبيهات في بيانات المصدر؛ ستحتاج إلى تأكيد صريح '
+                    'إذا اخترت المتابعة دون تصحيحها.',
+                  ),
+                ],
+                const SizedBox(height: 12),
+                FilledButton.icon(
+                  key: const Key('monthly_report_final_approval_button'),
+                  onPressed: actionsEnabled && !approvalInProgress
+                      ? () async {
+                          await onApprove();
+                        }
+                      : null,
+                  icon: approvalInProgress
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.verified_outlined),
+                  label: Text(
+                    approvalInProgress
+                        ? 'جارٍ إنشاء Excel والتحقق منه...'
+                        : 'اعتماد التقرير وإنشاء Excel',
+                  ),
                 ),
               ],
             ),

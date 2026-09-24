@@ -27,13 +27,16 @@ part 'app_database.g.dart';
     SupportWeeklyReportDayEntries,
     SupportMonthlyReports,
     SupportMonthlyReportStudents,
+    SupportMonthlyReportDays,
+    SupportMonthlyReportDayEntries,
+    ReportExportArtifacts,
   ],
 )
 final class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor);
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => buildAppDatabaseMigrationStrategy(this);

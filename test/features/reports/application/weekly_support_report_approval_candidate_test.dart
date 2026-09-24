@@ -110,6 +110,21 @@ void main() {
     );
   });
 
+  test(
+    'weekly source fingerprint changes when report context changes',
+    () async {
+      final support = await service.buildCandidate(
+        projection: _projection(reportContext: SupportReportContext.support),
+      );
+
+      final general = await service.buildCandidate(
+        projection: _projection(reportContext: SupportReportContext.general),
+      );
+
+      expect(general.sourceFingerprint, isNot(support.sourceFingerprint));
+    },
+  );
+
   group('PrimaryReportArtifactGate', () {
     test(
       'Package 7 production gate keeps final approval unavailable before Package 8',
@@ -155,16 +170,20 @@ WeeklySupportReportProjection _projection({
       SupportReportAttendanceStatus.present,
   int achievedQuarterFaces = 4,
   bool withWarning = false,
+  SupportReportContext reportContext = SupportReportContext.support,
 }) {
   final period = WeeklySupportReportPeriod.forDate(DateTime(2026, 9, 14));
 
-  final student = const WeeklySupportReportStudentProjection(
+  final student = WeeklySupportReportStudentProjection(
     sourceStudentId: 7,
     supportStudentNumber: 'SUP-007',
     studentName: 'أحمد',
     currentJuz: 2,
     dailyPlanText: 'نصف وجه',
     note: 'ملاحظة الطالب',
+    monthlyGoalQuarterFaces: reportContext == SupportReportContext.support
+        ? SupportReportPolicy.monthlyGoalQuarterFaces
+        : null,
     displayOrder: 1,
   );
 
@@ -201,10 +220,11 @@ WeeklySupportReportProjection _projection({
 
   return WeeklySupportReportProjection(
     period: period,
-    header: const SupportReportHeaderSnapshot(
+    header: SupportReportHeaderSnapshot(
       teacherName: 'المعلم',
       halaqahName: 'حلقة النور',
       organizationName: 'الجهة',
+      reportContext: reportContext,
       policyVersion: SupportReportPolicy.policyVersion,
       templateVersion: SupportReportPolicy.templateVersion,
     ),

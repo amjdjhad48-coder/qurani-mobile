@@ -185,47 +185,70 @@ void main() {
       },
     );
 
-    test('rejects more than one support organization in one official week', () {
-      expect(
-        () => builder.build(
-          _source(
-            supportPeriods: <SupportReportSupportPeriodSource>[
-              SupportReportSupportPeriodSource(
-                id: 1,
-                organizationName: 'الجهة أ',
-                startedAtUtc: _UtcDates.sep11At21,
-                endedAtUtc: _UtcDates.sep12At21,
-              ),
-              SupportReportSupportPeriodSource(
-                id: 2,
-                organizationName: 'الجهة ب',
-                startedAtUtc: _UtcDates.sep13At21,
-                endedAtUtc: null,
-              ),
-            ],
-          ),
-        ),
-        throwsStateError,
-      );
-    });
+    test(
+      'falls back to general when support organization changes in one official week',
+      () {
+        final source = _source(
+          supportPeriods: <SupportReportSupportPeriodSource>[
+            SupportReportSupportPeriodSource(
+              id: 1,
+              organizationName: 'الجهة أ',
+              startedAtUtc: _UtcDates.sep11At21,
+              endedAtUtc: _UtcDates.sep12At21,
+            ),
+            SupportReportSupportPeriodSource(
+              id: 2,
+              organizationName: 'الجهة ب',
+              startedAtUtc: _UtcDates.sep13At21,
+              endedAtUtc: null,
+            ),
+          ],
+        );
+        final projection = builder.build(source);
 
-    test('rejects a week with no intersecting support period', () {
-      expect(
-        () => builder.build(
-          _source(
-            supportPeriods: <SupportReportSupportPeriodSource>[
-              SupportReportSupportPeriodSource(
-                id: 1,
-                organizationName: 'الجهة أ',
-                startedAtUtc: _UtcDates.sep01At00,
-                endedAtUtc: _UtcDates.sep05At00,
-              ),
-            ],
+        expect(projection.header.reportContext, SupportReportContext.general);
+        expect(
+          projection.header.organizationName,
+          source.halaqah.centerName.trim(),
+        );
+        expect(projection.students, isNotEmpty);
+        expect(
+          projection.students.every(
+            (student) =>
+                student.supportStudentNumber == null &&
+                student.monthlyGoalQuarterFaces == null,
           ),
-        ),
-        throwsStateError,
-      );
-    });
+          isTrue,
+        );
+        expect(
+          projection.missingItems.where(
+            (item) => item.field == ReportMissingField.supportStudentNumber,
+          ),
+          isEmpty,
+        );
+      },
+    );
+
+    test(
+      'builds a general weekly report when no support period intersects the week',
+      () {
+        expect(
+          () => builder.build(
+            _source(
+              supportPeriods: <SupportReportSupportPeriodSource>[
+                SupportReportSupportPeriodSource(
+                  id: 1,
+                  organizationName: 'الجهة أ',
+                  startedAtUtc: _UtcDates.sep01At00,
+                  endedAtUtc: _UtcDates.sep05At00,
+                ),
+              ],
+            ),
+          ),
+          returnsNormally,
+        );
+      },
+    );
   });
 }
 

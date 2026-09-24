@@ -30,6 +30,56 @@ class P007ExternalSharingBridge(
             KIND_SMS to ExternalActionState(),
         )
 
+    private var pendingReportArtifactFile: File? = null
+    private var reportArtifactPauseSeen = false
+
+    init {
+        cleanupStaleReportArtifactsOncePerProcess()
+    }
+
+    private fun cleanupStaleReportArtifactsOncePerProcess() {
+        synchronized(P007ExternalSharingBridge::class.java) {
+            if (reportArtifactStartupCleanupComplete) {
+                return@synchronized
+            }
+
+            val shareDirectory =
+                File(
+                    activity.cacheDir,
+                    SHARE_CACHE_DIRECTORY,
+                )
+
+            if (shareDirectory.exists()) {
+                val canonicalShareDirectory = shareDirectory.canonicalFile
+                val canonicalCacheRoot = activity.cacheDir.canonicalFile
+
+                check(
+                    canonicalShareDirectory.path.startsWith(
+                        canonicalCacheRoot.path + File.separator,
+                    )
+                ) {
+                    "Report startup cleanup cache escaped app cache."
+                }
+
+                canonicalShareDirectory
+                    .listFiles()
+                    ?.filter { file ->
+                        file.isFile &&
+                            REPORT_ARTIFACT_EXTENSIONS.contains(
+                                file.extension.lowercase(),
+                            )
+                    }
+                    ?.forEach { file ->
+                        check(file.delete() || !file.exists()) {
+                            "Could not delete stale report cache artifact."
+                        }
+                    }
+            }
+
+            reportArtifactStartupCleanupComplete = true
+        }
+    }
+
     fun handle(
         call: MethodCall,
         result: MethodChannel.Result,
@@ -37,6 +87,8 @@ class P007ExternalSharingBridge(
         try {
             when (call.method) {
                 "shareImoProbe" -> result.success(shareImoProbe())
+                "openReportArtifact" -> result.success(openReportArtifact(call))
+                "shareReportArtifact" -> result.success(shareReportArtifact(call))
                 "shareWhatsAppText" -> result.success(shareWhatsAppText())
                 "openSmsComposer" -> result.success(openSmsComposer())
                 "openParentWhatsApp" ->
@@ -62,6 +114,10 @@ class P007ExternalSharingBridge(
                 state.pauseSeen = true
             }
         }
+
+        if (pendingReportArtifactFile != null) {
+            reportArtifactPauseSeen = true
+        }
     }
 
     fun onHostResumed() {
@@ -71,6 +127,366 @@ class P007ExternalSharingBridge(
                 state.pending = false
             }
         }
+
+        if (pendingReportArtifactFile != null && reportArtifactPauseSeen) {
+            pendingReportArtifactFile?.delete()
+            pendingReportArtifactFile = null
+            reportArtifactPauseSeen = false
+        }
+    }
+
+    private fun openReportArtifact(
+        call: MethodCall,
+    ): Map<String, Any?> {
+        val bytes =
+            call.argument<ByteArray>("bytes")
+                ?: throw IllegalArgumentException("Missing report artifact bytes.")
+
+        require(bytes.isNotEmpty()) {
+            "Report artifact bytes must not be empty."
+        }
+
+        val expectedSha256 =
+            call.argument<String>("sha256")
+                ?.trim()
+                ?.lowercase()
+                ?: throw IllegalArgumentException(
+                    "Missing report artifact SHA-256.",
+                )
+
+        require(Regex("^[0-9a-f]{64}$").matches(expectedSha256)) {
+            "Report artifact SHA-256 must be 64 lowercase hexadecimal characters."
+        }
+
+        val mimeType =
+            call.argument<String>("mimeType")
+                ?.trim()
+                ?: throw IllegalArgumentException(
+                    "Missing report artifact MIME type.",
+                )
+
+        val extension =
+            when (mimeType) {
+                REPORT_XLSX_MIME_TYPE -> "xlsx"
+                REPORT_PDF_MIME_TYPE -> "pdf"
+                else -> throw IllegalArgumentException(
+                    "Unsupported report artifact MIME type.",
+                )
+            }
+
+        val shareDirectory =
+            File(
+                activity.cacheDir,
+                SHARE_CACHE_DIRECTORY,
+            )
+
+        check(
+            shareDirectory.exists() ||
+                shareDirectory.mkdirs()
+        ) {
+            "Could not create dedicated report-open cache."
+        }
+
+        val canonicalShareDirectory =
+            shareDirectory.canonicalFile
+        val canonicalCacheRoot =
+            activity.cacheDir.canonicalFile
+
+        check(
+            canonicalShareDirectory.path.startsWith(
+                canonicalCacheRoot.path + File.separator,
+            )
+        ) {
+            "Report-open cache escaped app cache."
+        }
+
+        canonicalShareDirectory
+            .listFiles()
+            ?.filter { file ->
+                file.isFile &&
+                    REPORT_ARTIFACT_EXTENSIONS.contains(
+                        file.extension.lowercase(),
+                    )
+            }
+            ?.forEach { file ->
+                file.delete()
+            }
+
+        val file =
+            File(
+                canonicalShareDirectory,
+                "$expectedSha256.$extension",
+            )
+
+        val actualSha256: String
+        val uri: Uri
+
+        try {
+            file.writeBytes(bytes)
+
+            check(file.length() == bytes.size.toLong()) {
+                "Report-open cache file size mismatch."
+            }
+
+            actualSha256 = sha256(file).lowercase()
+
+            check(actualSha256 == expectedSha256) {
+                "Report-open cache SHA-256 mismatch."
+            }
+
+            uri =
+                FileProvider.getUriForFile(
+                    activity,
+                    "${activity.packageName}.p007.fileprovider",
+                    file,
+                )
+
+            check(uri.scheme == "content") {
+                "FileProvider did not return a content URI for report artifact."
+            }
+
+            check(
+                uri.authority ==
+                    "${activity.packageName}.p007.fileprovider"
+            ) {
+                "Unexpected FileProvider authority for report artifact."
+            }
+        } catch (error: Throwable) {
+            file.delete()
+            throw error
+        }
+
+        val intent =
+            Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, mimeType)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                clipData =
+                    ClipData.newRawUri(
+                        "qurani_report_artifact",
+                        uri,
+                    )
+            }
+
+        pendingReportArtifactFile = file
+        reportArtifactPauseSeen = false
+
+        try {
+            activity.startActivity(intent)
+        } catch (error: Throwable) {
+            pendingReportArtifactFile = null
+            reportArtifactPauseSeen = false
+            file.delete()
+            throw error
+        }
+
+        return mapOf(
+            "launched" to true,
+            "action" to Intent.ACTION_VIEW,
+            "mimeType" to mimeType,
+            "uri" to uri.toString(),
+            "authority" to uri.authority,
+            "scheme" to uri.scheme,
+            "fileName" to file.name,
+            "bytes" to file.length(),
+            "sha256" to actualSha256,
+            "dedicatedShareCache" to canonicalShareDirectory.path,
+            "cacheRoot" to canonicalCacheRoot.path,
+        )
+    }
+
+    private fun shareReportArtifact(
+        call: MethodCall,
+    ): Map<String, Any?> {
+        val bytes =
+            call.argument<ByteArray>("bytes")
+                ?: throw IllegalArgumentException("Missing report artifact bytes.")
+
+        require(bytes.isNotEmpty()) {
+            "Report artifact bytes must not be empty."
+        }
+
+        val expectedSha256 =
+            call.argument<String>("sha256")
+                ?.trim()
+                ?.lowercase()
+                ?: throw IllegalArgumentException(
+                    "Missing report artifact SHA-256.",
+                )
+
+        require(Regex("^[0-9a-f]{64}$").matches(expectedSha256)) {
+            "Report artifact SHA-256 must be 64 lowercase hexadecimal characters."
+        }
+
+        val suggestedName =
+            call.argument<String>("suggestedName")
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() }
+                ?: throw IllegalArgumentException(
+                    "Missing report artifact suggestedName.",
+                )
+
+        require(
+            !suggestedName.contains('/') &&
+                !suggestedName.contains('\\'),
+        ) {
+            "Report artifact suggestedName must be a simple file name."
+        }
+
+        val mimeType =
+            call.argument<String>("mimeType")
+                ?.trim()
+                ?: throw IllegalArgumentException(
+                    "Missing report artifact MIME type.",
+                )
+
+        val extension =
+            when (mimeType) {
+                REPORT_XLSX_MIME_TYPE -> "xlsx"
+                REPORT_PDF_MIME_TYPE -> "pdf"
+                else -> throw IllegalArgumentException(
+                    "Unsupported report artifact MIME type.",
+                )
+            }
+
+        require(suggestedName.endsWith(".$extension", ignoreCase = true)) {
+            "Report artifact file extension does not match its MIME type."
+        }
+
+        val shareDirectory =
+            File(
+                activity.cacheDir,
+                SHARE_CACHE_DIRECTORY,
+            )
+
+        check(
+            shareDirectory.exists() ||
+                shareDirectory.mkdirs()
+        ) {
+            "Could not create dedicated report-share cache."
+        }
+
+        val canonicalShareDirectory =
+            shareDirectory.canonicalFile
+        val canonicalCacheRoot =
+            activity.cacheDir.canonicalFile
+
+        check(
+            canonicalShareDirectory.path.startsWith(
+                canonicalCacheRoot.path + File.separator,
+            )
+        ) {
+            "Report-share cache escaped app cache."
+        }
+
+        canonicalShareDirectory
+            .listFiles()
+            ?.filter { candidate ->
+                candidate.isFile &&
+                    REPORT_ARTIFACT_EXTENSIONS.contains(
+                        candidate.extension.lowercase(),
+                    )
+            }
+            ?.forEach { candidate ->
+                candidate.delete()
+            }
+
+        val file =
+            File(
+                canonicalShareDirectory,
+                suggestedName,
+            ).canonicalFile
+
+        check(file.parentFile == canonicalShareDirectory) {
+            "Report-share file escaped dedicated cache."
+        }
+
+        val actualSha256: String
+        val uri: Uri
+
+        try {
+            file.writeBytes(bytes)
+
+            check(file.length() == bytes.size.toLong()) {
+                "Report-share cache file size mismatch."
+            }
+
+            actualSha256 = sha256(file).lowercase()
+
+            check(actualSha256 == expectedSha256) {
+                "Report-share cache SHA-256 mismatch."
+            }
+
+            uri =
+                FileProvider.getUriForFile(
+                    activity,
+                    "${activity.packageName}.p007.fileprovider",
+                    file,
+                )
+
+            check(uri.scheme == "content") {
+                "FileProvider did not return a content URI for report share."
+            }
+
+            check(
+                uri.authority ==
+                    "${activity.packageName}.p007.fileprovider"
+            ) {
+                "Unexpected FileProvider authority for report share."
+            }
+        } catch (error: Throwable) {
+            file.delete()
+            throw error
+        }
+
+        val shareIntent =
+            Intent(Intent.ACTION_SEND).apply {
+                type = mimeType
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                clipData =
+                    ClipData.newRawUri(
+                        "qurani_report_artifact_share",
+                        uri,
+                    )
+            }
+
+        val chooser =
+            Intent.createChooser(
+                shareIntent,
+                                if (mimeType == REPORT_PDF_MIME_TYPE) {
+                    "مشاركة ملف PDF المعتمد"
+                } else {
+                    "مشاركة ملف Excel المعتمد"
+                },
+
+            ).apply {
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+        pendingReportArtifactFile = file
+        reportArtifactPauseSeen = false
+
+        try {
+            activity.startActivity(chooser)
+        } catch (error: Throwable) {
+            pendingReportArtifactFile = null
+            reportArtifactPauseSeen = false
+            file.delete()
+            throw error
+        }
+
+        return mapOf(
+            "launched" to true,
+            "action" to Intent.ACTION_SEND,
+            "mimeType" to mimeType,
+            "uri" to uri.toString(),
+            "authority" to uri.authority,
+            "scheme" to uri.scheme,
+            "fileName" to file.name,
+            "bytes" to file.length(),
+            "sha256" to actualSha256,
+            "chooser" to true,
+        )
     }
 
     private fun shareImoProbe(): Map<String, Any?> {
@@ -529,6 +945,18 @@ class P007ExternalSharingBridge(
             "QURANI-P0-07-PRIVATE-SHARE-PROBE\n" +
                 "DEDICATED_CACHE_ONLY\n" +
                 "NO_PRIVATE_SPACE_EXPOSURE\n"
+
+        private const val REPORT_XLSX_MIME_TYPE =
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+        private const val REPORT_PDF_MIME_TYPE =
+            "application/pdf"
+
+        private val REPORT_ARTIFACT_EXTENSIONS =
+            setOf("xlsx", "pdf")
+
+        @Volatile
+        private var reportArtifactStartupCleanupComplete = false
 
         private const val REQUEST_IMO_CHOOSER = 7001
         private const val REQUEST_WHATSAPP_CHOOSER = 7002
